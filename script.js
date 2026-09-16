@@ -1,14 +1,10 @@
-// =========================================================
-// PIXORA — SUPABASE CONNECTION
-// =========================================================
-
-const SUPABASE_URL = hlldyvzgvblxmnygldqd
-const SUPABASE_PUBLISHABLE_KEY = sb_publishable_mg6WiPQq2BTk_2YTdJkaJA_f4zQwPF-
+const SUPABASE_URL = "hlldyvzgvblxmnygldqd";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_mg6WiPQq2BTk_2YTdJkaJA_f4zQwPF-";
 
 const supabase = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
-   );
+);
 /* =========================================================
    PIXORA — SCALABLE WALLPAPER ENGINE
    Supports 50 wallpapers per category now
