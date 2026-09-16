@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="PIXORA — Discover beautiful wallpapers for every mood, style and screen."
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b0b10"
+    >
+
+    <meta
+        name="robots"
+        content="index, follow"
+    >
+
+    <title>PIXORA — Discover Your Screen</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         TOP BAR
+    ========================== -->
+    <header class="topbar">
+
+        <a href="#home" class="logo" aria-label="PIXORA Home">
+            PIX<span>ORA</span>
+        </a>
+
+        <div class="top-actions">
+
+            <button
+                id="searchTrigger"
+                class="icon-btn"
+                type="button"
+                aria-label="Open search"
+            >
+                🔍
+            </button>
+
+            <!-- Day / Night Toggle -->
+            <button
+                id="themeToggle"
+                class="theme-toggle"
+                type="button"
+                aria-label="Switch theme"
+                aria-pressed="false"
+            >
+                <span class="theme-sun">☀️</span>
+                <span class="theme-moon">🌙</span>
+                <span class="theme-knob"></span>
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         SEARCH PANEL
+    ========================== -->
+    <section
+        id="searchPanel"
+        class="search-panel"
+        aria-label="Wallpaper search"
+    >
+
+        <div class="search-box">
+
+            <span class="search-icon">🔍</span>
+
+            <input
+                id="searchInput"
+                type="search"
+                placeholder="Search wallpapers..."
+                autocomplete="off"
+                aria-label="Search wallpapers"
+            >
+
+            <button
+                id="clearSearch"
+                class="clear-search"
+                type="button"
+                aria-label="Clear search"
+            >
+                ✕
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+    <main id="home">
+
+
+        <!-- =========================
+             HERO
+        ========================== -->
+        <section class="hero">
+
+            <div class="hero-slider">
+
+                <article class="hero-slide active">
+                    <div class="hero-content">
+
+                        <span class="hero-label">
+                            WELCOME TO PIXORA
+                        </span>
+
+                        <h1>
+                            Discover Your
+                            <span>Perfect Screen.</span>
+                        </h1>
+
+                        <p>
+                            Beautiful wallpapers for every mood,
+                            style and device.
+                        </p>
+
+                        <button
+                            id="exploreBtn"
+                            class="primary-btn"
+                            type="button"
+                        >
+                            Explore Wallpapers →
+                        </button>
+
+                    </div>
+                </article>
+
+
+                <article class="hero-slide">
+
+                    <div class="hero-content">
+
+                        <span class="hero-label">
+                            FRESH COLLECTIONS
+                        </span>
+
+                        <h1>
+                            New Wallpapers.
+                            <span>Every Day.</span>
+                        </h1>
+
+                        <p>
+                            Find something new for your
+                            lock screen and home screen.
+                        </p>
+
+                        <button
+                            class="primary-btn"
+                            type="button"
+                            data-scroll="new"
+                        >
+                            View Fresh Drops →
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <article class="hero-slide">
+
+                    <div class="hero-content">
+
+                        <span class="hero-label">
+                            EXPLORE PIXORA
+                        </span>
+
+                        <h1>
+                            Find Your
+                            <span>Visual Vibe.</span>
+                        </h1>
+
+                        <p>
+                            Anime, gaming, cars, nature,
+                            AMOLED, luxury and more.
+                        </p>
+
+                        <button
+                            class="primary-btn"
+                            type="button"
+                            data-scroll="categories"
+                        >
+                            Browse Categories →
+                        </button>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <!-- HERO DOTS -->
+            <div
+                class="hero-dots"
+                aria-label="Hero slides"
+            >
+
+                <button
+                    class="hero-dot active"
+                    type="button"
+                    data-slide="0"
+                    aria-label="Slide 1"
+                ></button>
+
+                <button
+                    class="hero-dot"
+                    type="button"
+                    data-slide="1"
+                    aria-label="Slide 2"
+                ></button>
+
+                <button
+                    class="hero-dot"
+                    type="button"
+                    data-slide="2"
+                    aria-label="Slide 3"
+                ></button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CATEGORIES
+        ========================== -->
+        <section
+            id="categories"
+            class="section"
+        >
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        EXPLORE
+                    </span>
+
+                    <h2>Categories</h2>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="categoryList"
+                class="category-list"
+            >
+
+                <button
+                    class="category-btn active"
+                    type="button"
+                    data-category="all"
+                >
+                    ✨ All
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="anime"
+                >
+                    🎌 Anime
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="gaming"
+                >
+                    🎮 Gaming
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="cars"
+                >
+                    🏎️ Cars
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="sports"
+                >
+                    ⚽ Sports
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="nature"
+                >
+                    🌿 Nature
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="space"
+                >
+                    🌌 Space
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="luxury"
+                >
+                    💎 Luxury
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="technology"
+                >
+                    💻 Technology
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="movies"
+                >
+                    🎬 Movies
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="music"
+                >
+                    🎵 Music
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="amoled"
+                >
+                    🖤 AMOLED
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="aesthetic"
+                >
+                    ✨ Aesthetic
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="horror"
+                >
+                    👻 Horror
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="fantasy"
+                >
+                    🧙 Fantasy
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="travel"
+                >
+                    ✈️ Travel
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="fitness"
+                >
+                    🏋️ Fitness
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="animals"
+                >
+                    🐺 Animals
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="cities"
+                >
+                    🌆 Cities
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="love"
+                >
+                    ❤️ Love
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="retro"
+                >
+                    📼 Retro
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="cute"
+                >
+                    🧸 Cute
+                </button>
+
+                <button
+                    class="category-btn"
+                    type="button"
+                    data-category="art"
+                >
+                    🎨 Art
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             TRENDING
+        ========================== -->
+        <section
+            id="trending"
+            class="section"
+        >
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        POPULAR NOW
+                    </span>
+
+                    <h2>Trending</h2>
+
+                </div>
+
+                <button
+                    class="text-btn"
+                    type="button"
+                    data-category="all"
+                >
+                    View All →
+                </button>
+
+            </div>
+
+
+            <div class="trending-grid">
+
+                <article
+                    class="wallpaper-card trending-card"
+                    data-id="trending-gaming"
+                    data-category="gaming"
+                    data-title="Neon Gaming"
+                    data-keywords="gaming neon gamer cyber game"
+                >
+
+                    <div class="wallpaper-art art-cyber">
+
+                        <button
+                            class="like-btn"
+                            type="button"
+                            aria-label="Like Neon Gaming"
+                        >
+                            ♡
+                        </button>
+
+                        <button
+                            class="preview-btn"
+                            type="button"
+                            aria-label="Preview Neon Gaming"
+                        >
+                            👁
+                        </button>
+
+                        <div class="wallpaper-info">
+
+                            <h3>Neon Gaming</h3>
+
+                            <span>
+                                Gaming • Neon
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article
+                    class="wallpaper-card trending-card"
+                    data-id="trending-nature"
+                    data-category="nature"
+                    data-title="Emerald Nature"
+                    data-keywords="nature forest green trees landscape"
+                >
+
+                    <div class="wallpaper-art art-forest">
+
+                        <button
+                            class="like-btn"
+                            type="button"
+                            aria-label="Like Emerald Nature"
+                        >
+                            ♡
+                        </button>
+
+                        <button
+                            class="preview-btn"
+                            type="button"
+                            aria-label="Preview Emerald Nature"
+                        >
+                            👁
+                        </button>
+
+                        <div class="wallpaper-info">
+
+                            <h3>Emerald Nature</h3>
+
+                            <span>
+                                Nature • Forest
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article
+                    class="wallpaper-card trending-card"
+                    data-id="trending-luxury"
+                    data-category="luxury"
+                    data-title="Golden Luxury"
+                    data-keywords="luxury gold premium elegant"
+                >
+
+                    <div class="wallpaper-art art-gold">
+
+                        <button
+                            class="like-btn"
+                            type="button"
+                            aria-label="Like Golden Luxury"
+                        >
+                            ♡
+                        </button>
+
+                        <button
+                            class="preview-btn"
+                            type="button"
+                            aria-label="Preview Golden Luxury"
+                        >
+                            👁
+                        </button>
+
+                        <div class="wallpaper-info">
+
+                            <h3>Golden Luxury</h3>
+
+                            <span>
+                                Luxury • Gold
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article
+                    class="wallpaper-card trending-card"
+                    data-id="trending-aesthetic"
+                    data-category="aesthetic"
+                    data-title="Purple Dream"
+                    data-keywords="purple aesthetic dream gradient"
+                >
+
+                    <div class="wallpaper-art art-purple">
+
+                        <button
+                            class="like-btn"
+                            type="button"
+                            aria-label="Like Purple Dream"
+                        >
+                            ♡
+                        </button>
+
+                        <button
+                            class="preview-btn"
+                            type="button"
+                            aria-label="Preview Purple Dream"
+                        >
+                            👁
+                        </button>
+
+                        <div class="wallpaper-info">
+
+                            <h3>Purple Dream</h3>
+
+                            <span>
+                                Aesthetic • Purple
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FRESH DROPS
+        ========================== -->
+        <section
+            id="new"
+            class="section"
+        >
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        LATEST
+                    </span>
+
+                    <h2>Fresh Drops</h2>
+
+                </div>
+
+                <span
+                    id="resultsCount"
+                    class="results-count"
+                >
+                    0 wallpapers
+                </span>
+
+            </div>
+
+
+            <!--
+                IMPORTANT:
+                Wallpapers will now be generated
+                automatically by wallpaper-data.js
+                + script.js.
+
+                This allows PIXORA to scale to
+                50 wallpapers per category now
+                and 200 later without putting
+                thousands of cards inside HTML.
+            -->
+            <div
+                id="wallpaperGrid"
+                class="wallpaper-grid"
+                aria-live="polite"
+            ></div>
+
+
+            <!-- LOAD MORE -->
+            <div
+                id="loadMoreContainer"
+                class="load-more-container"
+            >
+
+                <button
+                    id="loadMoreBtn"
+                    class="primary-btn"
+                    type="button"
+                >
+                    Load More Wallpapers
+                </button>
+
+            </div>
+
+
+            <!-- EMPTY SEARCH STATE -->
+            <div
+                id="emptyState"
+                class="empty-state"
+                hidden
+            >
+
+                <div class="empty-icon">
+                    🔍
+                </div>
+
+                <h3>
+                    No wallpapers found
+                </h3>
+
+                <p>
+                    Try another keyword or choose
+                    a different category.
+                </p>
+
+                <button
+                    id="resetFilters"
+                    class="primary-btn"
+                    type="button"
+                >
+                    Show All Wallpapers
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RANDOM
+        ========================== -->
+        <section class="random-section">
+
+            <div class="random-box">
+
+                <span class="random-icon">
+                    🎲
+                </span>
+
+                <div>
+
+                    <h2>
+                        Can't decide?
+                    </h2>
+
+                    <p>
+                        Let PIXORA choose a wallpaper
+                        for you.
+                    </p>
+
+                </div>
+
+                <button
+                    id="randomBtn"
+                    class="primary-btn"
+                    type="button"
+                >
+                    Surprise Me
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         PREVIEW MODAL
+    ========================== -->
+    <div
+        id="previewModal"
+        class="modal"
+        aria-hidden="true"
+    >
+
+        <div class="modal-backdrop"></div>
+
+        <div
+            class="modal-content"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalTitle"
+        >
+
+            <button
+                id="modalClose"
+                class="modal-close"
+                type="button"
+                aria-label="Close preview"
+            >
+                ✕
+            </button>
+
+            <div
+                id="modalArt"
+                class="modal-art"
+            ></div>
+
+            <div class="modal-info">
+
+                <h2 id="modalTitle">
+                    Wallpaper
+                </h2>
+
+                <p id="modalDetails">
+                    PIXORA Wallpaper
+                </p>
+
+                <div class="modal-actions">
+
+                    <button
+                        id="modalLike"
+                        class="modal-action"
+                        type="button"
+                    >
+                        ♡ Like
+                    </button>
+
+                    <button
+                        id="modalDownload"
+                        class="modal-action primary"
+                        type="button"
+                    >
+                        ↓ Download
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         BOTTOM NAVIGATION
+    ========================== -->
+    <nav
+        class="bottom-nav"
+        aria-label="Main navigation"
+    >
+
+        <button
+            class="nav-item active"
+            type="button"
+            data-target="home"
+        >
+            <span>⌂</span>
+            <small>Home</small>
+        </button>
+
+        <button
+            class="nav-item"
+            type="button"
+            data-target="trending"
+        >
+            <span>🔥</span>
+            <small>Trending</small>
+        </button>
+
+        <button
+            class="nav-item"
+            type="button"
+            data-target="new"
+        >
+            <span>✨</span>
+            <small>New</small>
+        </button>
+
+        <button
+            class="nav-item"
+            type="button"
+            data-target="categories"
+        >
+            <span>☰</span>
+            <small>Categories</small>
+        </button>
+
+    </nav>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <!-- Wallpaper database -->
+    <script src="wallpaper-data.js"></script>
+
+    <!-- Main PIXORA functionality -->
+    <script src="script.js"></script>
+
+</body>
+
+  </html>
