@@ -1,17 +1,21 @@
-<!DOCTYPE html>
+
+     <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <meta
         name="description"
-        content="PIXORA — Discover wallpapers for every mood, style and screen."
+        content="PIXORA — Discover beautiful wallpapers for every mood, style and screen."
     >
 
     <title>PIXORA — Wallpaper Discovery</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -23,13 +27,13 @@
     <style>
 
         /* =====================================================
-           PIXORA
+           PIXORA DESIGN SYSTEM
         ===================================================== */
 
         :root {
             --bg: #0b0b10;
             --surface: #15151c;
-            --surface-2: #1b1b24;
+            --surface-2: #1c1c25;
             --border: rgba(255,255,255,.08);
 
             --text: #f5f5f7;
@@ -41,6 +45,16 @@
             --amber: #f2b84b;
 
             --radius: 20px;
+        }
+
+        body.light {
+            --bg: #f5f5f7;
+            --surface: #ffffff;
+            --surface-2: #eeeeF2;
+            --border: rgba(0,0,0,.08);
+
+            --text: #111116;
+            --muted: #666672;
         }
 
         * {
@@ -56,9 +70,16 @@
         body {
             background: var(--bg);
             color: var(--text);
+
             font-family: "Inter", sans-serif;
-            padding-bottom: 82px;
+
+            padding-bottom: 90px;
+
             overflow-x: hidden;
+
+            transition:
+                background .4s ease,
+                color .4s ease;
         }
 
         button,
@@ -82,8 +103,10 @@
 
         .topbar {
             position: fixed;
+
             top: 0;
             left: 0;
+
             width: 100%;
             height: 68px;
 
@@ -93,11 +116,18 @@
 
             padding: 0 18px;
 
-            background: rgba(11,11,16,.78);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            background:
+                color-mix(
+                    in srgb,
+                    var(--bg) 82%,
+                    transparent
+                );
 
-            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+
+            border-bottom:
+                1px solid var(--border);
 
             z-index: 1000;
         }
@@ -105,25 +135,37 @@
         .brand {
             display: flex;
             align-items: center;
+
             gap: 10px;
 
-            font-family: "Space Grotesk", sans-serif;
-            font-weight: 700;
-            font-size: 1.15rem;
-            letter-spacing: -.5px;
-        }
+            font-family:
+                "Space Grotesk",
+                sans-serif;
 
-        /* 2x2 PIXEL MARK */
+            font-weight: 700;
+
+            font-size: 1.15rem;
+
+            letter-spacing: -.6px;
+        }
 
         .pixel-mark {
             width: 25px;
             height: 25px;
 
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            grid-template-rows:
+                1fr 1fr;
 
             gap: 2px;
+
+            border-radius: 5px;
+
+            overflow: hidden;
         }
 
         .pixel-mark span:nth-child(1) {
@@ -142,17 +184,22 @@
             background: var(--amber);
         }
 
+        .top-actions {
+            display: flex;
+            gap: 8px;
+        }
 
-        /* SEARCH */
-
-        .search-trigger {
+        .icon-button {
             width: 40px;
             height: 40px;
 
-            border: 1px solid var(--border);
+            border:
+                1px solid var(--border);
+
             border-radius: 50%;
 
-            background: var(--surface);
+            background:
+                var(--surface);
 
             color: var(--text);
 
@@ -160,61 +207,119 @@
             align-items: center;
             justify-content: center;
 
-            font-size: 1.15rem;
+            font-size: 1.1rem;
+
+            transition: .25s;
+        }
+
+        .icon-button:hover {
+            transform: translateY(-2px);
+
+            border-color:
+                var(--violet);
         }
 
 
+        /* =====================================================
+           SEARCH
+        ===================================================== */
+
         .search-panel {
             position: fixed;
+
             top: 68px;
             left: 0;
 
             width: 100%;
 
-            padding: 12px 16px;
+            padding: 14px 16px;
 
-            background: rgba(11,11,16,.96);
+            background:
+                color-mix(
+                    in srgb,
+                    var(--bg) 96%,
+                    transparent
+                );
 
-            border-bottom: 1px solid var(--border);
+            border-bottom:
+                1px solid var(--border);
 
-            transform: translateY(-130%);
-            transition: transform .35s ease;
+            transform:
+                translateY(-150%);
+
+            transition:
+                transform .35s ease;
 
             z-index: 999;
         }
 
         .search-panel.open {
-            transform: translateY(0);
+            transform:
+                translateY(0);
+        }
+
+        .search-box {
+            position: relative;
         }
 
         .search-input {
             width: 100%;
 
-            border: 1px solid var(--border);
-            border-radius: 14px;
+            padding:
+                15px 48px 15px 16px;
 
-            background: var(--surface);
+            border:
+                1px solid var(--border);
 
-            color: white;
-
-            padding: 14px 16px;
+            border-radius: 15px;
 
             outline: none;
+
+            background:
+                var(--surface);
+
+            color:
+                var(--text);
         }
 
         .search-input:focus {
-            border-color: var(--violet);
+            border-color:
+                var(--violet);
+        }
+
+        .clear-search {
+            position: absolute;
+
+            right: 8px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            width: 34px;
+            height: 34px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background:
+                var(--surface-2);
+
+            color:
+                var(--text);
         }
 
 
         /* =====================================================
-           HERO CAROUSEL
+           HERO
         ===================================================== */
 
         .hero {
             position: relative;
 
-            height: min(82vh, 760px);
+            height:
+                min(78vh, 760px);
 
             margin-top: 68px;
 
@@ -227,11 +332,14 @@
             display: flex;
 
             overflow-x: auto;
-            scroll-snap-type: x mandatory;
+
+            scroll-snap-type:
+                x mandatory;
 
             scrollbar-width: none;
 
-            -webkit-overflow-scrolling: touch;
+            -webkit-overflow-scrolling:
+                touch;
         }
 
         .slides::-webkit-scrollbar {
@@ -244,141 +352,153 @@
             min-width: 100%;
             height: 100%;
 
-            scroll-snap-align: start;
+            scroll-snap-align:
+                start;
+
+            display: flex;
+
+            align-items: flex-end;
 
             background-size: cover;
             background-position: center;
-
-            display: flex;
-            align-items: flex-end;
         }
 
         .slide::after {
             content: "";
 
             position: absolute;
+
             inset: 0;
 
             background:
                 linear-gradient(
                     to top,
-                    rgba(0,0,0,.88) 0%,
-                    rgba(0,0,0,.45) 42%,
-                    rgba(0,0,0,.08) 75%
+                    rgba(0,0,0,.9),
+                    rgba(0,0,0,.35) 45%,
+                    rgba(0,0,0,.08)
                 );
         }
-
-
-        /* Temporary visual wallpapers */
 
         .slide-1 {
             background:
                 radial-gradient(
                     circle at 70% 25%,
-                    #7765c9,
-                    transparent 25%
+                    #8b6cff,
+                    transparent 24%
                 ),
                 linear-gradient(
                     145deg,
-                    #10101c,
+                    #08080d,
                     #302858,
-                    #17151f
+                    #14141c
                 );
         }
 
         .slide-2 {
             background:
                 radial-gradient(
-                    circle at 35% 30%,
-                    #6d987d,
-                    transparent 27%
+                    circle at 35% 25%,
+                    #75a98b,
+                    transparent 26%
                 ),
                 linear-gradient(
                     145deg,
-                    #0e1813,
-                    #304c3b,
-                    #111913
+                    #07100b,
+                    #31543e,
+                    #101713
                 );
         }
 
         .slide-3 {
             background:
                 radial-gradient(
-                    circle at 70% 30%,
-                    #c57860,
+                    circle at 70% 28%,
+                    #df856f,
                     transparent 25%
                 ),
                 linear-gradient(
                     145deg,
-                    #111116,
-                    #54332e,
-                    #1c1515
+                    #100d10,
+                    #59352f,
+                    #1b1517
                 );
         }
 
-
         .slide-content {
             position: relative;
+
             z-index: 2;
 
             width: 100%;
 
-            padding: 28px 20px 58px;
+            padding:
+                28px 20px 70px;
         }
 
         .slide-meta {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
 
-            margin-bottom: 12px;
+            gap: 8px;
+
+            margin-bottom: 13px;
         }
 
         .tag {
-            padding: 6px 9px;
+            padding:
+                6px 9px;
 
-            border: 1px solid rgba(255,255,255,.14);
+            border:
+                1px solid
+                rgba(255,255,255,.15);
+
             border-radius: 8px;
 
-            background: rgba(0,0,0,.28);
+            background:
+                rgba(0,0,0,.25);
 
-            color: #ddd;
+            font-size:
+                .66rem;
 
-            font-size: .67rem;
-            font-weight: 600;
+            font-weight:
+                600;
         }
 
         .slide h1 {
-            max-width: 700px;
+            font-family:
+                "Space Grotesk",
+                sans-serif;
 
-            font-family: "Space Grotesk", sans-serif;
+            font-size:
+                clamp(2.4rem, 9vw, 5rem);
 
-            font-size: clamp(2.2rem, 8vw, 5rem);
+            line-height:
+                .95;
 
-            line-height: .96;
+            letter-spacing:
+                -2.5px;
 
-            letter-spacing: -2px;
-
-            margin-bottom: 10px;
+            margin-bottom:
+                10px;
         }
 
         .creator {
-            color: #bdbdc7;
-            font-size: .78rem;
+            color:
+                #c4c4cc;
+
+            font-size:
+                .78rem;
         }
-
-
-        /* DOTS */
 
         .dots {
             position: absolute;
 
-            bottom: 22px;
             left: 20px;
+            bottom: 24px;
 
-            z-index: 5;
+            z-index: 10;
 
             display: flex;
+
             gap: 6px;
         }
 
@@ -387,16 +507,22 @@
             height: 4px;
 
             border: none;
-            border-radius: 20px;
 
-            background: rgba(255,255,255,.3);
+            border-radius:
+                20px;
 
-            transition: .3s;
+            background:
+                rgba(255,255,255,.3);
+
+            transition:
+                .3s;
         }
 
         .dot.active {
             width: 30px;
-            background: white;
+
+            background:
+                white;
         }
 
 
@@ -405,28 +531,38 @@
         ===================================================== */
 
         .section {
-            padding: 45px 16px 0;
+            padding:
+                44px 16px 0;
         }
 
         .section-header {
             display: flex;
+
             align-items: center;
             justify-content: space-between;
 
-            margin-bottom: 18px;
+            margin-bottom:
+                17px;
         }
 
         .section-header h2 {
-            font-family: "Space Grotesk", sans-serif;
+            font-family:
+                "Space Grotesk",
+                sans-serif;
 
-            font-size: 1.45rem;
+            font-size:
+                1.45rem;
 
-            letter-spacing: -.7px;
+            letter-spacing:
+                -.8px;
         }
 
         .section-header span {
-            color: var(--muted);
-            font-size: .72rem;
+            color:
+                var(--muted);
+
+            font-size:
+                .72rem;
         }
 
 
@@ -441,9 +577,11 @@
 
             overflow-x: auto;
 
-            scrollbar-width: none;
+            scrollbar-width:
+                none;
 
-            padding-bottom: 5px;
+            padding-bottom:
+                5px;
         }
 
         .chips::-webkit-scrollbar {
@@ -451,33 +589,43 @@
         }
 
         .chip {
-            flex: 0 0 auto;
+            flex:
+                0 0 auto;
 
-            border: 1px solid var(--border);
+            padding:
+                10px 13px;
 
-            background: var(--surface);
+            border:
+                1px solid var(--border);
 
-            color: #d6d6dc;
+            border-radius:
+                100px;
 
-            padding: 10px 13px;
+            background:
+                var(--surface);
 
-            border-radius: 100px;
+            color:
+                var(--text);
 
-            font-size: .76rem;
+            font-size:
+                .76rem;
 
-            transition: .25s;
+            transition:
+                .25s;
         }
 
-        .chip:hover,
-        .chip.active {
-            border-color: var(--violet);
-            color: white;
-            background: rgba(139,108,255,.12);
+        .chip.active,
+        .chip:hover {
+            border-color:
+                var(--violet);
+
+            background:
+                rgba(139,108,255,.13);
         }
 
 
         /* =====================================================
-           TRENDING RAIL
+           TRENDING
         ===================================================== */
 
         .rail {
@@ -487,9 +635,8 @@
 
             overflow-x: auto;
 
-            scrollbar-width: none;
-
-            padding-bottom: 6px;
+            scrollbar-width:
+                none;
         }
 
         .rail::-webkit-scrollbar {
@@ -499,339 +646,708 @@
         .rank-card {
             position: relative;
 
-            flex: 0 0 145px;
+            flex:
+                0 0 150px;
 
-            aspect-ratio: 3 / 4;
+            aspect-ratio:
+                3 / 4;
 
-            border-radius: 17px;
+            border-radius:
+                18px;
 
-            overflow: hidden;
+            overflow:
+                hidden;
 
-            border: 1px solid var(--border);
+            border:
+                1px solid var(--border);
 
-            background: var(--surface);
+            background:
+                var(--surface);
 
-            background-size: cover;
-            background-position: center;
+            cursor:
+                pointer;
         }
 
         .rank-card::after {
             content: "";
 
             position: absolute;
+
             inset: 0;
 
             background:
                 linear-gradient(
                     to top,
-                    rgba(0,0,0,.75),
-                    transparent 55%
+                    rgba(0,0,0,.85),
+                    transparent 60%
                 );
         }
 
         .rank-number {
             position: absolute;
 
-            left: 10px;
-            top: 9px;
+            top: 10px;
+            left: 11px;
 
-            z-index: 3;
+            z-index: 2;
 
-            font-family: "Space Grotesk", sans-serif;
+            font-family:
+                "Space Grotesk",
+                sans-serif;
 
-            font-size: 2rem;
-
-            font-weight: 700;
-
-            color: rgba(255,255,255,.9);
+            font-size:
+                2rem;
         }
 
         .rank-title {
             position: absolute;
 
             left: 11px;
-            right: 8px;
-            bottom: 10px;
+            right: 10px;
+            bottom: 11px;
 
-            z-index: 3;
+            z-index: 2;
 
-            font-size: .75rem;
-            font-weight: 600;
+            font-size:
+                .75rem;
+
+            font-weight:
+                600;
         }
 
         .trend-1 {
             background:
-                linear-gradient(145deg,#28214f,#7664bd);
+                linear-gradient(
+                    145deg,
+                    #211947,
+                    #806ce2
+                );
         }
 
         .trend-2 {
             background:
-                linear-gradient(145deg,#102d27,#61947d);
+                linear-gradient(
+                    145deg,
+                    #102d27,
+                    #6b9c82
+                );
         }
 
         .trend-3 {
             background:
-                linear-gradient(145deg,#321f25,#bd6b62);
+                linear-gradient(
+                    145deg,
+                    #321d24,
+                    #c46e63
+                );
         }
 
         .trend-4 {
             background:
-                linear-gradient(145deg,#171b32,#6678c1);
+                linear-gradient(
+                    145deg,
+                    #141a35,
+                    #6376c5
+                );
         }
 
         .trend-5 {
             background:
-                linear-gradient(145deg,#31281b,#b49a60);
+                linear-gradient(
+                    145deg,
+                    #332719,
+                    #b99c5c
+                );
         }
 
 
         /* =====================================================
-           MASONRY FRESH DROPS
+           MASONRY
         ===================================================== */
 
         .masonry {
             columns: 2;
-            column-gap: 12px;
+
+            column-gap:
+                12px;
         }
 
         .masonry-card {
             position: relative;
 
-            break-inside: avoid;
+            break-inside:
+                avoid;
 
-            margin-bottom: 12px;
+            margin-bottom:
+                12px;
 
-            overflow: hidden;
+            border-radius:
+                17px;
 
-            border-radius: 17px;
+            overflow:
+                hidden;
 
-            background: var(--surface);
+            border:
+                1px solid var(--border);
 
-            border: 1px solid var(--border);
+            background:
+                var(--surface);
+
+            cursor:
+                pointer;
         }
 
         .masonry-image {
+            position: relative;
+
             width: 100%;
 
-            min-height: 180px;
+            min-height:
+                190px;
 
             display: flex;
-            align-items: flex-end;
 
-            padding: 10px;
+            align-items:
+                flex-end;
 
-            background-size: cover;
-            background-position: center;
+            background-size:
+                cover;
 
-            position: relative;
+            background-position:
+                center;
         }
 
         .tall {
-            min-height: 310px;
+            min-height:
+                320px;
         }
 
         .short {
-            min-height: 210px;
+            min-height:
+                215px;
         }
 
         .medium {
-            min-height: 260px;
+            min-height:
+                265px;
         }
-
-        .masonry-image::after {
-            content: "";
-
-            position: absolute;
-            inset: 0;
-
-            background:
-                linear-gradient(
-                    to top,
-                    rgba(0,0,0,.7),
-                    transparent 50%
-                );
-
-            opacity: 0;
-
-            transition: .3s;
-        }
-
-        .masonry-card:hover .masonry-image::after {
-            opacity: 1;
-        }
-
-
-        /* Fresh visual placeholders */
 
         .fresh-1 {
             background:
-                radial-gradient(circle at 60% 30%,#8976e5,transparent 28%),
-                linear-gradient(145deg,#11111b,#443875);
+                radial-gradient(
+                    circle at 60% 25%,
+                    #9a86f1,
+                    transparent 28%
+                ),
+                linear-gradient(
+                    145deg,
+                    #11111b,
+                    #473b79
+                );
         }
 
         .fresh-2 {
             background:
-                radial-gradient(circle at 30% 25%,#81a78e,transparent 25%),
-                linear-gradient(145deg,#14231b,#537763);
+                radial-gradient(
+                    circle at 30% 25%,
+                    #8bb69a,
+                    transparent 25%
+                ),
+                linear-gradient(
+                    145deg,
+                    #122219,
+                    #577963
+                );
         }
 
         .fresh-3 {
             background:
-                radial-gradient(circle at 65% 25%,#e19a6c,transparent 25%),
-                linear-gradient(145deg,#211617,#713d35);
+                radial-gradient(
+                    circle at 65% 25%,
+                    #e49b72,
+                    transparent 25%
+                ),
+                linear-gradient(
+                    145deg,
+                    #241516,
+                    #743e36
+                );
         }
 
         .fresh-4 {
             background:
-                radial-gradient(circle at 45% 20%,#79a8c6,transparent 25%),
-                linear-gradient(145deg,#101c25,#34586c);
+                radial-gradient(
+                    circle at 45% 20%,
+                    #7daecc,
+                    transparent 25%
+                ),
+                linear-gradient(
+                    145deg,
+                    #101d26,
+                    #355a6e
+                );
         }
 
         .fresh-5 {
             background:
-                radial-gradient(circle at 70% 35%,#b28de0,transparent 27%),
-                linear-gradient(145deg,#1c1327,#614477);
+                radial-gradient(
+                    circle at 70% 35%,
+                    #bd94e9,
+                    transparent 27%
+                ),
+                linear-gradient(
+                    145deg,
+                    #1d1329,
+                    #67477d
+                );
         }
 
         .fresh-6 {
             background:
-                radial-gradient(circle at 30% 30%,#d1c08b,transparent 25%),
-                linear-gradient(145deg,#17150e,#665b36);
+                radial-gradient(
+                    circle at 30% 30%,
+                    #d4c58f,
+                    transparent 25%
+                ),
+                linear-gradient(
+                    145deg,
+                    #17150e,
+                    #685d38
+                );
         }
-
-
-        /* Overlay controls */
 
         .card-overlay {
             position: absolute;
 
             inset: 0;
 
-            z-index: 5;
-
             display: flex;
 
-            align-items: flex-end;
+            align-items:
+                flex-end;
 
-            justify-content: space-between;
+            justify-content:
+                space-between;
 
-            padding: 12px;
+            padding:
+                12px;
 
-            opacity: 0;
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(0,0,0,.72),
+                    transparent 55%
+                );
 
-            transition: .3s;
+            opacity:
+                0;
+
+            transition:
+                .3s;
+
+            z-index:
+                5;
         }
 
-        .masonry-card:hover .card-overlay,
-        .masonry-card.tapped .card-overlay {
-            opacity: 1;
+        .masonry-card:hover
+        .card-overlay,
+
+        .masonry-card.tapped
+        .card-overlay {
+            opacity:
+                1;
         }
 
         .resolution {
-            padding: 6px 8px;
+            padding:
+                6px 8px;
 
-            border-radius: 7px;
+            border-radius:
+                7px;
 
-            background: rgba(0,0,0,.55);
+            background:
+                rgba(0,0,0,.55);
 
-            color: white;
-
-            font-size: .62rem;
-
-            backdrop-filter: blur(8px);
+            font-size:
+                .62rem;
         }
 
         .card-actions {
-            display: flex;
-            gap: 6px;
+            display:
+                flex;
+
+            gap:
+                7px;
         }
 
         .card-actions button {
-            width: 34px;
-            height: 34px;
+            width:
+                36px;
 
-            border: 1px solid rgba(255,255,255,.12);
+            height:
+                36px;
 
-            border-radius: 50%;
+            border:
+                1px solid
+                rgba(255,255,255,.15);
 
-            background: rgba(0,0,0,.5);
+            border-radius:
+                50%;
 
-            color: white;
+            background:
+                rgba(0,0,0,.55);
 
-            backdrop-filter: blur(8px);
+            color:
+                white;
+
+            backdrop-filter:
+                blur(8px);
+
+            transition:
+                .2s;
         }
 
-        .card-actions button.liked {
-            color: var(--coral);
+        .card-actions button:hover {
+            transform:
+                scale(1.08);
+        }
+
+        .card-actions .liked {
+            color:
+                var(--coral);
         }
 
 
         /* =====================================================
-           BOTTOM TAB BAR
+           EMPTY SEARCH
+        ===================================================== */
+
+        .empty-state {
+            display:
+                none;
+
+            text-align:
+                center;
+
+            padding:
+                70px 20px;
+
+            color:
+                var(--muted);
+        }
+
+        .empty-state.show {
+            display:
+                block;
+        }
+
+        .empty-icon {
+            font-size:
+                2.5rem;
+
+            margin-bottom:
+                12px;
+        }
+
+
+        /* =====================================================
+           PREVIEW MODAL
+        ===================================================== */
+
+        .modal {
+            position:
+                fixed;
+
+            inset:
+                0;
+
+            z-index:
+                5000;
+
+            display:
+                none;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                20px;
+
+            background:
+                rgba(0,0,0,.82);
+
+            backdrop-filter:
+                blur(20px);
+        }
+
+        .modal.open {
+            display:
+                flex;
+        }
+
+        .modal-content {
+            position:
+                relative;
+
+            width:
+                min(100%, 650px);
+
+            max-height:
+                92vh;
+
+            overflow:
+                auto;
+
+            border:
+                1px solid
+                rgba(255,255,255,.12);
+
+            border-radius:
+                24px;
+
+            background:
+                var(--surface);
+        }
+
+        .modal-image {
+            width:
+                100%;
+
+            height:
+                55vh;
+
+            min-height:
+                350px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #25213d,
+                    #8b6cff
+                );
+
+            background-size:
+                cover;
+
+            background-position:
+                center;
+        }
+
+        .modal-info {
+            padding:
+                20px;
+        }
+
+        .modal-category {
+            color:
+                var(--violet);
+
+            font-size:
+                .72rem;
+
+            font-weight:
+                700;
+
+            margin-bottom:
+                7px;
+        }
+
+        .modal-title {
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size:
+                1.7rem;
+
+            margin-bottom:
+                7px;
+        }
+
+        .modal-meta {
+            color:
+                var(--muted);
+
+            font-size:
+                .78rem;
+
+            margin-bottom:
+                18px;
+        }
+
+        .modal-actions {
+            display:
+                flex;
+
+            gap:
+                9px;
+        }
+
+        .modal-button {
+            flex:
+                1;
+
+            padding:
+                13px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                13px;
+
+            background:
+                var(--surface-2);
+
+            color:
+                var(--text);
+
+            font-weight:
+                600;
+        }
+
+        .modal-button.primary {
+            background:
+                var(--violet);
+
+            border-color:
+                var(--violet);
+
+            color:
+                white;
+        }
+
+        .close-modal {
+            position:
+                absolute;
+
+            top:
+                12px;
+
+            right:
+                12px;
+
+            z-index:
+                10;
+
+            width:
+                38px;
+
+            height:
+                38px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.2);
+
+            border-radius:
+                50%;
+
+            background:
+                rgba(0,0,0,.55);
+
+            color:
+                white;
+
+            font-size:
+                1.2rem;
+        }
+
+
+        /* =====================================================
+           BOTTOM NAV
         ===================================================== */
 
         .bottom-nav {
-            position: fixed;
+            position:
+                fixed;
 
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
+            left:
+                10px;
 
-            height: 65px;
+            right:
+                10px;
 
-            display: grid;
+            bottom:
+                10px;
+
+            height:
+                65px;
+
+            display:
+                grid;
 
             grid-template-columns:
-                repeat(5, 1fr);
-
-            align-items: center;
+                repeat(5,1fr);
 
             background:
-                rgba(21,21,28,.94);
+                color-mix(
+                    in srgb,
+                    var(--surface) 94%,
+                    transparent
+                );
 
-            backdrop-filter: blur(20px);
+            backdrop-filter:
+                blur(20px);
 
             border:
-                1px solid var(--border);
+                1px solid
+                var(--border);
 
-            border-radius: 20px;
+            border-radius:
+                20px;
 
-            z-index: 1000;
+            z-index:
+                2000;
         }
 
         .tab {
-            height: 100%;
+            border:
+                none;
 
-            border: none;
+            background:
+                transparent;
 
-            background: transparent;
+            color:
+                var(--muted);
 
-            color: #777783;
+            display:
+                flex;
 
-            display: flex;
+            flex-direction:
+                column;
 
-            flex-direction: column;
+            align-items:
+                center;
 
-            align-items: center;
-            justify-content: center;
+            justify-content:
+                center;
 
-            gap: 4px;
+            gap:
+                4px;
 
-            font-size: .62rem;
-
-            transition: .25s;
+            font-size:
+                .62rem;
         }
 
         .tab-icon {
-            font-size: 1.05rem;
+            font-size:
+                1.05rem;
         }
 
         .tab.active {
-            color: white;
+            color:
+                var(--text);
         }
 
-        .tab.active .tab-icon {
-            color: var(--violet);
+        .tab.active
+        .tab-icon {
+            color:
+                var(--violet);
         }
 
 
@@ -839,23 +1355,26 @@
            DESKTOP
         ===================================================== */
 
-        @media (min-width: 800px) {
+        @media (min-width:800px) {
 
             body {
-                padding-bottom: 20px;
+                padding-bottom:
+                    20px;
             }
 
             .topbar {
-                padding: 0 4%;
+                padding:
+                    0 4%;
             }
 
             .hero {
-                height: 720px;
+                height:
+                    720px;
             }
 
             .slide-content {
                 padding:
-                    50px 7% 65px;
+                    50px 7% 75px;
             }
 
             .section {
@@ -864,36 +1383,51 @@
             }
 
             .masonry {
-                columns: 4;
-                column-gap: 18px;
-            }
+                columns:
+                    4;
 
-            .bottom-nav {
-                left: 50%;
-                right: auto;
-                width: 600px;
-                transform: translateX(-50%);
+                column-gap:
+                    18px;
             }
 
             .rank-card {
-                flex-basis: 190px;
+                flex-basis:
+                    190px;
+            }
+
+            .bottom-nav {
+                left:
+                    50%;
+
+                right:
+                    auto;
+
+                width:
+                    600px;
+
+                transform:
+                    translateX(-50%);
             }
         }
 
-
-        @media (min-width: 1200px) {
+        @media (min-width:1200px) {
 
             .hero {
-                height: 780px;
+                height:
+                    780px;
             }
 
             .section {
-                max-width: 1450px;
-                margin: auto;
+                max-width:
+                    1450px;
+
+                margin:
+                    auto;
             }
 
             .masonry {
-                columns: 5;
+                columns:
+                    5;
             }
         }
 
@@ -904,587 +1438,1446 @@
 <body>
 
 
-    <!-- =====================================================
-         TOP BAR
-    ===================================================== -->
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
 
-    <header class="topbar">
+<header class="topbar">
 
-        <a href="#" class="brand">
+    <a href="#" class="brand">
 
-            <span class="pixel-mark">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </span>
+        <span class="pixel-mark">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
 
-            PIXORA
+        PIXORA
 
-        </a>
+    </a>
 
+
+    <div class="top-actions">
 
         <button
-            class="search-trigger"
-            id="searchTrigger"
+            class="icon-button"
+            id="themeButton"
+            aria-label="Change theme"
+        >
+            ☀️
+        </button>
+
+        <button
+            class="icon-button"
+            id="searchButton"
             aria-label="Search"
         >
             ⌕
         </button>
 
-    </header>
+    </div>
+
+</header>
 
 
-    <!-- SEARCH PANEL -->
+<!-- =====================================================
+     SEARCH
+===================================================== -->
 
-    <div class="search-panel" id="searchPanel">
+<div
+    class="search-panel"
+    id="searchPanel"
+>
+
+    <div class="search-box">
 
         <input
+            type="search"
             class="search-input"
             id="searchInput"
-            type="search"
-            placeholder="Search wallpapers..."
+            placeholder="Search wallpapers, categories..."
         >
+
+        <button
+            class="clear-search"
+            id="clearSearch"
+        >
+            ×
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section
+    class="hero"
+    id="home"
+>
+
+    <div
+        class="slides"
+        id="slides"
+    >
+
+        <article
+            class="slide slide-1"
+            data-title="Midnight Aura"
+        >
+
+            <div class="slide-content">
+
+                <div class="slide-meta">
+
+                    <span class="tag">
+                        ABSTRACT
+                    </span>
+
+                    <span class="tag">
+                        4K
+                    </span>
+
+                </div>
+
+                <h1>
+                    Midnight Aura
+                </h1>
+
+                <p class="creator">
+                    Curated by PIXORA
+                </p>
+
+            </div>
+
+        </article>
+
+
+        <article
+            class="slide slide-2"
+            data-title="Quiet Forest"
+        >
+
+            <div class="slide-content">
+
+                <div class="slide-meta">
+
+                    <span class="tag">
+                        NATURE
+                    </span>
+
+                    <span class="tag">
+                        4K
+                    </span>
+
+                </div>
+
+                <h1>
+                    Quiet Forest
+                </h1>
+
+                <p class="creator">
+                    Curated by PIXORA
+                </p>
+
+            </div>
+
+        </article>
+
+
+        <article
+            class="slide slide-3"
+            data-title="After Midnight"
+        >
+
+            <div class="slide-content">
+
+                <div class="slide-meta">
+
+                    <span class="tag">
+                        CARS
+                    </span>
+
+                    <span class="tag">
+                        2K
+                    </span>
+
+                </div>
+
+                <h1>
+                    After Midnight
+                </h1>
+
+                <p class="creator">
+                    Curated by PIXORA
+                </p>
+
+            </div>
+
+        </article>
 
     </div>
 
 
-    <!-- =====================================================
-         HERO CAROUSEL
-    ===================================================== -->
+    <div class="dots">
 
-    <section class="hero">
+        <button class="dot active"></button>
+        <button class="dot"></button>
+        <button class="dot"></button>
 
-        <div class="slides" id="slides">
+    </div>
 
-            <article class="slide slide-1">
+</section>
 
-                <div class="slide-content">
 
-                    <div class="slide-meta">
+<!-- =====================================================
+     CATEGORIES
+===================================================== -->
 
-                        <span class="tag">
-                            ABSTRACT
-                        </span>
+<section
+    class="section"
+    id="categories"
+>
 
-                        <span class="tag">
-                            4K
-                        </span>
+    <div class="section-header">
 
-                    </div>
+        <h2>
+            Explore
+        </h2>
 
-                    <h1>
-                        Midnight Aura
-                    </h1>
+        <span>
+            24 categories
+        </span>
 
-                    <p class="creator">
-                        Curated by PIXORA
-                    </p>
+    </div>
 
-                </div>
 
-            </article>
+    <div class="chips">
 
-
-            <article class="slide slide-2">
-
-                <div class="slide-content">
-
-                    <div class="slide-meta">
-
-                        <span class="tag">
-                            NATURE
-                        </span>
-
-                        <span class="tag">
-                            4K
-                        </span>
-
-                    </div>
-
-                    <h1>
-                        Quiet Forest
-                    </h1>
-
-                    <p class="creator">
-                        Curated by PIXORA
-                    </p>
-
-                </div>
-
-            </article>
-
-
-            <article class="slide slide-3">
-
-                <div class="slide-content">
-
-                    <div class="slide-meta">
-
-                        <span class="tag">
-                            CARS
-                        </span>
-
-                        <span class="tag">
-                            2K
-                        </span>
-
-                    </div>
-
-                    <h1>
-                        After Midnight
-                    </h1>
-
-                    <p class="creator">
-                        Curated by PIXORA
-                    </p>
-
-                </div>
-
-            </article>
-
-        </div>
-
-
-        <div class="dots">
-
-            <button class="dot active"></button>
-            <button class="dot"></button>
-            <button class="dot"></button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         CATEGORIES
-    ===================================================== -->
-
-    <section class="section">
-
-        <div class="section-header">
-
-            <h2>
-                Explore
-            </h2>
-
-            <span>
-                24 categories
-            </span>
-
-        </div>
-
-
-        <div class="chips">
-
-            <button class="chip active">🎮 Gaming</button>
-            <button class="chip">🎌 Anime</button>
-            <button class="chip">🚗 Cars</button>
-            <button class="chip">⚽ Sports</button>
-            <button class="chip">🌿 Nature</button>
-            <button class="chip">🌌 Space</button>
-            <button class="chip">💎 Luxury</button>
-            <button class="chip">👨‍💻 Technology</button>
-            <button class="chip">🎬 Movies & TV</button>
-            <button class="chip">🎵 Music</button>
-            <button class="chip">🖤 Dark & AMOLED</button>
-            <button class="chip">✨ Aesthetic</button>
-            <button class="chip">🎨 Art</button>
-            <button class="chip">👻 Horror</button>
-            <button class="chip">🧙 Fantasy</button>
-            <button class="chip">✈️ Travel</button>
-            <button class="chip">🏋️ Fitness</button>
-            <button class="chip">💬 Quotes</button>
-            <button class="chip">🐾 Animals</button>
-            <button class="chip">🏙️ Cities</button>
-            <button class="chip">❤️ Love</button>
-            <button class="chip">🕹️ Retro</button>
-            <button class="chip">🧸 Cute & Fun</button>
-            <button class="chip">🌍 Culture</button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         TRENDING
-    ===================================================== -->
-
-    <section class="section">
-
-        <div class="section-header">
-
-            <h2>
-                Trending
-            </h2>
-
-            <span>
-                Popular now
-            </span>
-
-        </div>
-
-
-        <div class="rail">
-
-            <article class="rank-card trend-1">
-
-                <span class="rank-number">01</span>
-
-                <span class="rank-title">
-                    Violet Dreams
-                </span>
-
-            </article>
-
-
-            <article class="rank-card trend-2">
-
-                <span class="rank-number">02</span>
-
-                <span class="rank-title">
-                    Wild Calm
-                </span>
-
-            </article>
-
-
-            <article class="rank-card trend-3">
-
-                <span class="rank-number">03</span>
-
-                <span class="rank-title">
-                    Redline
-                </span>
-
-            </article>
-
-
-            <article class="rank-card trend-4">
-
-                <span class="rank-number">04</span>
-
-                <span class="rank-title">
-                    Digital Night
-                </span>
-
-            </article>
-
-
-            <article class="rank-card trend-5">
-
-                <span class="rank-number">05</span>
-
-                <span class="rank-title">
-                    Golden Hour
-                </span>
-
-            </article>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         FRESH DROPS
-    ===================================================== -->
-
-    <section class="section">
-
-        <div class="section-header">
-
-            <h2>
-                Fresh drops
-            </h2>
-
-            <span>
-                Just added
-            </span>
-
-        </div>
-
-
-        <div class="masonry">
-
-
-            <article class="masonry-card">
-
-                <div class="masonry-image tall fresh-1">
-
-                    <div class="card-overlay">
-
-                        <span class="resolution">
-                            1440 × 2560
-                        </span>
-
-                        <div class="card-actions">
-
-                            <button class="like">
-                                ♡
-                            </button>
-
-                            <button class="download">
-                                ↓
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <article class="masonry-card">
-
-                <div class="masonry-image short fresh-2">
-
-                    <div class="card-overlay">
-
-                        <span class="resolution">
-                            1080 × 1920
-                        </span>
-
-                        <div class="card-actions">
-
-                            <button class="like">
-                                ♡
-                            </button>
-
-                            <button class="download">
-                                ↓
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <article class="masonry-card">
-
-                <div class="masonry-image medium fresh-3">
-
-                    <div class="card-overlay">
-
-                        <span class="resolution">
-                            4K
-                        </span>
-
-                        <div class="card-actions">
-
-                            <button class="like">
-                                ♡
-                            </button>
-
-                            <button class="download">
-                                ↓
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <article class="masonry-card">
-
-                <div class="masonry-image tall fresh-4">
-
-                    <div class="card-overlay">
-
-                        <span class="resolution">
-                            1440 × 2560
-                        </span>
-
-                        <div class="card-actions">
-
-                            <button class="like">
-                                ♡
-                            </button>
-
-                            <button class="download">
-                                ↓
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <article class="masonry-card">
-
-                <div class="masonry-image short fresh-5">
-
-                    <div class="card-overlay">
-
-                        <span class="resolution">
-                            2K
-                        </span>
-
-                        <div class="card-actions">
-
-                            <button class="like">
-                                ♡
-                            </button>
-
-                            <button class="download">
-                                ↓
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <article class="masonry-card">
-
-                <div class="masonry-image medium fresh-6">
-
-                    <div class="card-overlay">
-
-                        <span class="resolution">
-                            4K
-                        </span>
-
-                        <div class="card-actions">
-
-                            <button class="like">
-                                ♡
-                            </button>
-
-                            <button class="download">
-                                ↓
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         BOTTOM NAVIGATION
-    ===================================================== -->
-
-    <nav class="bottom-nav">
-
-        <button class="tab active">
-            <span class="tab-icon">⌂</span>
-            Home
+        <button class="chip active" data-category="all">
+            🌐 All
         </button>
 
-        <button class="tab">
-            <span class="tab-icon">🔥</span>
+        <button class="chip" data-category="Gaming">
+            🎮 Gaming
+        </button>
+
+        <button class="chip" data-category="Anime">
+            🎌 Anime
+        </button>
+
+        <button class="chip" data-category="Cars">
+            🚗 Cars
+        </button>
+
+        <button class="chip" data-category="Sports">
+            ⚽ Sports
+        </button>
+
+        <button class="chip" data-category="Nature">
+            🌿 Nature
+        </button>
+
+        <button class="chip" data-category="Space">
+            🌌 Space
+        </button>
+
+        <button class="chip" data-category="Luxury">
+            💎 Luxury
+        </button>
+
+        <button class="chip" data-category="Technology">
+            👨‍💻 Technology
+        </button>
+
+        <button class="chip" data-category="Movies">
+            🎬 Movies & TV
+        </button>
+
+        <button class="chip" data-category="Music">
+            🎵 Music
+        </button>
+
+        <button class="chip" data-category="Dark">
+            🖤 Dark & AMOLED
+        </button>
+
+        <button class="chip" data-category="Aesthetic">
+            ✨ Aesthetic
+        </button>
+
+        <button class="chip" data-category="Art">
+            🎨 Art
+        </button>
+
+        <button class="chip" data-category="Horror">
+            👻 Horror
+        </button>
+
+        <button class="chip" data-category="Fantasy">
+            🧙 Fantasy
+        </button>
+
+        <button class="chip" data-category="Travel">
+            ✈️ Travel
+        </button>
+
+        <button class="chip" data-category="Fitness">
+            🏋️ Fitness
+        </button>
+
+        <button class="chip" data-category="Quotes">
+            💬 Quotes
+        </button>
+
+        <button class="chip" data-category="Animals">
+            🐾 Animals
+        </button>
+
+        <button class="chip" data-category="Cities">
+            🏙️ Cities
+        </button>
+
+        <button class="chip" data-category="Love">
+            ❤️ Love
+        </button>
+
+        <button class="chip" data-category="Retro">
+            🕹️ Retro
+        </button>
+
+        <button class="chip" data-category="Cute">
+            🧸 Cute & Fun
+        </button>
+
+        <button class="chip" data-category="Culture">
+            🌍 Culture
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TRENDING
+===================================================== -->
+
+<section
+    class="section"
+    id="trending"
+>
+
+    <div class="section-header">
+
+        <h2>
             Trending
+        </h2>
+
+        <span>
+            Popular now
+        </span>
+
+    </div>
+
+
+    <div class="rail">
+
+        <article
+            class="rank-card trend-1"
+            data-title="Violet Dreams"
+            data-category="Aesthetic"
+            data-resolution="4K"
+        >
+
+            <span class="rank-number">
+                01
+            </span>
+
+            <span class="rank-title">
+                Violet Dreams
+            </span>
+
+        </article>
+
+
+        <article
+            class="rank-card trend-2"
+            data-title="Wild Calm"
+            data-category="Nature"
+            data-resolution="4K"
+        >
+
+            <span class="rank-number">
+                02
+            </span>
+
+            <span class="rank-title">
+                Wild Calm
+            </span>
+
+        </article>
+
+
+        <article
+            class="rank-card trend-3"
+            data-title="Redline"
+            data-category="Cars"
+            data-resolution="2K"
+        >
+
+            <span class="rank-number">
+                03
+            </span>
+
+            <span class="rank-title">
+                Redline
+            </span>
+
+        </article>
+
+
+        <article
+            class="rank-card trend-4"
+            data-title="Digital Night"
+            data-category="Technology"
+            data-resolution="4K"
+        >
+
+            <span class="rank-number">
+                04
+            </span>
+
+            <span class="rank-title">
+                Digital Night
+            </span>
+
+        </article>
+
+
+        <article
+            class="rank-card trend-5"
+            data-title="Golden Hour"
+            data-category="Nature"
+            data-resolution="4K"
+        >
+
+            <span class="rank-number">
+                05
+            </span>
+
+            <span class="rank-title">
+                Golden Hour
+            </span>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FRESH DROPS
+===================================================== -->
+
+<section
+    class="section"
+    id="fresh"
+>
+
+    <div class="section-header">
+
+        <h2>
+            Fresh drops
+        </h2>
+
+        <span id="resultsCount">
+            6 wallpapers
+        </span>
+
+    </div>
+
+
+    <div
+        class="masonry"
+        id="wallpaperGrid"
+    >
+
+
+        <!-- CARD 1 -->
+
+        <article
+            class="masonry-card"
+            data-title="Violet Dreams"
+            data-category="Aesthetic"
+            data-resolution="1440 × 2560"
+            data-creator="PIXORA"
+        >
+
+            <div class="masonry-image tall fresh-1">
+
+                <div class="card-overlay">
+
+                    <span class="resolution">
+                        1440 × 2560
+                    </span>
+
+                    <div class="card-actions">
+
+                        <button
+                            class="like"
+                            aria-label="Like"
+                        >
+                            ♡
+                        </button>
+
+                        <button
+                            class="download"
+                            aria-label="Download"
+                        >
+                            ↓
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- CARD 2 -->
+
+        <article
+            class="masonry-card"
+            data-title="Wild Calm"
+            data-category="Nature"
+            data-resolution="1080 × 1920"
+            data-creator="PIXORA"
+        >
+
+            <div class="masonry-image short fresh-2">
+
+                <div class="card-overlay">
+
+                    <span class="resolution">
+                        1080 × 1920
+                    </span>
+
+                    <div class="card-actions">
+
+                        <button class="like">
+                            ♡
+                        </button>
+
+                        <button class="download">
+                            ↓
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- CARD 3 -->
+
+        <article
+            class="masonry-card"
+            data-title="Redline"
+            data-category="Cars"
+            data-resolution="4K"
+            data-creator="PIXORA"
+        >
+
+            <div class="masonry-image medium fresh-3">
+
+                <div class="card-overlay">
+
+                    <span class="resolution">
+                        4K
+                    </span>
+
+                    <div class="card-actions">
+
+                        <button class="like">
+                            ♡
+                        </button>
+
+                        <button class="download">
+                            ↓
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- CARD 4 -->
+
+        <article
+            class="masonry-card"
+            data-title="Digital Night"
+            data-category="Technology"
+            data-resolution="1440 × 2560"
+            data-creator="PIXORA"
+        >
+
+            <div class="masonry-image tall fresh-4">
+
+                <div class="card-overlay">
+
+                    <span class="resolution">
+                        1440 × 2560
+                    </span>
+
+                    <div class="card-actions">
+
+                        <button class="like">
+                            ♡
+                        </button>
+
+                        <button class="download">
+                            ↓
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- CARD 5 -->
+
+        <article
+            class="masonry-card"
+            data-title="Purple Fantasy"
+            data-category="Fantasy"
+            data-resolution="2K"
+            data-creator="PIXORA"
+        >
+
+            <div class="masonry-image short fresh-5">
+
+                <div class="card-overlay">
+
+                    <span class="resolution">
+                        2K
+                    </span>
+
+                    <div class="card-actions">
+
+                        <button class="like">
+                            ♡
+                        </button>
+
+                        <button class="download">
+                            ↓
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- CARD 6 -->
+
+        <article
+            class="masonry-card"
+            data-title="Golden Hour"
+            data-category="Nature"
+            data-resolution="4K"
+            data-creator="PIXORA"
+        >
+
+            <div class="masonry-image medium fresh-6">
+
+                <div class="card-overlay">
+
+                    <span class="resolution">
+                        4K
+                    </span>
+
+                    <div class="card-actions">
+
+                        <button class="like">
+                            ♡
+                        </button>
+
+                        <button class="download">
+                            ↓
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+    </div>
+
+
+    <div
+        class="empty-state"
+        id="emptyState"
+    >
+
+        <div class="empty-icon">
+            🔎
+        </div>
+
+        <h3>
+            No wallpapers found
+        </h3>
+
+        <p>
+            Try another search or category.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PREVIEW MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="previewModal"
+>
+
+    <div class="modal-content">
+
+        <button
+            class="close-modal"
+            id="closeModal"
+        >
+            ×
         </button>
 
-        <button class="tab">
-            <span class="tab-icon">✦</span>
-            New
-        </button>
 
-        <button class="tab">
-            <span class="tab-icon">▦</span>
-            Categories
-        </button>
-
-        <button class="tab">
-            <span class="tab-icon">⌘</span>
-            Random
-        </button>
-
-    </nav>
+        <div
+            class="modal-image"
+            id="modalImage"
+        ></div>
 
 
-    <script>
+        <div class="modal-info">
 
-        /* =====================================================
-           SEARCH
-        ===================================================== */
+            <div
+                class="modal-category"
+                id="modalCategory"
+            >
+                AESTHETIC
+            </div>
 
-        const searchTrigger =
-            document.getElementById("searchTrigger");
+            <h2
+                class="modal-title"
+                id="modalTitle"
+            >
+                Violet Dreams
+            </h2>
 
-        const searchPanel =
-            document.getElementById("searchPanel");
-
-        const searchInput =
-            document.getElementById("searchInput");
-
-
-        searchTrigger.addEventListener("click", () => {
-
-            searchPanel.classList.toggle("open");
-
-            if (searchPanel.classList.contains("open")) {
-                setTimeout(() => searchInput.focus(), 200);
-            }
-
-        });
+            <p
+                class="modal-meta"
+                id="modalMeta"
+            >
+                1440 × 2560 • Curated by PIXORA
+            </p>
 
 
-        /* =====================================================
-           CATEGORY CHIPS
-        ===================================================== */
+            <div class="modal-actions">
 
-        const chips =
-            document.querySelectorAll(".chip");
+                <button
+                    class="modal-button"
+                    id="modalLike"
+                >
+                    ♡ Like
+                </button>
+
+                <button
+                    class="modal-button primary"
+                    id="modalDownload"
+                >
+                    ↓ Download
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 
-        chips.forEach(chip => {
+<!-- =====================================================
+     BOTTOM NAV
+===================================================== -->
 
-            chip.addEventListener("click", () => {
+<nav class="bottom-nav">
 
-                chips.forEach(item =>
-                    item.classList.remove("active")
+    <button
+        class="tab active"
+        data-target="home"
+    >
+
+        <span class="tab-icon">
+            ⌂
+        </span>
+
+        Home
+
+    </button>
+
+
+    <button
+        class="tab"
+        data-target="trending"
+    >
+
+        <span class="tab-icon">
+            🔥
+        </span>
+
+        Trending
+
+    </button>
+
+
+    <button
+        class="tab"
+        data-target="fresh"
+    >
+
+        <span class="tab-icon">
+            ✦
+        </span>
+
+        New
+
+    </button>
+
+
+    <button
+        class="tab"
+        data-target="categories"
+    >
+
+        <span class="tab-icon">
+            ▦
+        </span>
+
+        Categories
+
+    </button>
+
+
+    <button
+        class="tab"
+        id="randomButton"
+    >
+
+        <span class="tab-icon">
+            ⌘
+        </span>
+
+        Random
+
+    </button>
+
+</nav>
+
+
+<script>
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const searchButton =
+        document.getElementById("searchButton");
+
+    const searchPanel =
+        document.getElementById("searchPanel");
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    const clearSearch =
+        document.getElementById("clearSearch");
+
+    const themeButton =
+        document.getElementById("themeButton");
+
+    const wallpaperCards =
+        document.querySelectorAll(".masonry-card");
+
+    const chips =
+        document.querySelectorAll(".chip");
+
+    const resultsCount =
+        document.getElementById("resultsCount");
+
+    const emptyState =
+        document.getElementById("emptyState");
+
+
+    /* =====================================================
+       SEARCH PANEL
+    ===================================================== */
+
+    searchButton.addEventListener(
+        "click",
+        () => {
+
+            searchPanel.classList.toggle(
+                "open"
+            );
+
+            if (
+                searchPanel.classList.contains(
+                    "open"
+                )
+            ) {
+
+                setTimeout(
+                    () => searchInput.focus(),
+                    250
                 );
 
-                chip.classList.add("active");
+            }
 
-            });
-
-        });
-
-
-        /* =====================================================
-           HERO DOT INDICATORS
-        ===================================================== */
-
-        const slides =
-            document.getElementById("slides");
-
-        const dots =
-            document.querySelectorAll(".dot");
+        }
+    );
 
 
-        slides.addEventListener("scroll", () => {
+    clearSearch.addEventListener(
+        "click",
+        () => {
+
+            searchInput.value = "";
+
+            filterWallpapers();
+
+            searchInput.focus();
+
+        }
+    );
+
+
+    /* =====================================================
+       SEARCH + CATEGORY FILTER
+    ===================================================== */
+
+    let selectedCategory = "all";
+
+
+    function filterWallpapers() {
+
+        const search =
+            searchInput.value
+                .toLowerCase()
+                .trim();
+
+        let visible = 0;
+
+
+        wallpaperCards.forEach(
+            card => {
+
+                const title =
+                    card.dataset.title
+                        .toLowerCase();
+
+                const category =
+                    card.dataset.category
+                        .toLowerCase();
+
+
+                const matchesSearch =
+                    title.includes(search) ||
+                    category.includes(search);
+
+
+                const matchesCategory =
+                    selectedCategory === "all" ||
+                    card.dataset.category ===
+                    selectedCategory;
+
+
+                const show =
+                    matchesSearch &&
+                    matchesCategory;
+
+
+                card.style.display =
+                    show ? "" : "none";
+
+
+                if (show) {
+                    visible++;
+                }
+
+            }
+        );
+
+
+        resultsCount.textContent =
+            `${visible} wallpaper${visible === 1 ? "" : "s"}`;
+
+
+        emptyState.classList.toggle(
+            "show",
+            visible === 0
+        );
+
+    }
+
+
+    searchInput.addEventListener(
+        "input",
+        filterWallpapers
+    );
+
+
+    /* =====================================================
+       CATEGORY FILTER
+    ===================================================== */
+
+    chips.forEach(
+        chip => {
+
+            chip.addEventListener(
+                "click",
+                () => {
+
+                    chips.forEach(
+                        item =>
+                            item.classList.remove(
+                                "active"
+                            )
+                    );
+
+
+                    chip.classList.add(
+                        "active"
+                    );
+
+
+                    selectedCategory =
+                        chip.dataset.category;
+
+
+                    filterWallpapers();
+
+
+                    document
+                        .getElementById("fresh")
+                        .scrollIntoView({
+                            behavior: "smooth"
+                        });
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       WALLPAPER PREVIEW
+    ===================================================== */
+
+    const previewModal =
+        document.getElementById(
+            "previewModal"
+        );
+
+    const modalImage =
+        document.getElementById(
+            "modalImage"
+        );
+
+    const modalTitle =
+        document.getElementById(
+            "modalTitle"
+        );
+
+    const modalCategory =
+        document.getElementById(
+            "modalCategory"
+        );
+
+    const modalMeta =
+        document.getElementById(
+            "modalMeta"
+        );
+
+    const closeModal =
+        document.getElementById(
+            "closeModal"
+        );
+
+    const modalLike =
+        document.getElementById(
+            "modalLike"
+        );
+
+    const modalDownload =
+        document.getElementById(
+            "modalDownload"
+        );
+
+
+    let currentCard = null;
+
+
+    wallpaperCards.forEach(
+        card => {
+
+            card.addEventListener(
+                "click",
+                event => {
+
+                    if (
+                        event.target.closest(
+                            ".card-actions"
+                        )
+                    ) {
+                        return;
+                    }
+
+
+                    openPreview(card);
+
+                }
+            );
+
+        }
+    );
+
+
+    function openPreview(card) {
+
+        currentCard = card;
+
+
+        modalTitle.textContent =
+            card.dataset.title;
+
+
+        modalCategory.textContent =
+            card.dataset.category
+                .toUpperCase();
+
+
+        modalMeta.textContent =
+            `${card.dataset.resolution} • Curated by ${card.dataset.creator}`;
+
+
+        const image =
+            card.querySelector(
+                ".masonry-image"
+            );
+
+
+        modalImage.style.background =
+            getComputedStyle(
+                image
+            ).background;
+
+
+        modalLike.innerHTML =
+            card.querySelector(
+                ".like"
+            ).classList.contains("liked")
+                ? "♥ Liked"
+                : "♡ Like";
+
+
+        previewModal.classList.add(
+            "open"
+        );
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    function closePreview() {
+
+        previewModal.classList.remove(
+            "open"
+        );
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    closeModal.addEventListener(
+        "click",
+        closePreview
+    );
+
+
+    previewModal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                previewModal
+            ) {
+
+                closePreview();
+
+            }
+
+        }
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closePreview();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       LIKE SYSTEM
+    ===================================================== */
+
+    const savedLikes =
+        JSON.parse(
+            localStorage.getItem(
+                "pixoraLikes"
+            ) || "{}"
+        );
+
+
+    wallpaperCards.forEach(
+        card => {
+
+            const title =
+                card.dataset.title;
+
+            const like =
+                card.querySelector(
+                    ".like"
+                );
+
+
+            if (savedLikes[title]) {
+
+                like.classList.add(
+                    "liked"
+                );
+
+                like.textContent =
+                    "♥";
+
+            }
+
+
+            like.addEventListener(
+                "click",
+                event => {
+
+                    event.stopPropagation();
+
+
+                    const liked =
+                        like.classList.toggle(
+                            "liked"
+                        );
+
+
+                    like.textContent =
+                        liked
+                            ? "♥"
+                            : "♡";
+
+
+                    savedLikes[title] =
+                        liked;
+
+
+                    localStorage.setItem(
+                        "pixoraLikes",
+                        JSON.stringify(
+                            savedLikes
+                        )
+                    );
+
+
+                    if (
+                        currentCard === card
+                    ) {
+
+                        modalLike.innerHTML =
+                            liked
+                                ? "♥ Liked"
+                                : "♡ Like";
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       MODAL LIKE
+    ===================================================== */
+
+    modalLike.addEventListener(
+        "click",
+        () => {
+
+            if (!currentCard) {
+                return;
+            }
+
+
+            const like =
+                currentCard.querySelector(
+                    ".like"
+                );
+
+
+            like.click();
+
+        }
+    );
+
+
+    /* =====================================================
+       DOWNLOAD SYSTEM
+    ===================================================== */
+
+    document
+        .querySelectorAll(".download")
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    event => {
+
+                        event.stopPropagation();
+
+
+                        const card =
+                            button.closest(
+                                ".masonry-card"
+                            );
+
+
+                        downloadWallpaper(
+                            card
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+    modalDownload.addEventListener(
+        "click",
+        () => {
+
+            if (currentCard) {
+
+                downloadWallpaper(
+                    currentCard
+                );
+
+            }
+
+        }
+    );
+
+
+    function downloadWallpaper(card) {
+
+        /*
+            REAL DOWNLOAD:
+
+            When you add actual image URLs,
+            we will replace this function
+            with the real download code.
+        */
+
+
+        alert(
+            `Download ready for "${card.dataset.title}".\n\nAdd the real wallpaper file and PIXORA will download it here.`
+        );
+
+    }
+
+
+    /* =====================================================
+       HERO CAROUSEL
+    ===================================================== */
+
+    const slides =
+        document.getElementById(
+            "slides"
+        );
+
+    const dots =
+        document.querySelectorAll(
+            ".dot"
+        );
+
+
+    slides.addEventListener(
+        "scroll",
+        () => {
 
             const index =
                 Math.round(
@@ -1492,129 +2885,299 @@
                     slides.clientWidth
                 );
 
-            dots.forEach((dot, i) => {
 
-                dot.classList.toggle(
-                    "active",
-                    i === index
-                );
+            dots.forEach(
+                (dot, i) => {
 
-            });
+                    dot.classList.toggle(
+                        "active",
+                        i === index
+                    );
 
-        });
-
-
-        dots.forEach((dot, index) => {
-
-            dot.addEventListener("click", () => {
-
-                slides.scrollTo({
-                    left: index * slides.clientWidth,
-                    behavior: "smooth"
-                });
-
-            });
-
-        });
-
-
-        /* =====================================================
-           MASONRY CARD TAP
-        ===================================================== */
-
-        const cards =
-            document.querySelectorAll(".masonry-card");
-
-
-        cards.forEach(card => {
-
-            card.addEventListener("click", event => {
-
-                if (
-                    event.target.closest(".card-actions")
-                ) {
-                    return;
                 }
+            );
 
-                card.classList.toggle("tapped");
+        }
+    );
 
+
+    dots.forEach(
+        (dot, index) => {
+
+            dot.addEventListener(
+                "click",
+                () => {
+
+                    slides.scrollTo({
+                        left:
+                            index *
+                            slides.clientWidth,
+
+                        behavior:
+                            "smooth"
+                    });
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       AUTO HERO SLIDES
+    ===================================================== */
+
+    let heroIndex = 0;
+
+
+    setInterval(
+        () => {
+
+            heroIndex++;
+
+            if (heroIndex >= 3) {
+                heroIndex = 0;
+            }
+
+
+            slides.scrollTo({
+                left:
+                    heroIndex *
+                    slides.clientWidth,
+
+                behavior:
+                    "smooth"
             });
 
-        });
+        },
+        6000
+    );
 
 
-        /* =====================================================
-           LIKE BUTTON
-        ===================================================== */
+    /* =====================================================
+       TRENDING CARD PREVIEW
+    ===================================================== */
 
-        const likeButtons =
-            document.querySelectorAll(".like");
+    document
+        .querySelectorAll(".rank-card")
+        .forEach(
+            card => {
 
+                card.addEventListener(
+                    "click",
+                    () => {
 
-        likeButtons.forEach(button => {
-
-            button.addEventListener("click", event => {
-
-                event.stopPropagation();
-
-                button.classList.toggle("liked");
-
-                button.textContent =
-                    button.classList.contains("liked")
-                    ? "♥"
-                    : "♡";
-
-            });
-
-        });
+                        const matchingCard =
+                            [...wallpaperCards]
+                                .find(
+                                    item =>
+                                        item.dataset.title ===
+                                        card.dataset.title
+                                );
 
 
-        /* =====================================================
-           DOWNLOAD BUTTON
-        ===================================================== */
+                        if (
+                            matchingCard
+                        ) {
 
-        const downloadButtons =
-            document.querySelectorAll(".download");
+                            openPreview(
+                                matchingCard
+                            );
 
+                        } else {
 
-        downloadButtons.forEach(button => {
+                            modalTitle.textContent =
+                                card.dataset.title;
 
-            button.addEventListener("click", event => {
+                            modalCategory.textContent =
+                                card.dataset.category
+                                    .toUpperCase();
 
-                event.stopPropagation();
+                            modalMeta.textContent =
+                                `${card.dataset.resolution} • Curated by PIXORA`;
 
-                alert(
-                    "Wallpaper download will be connected when we add the real wallpaper files."
+                            modalImage.style.background =
+                                getComputedStyle(
+                                    card
+                                ).background;
+
+                            previewModal.classList.add(
+                                "open"
+                            );
+
+                            document.body.style.overflow =
+                                "hidden";
+
+                        }
+
+                    }
                 );
 
-            });
-
-        });
-
-
-        /* =====================================================
-           BOTTOM NAV
-        ===================================================== */
-
-        const tabs =
-            document.querySelectorAll(".tab");
+            }
+        );
 
 
-        tabs.forEach(tab => {
+    /* =====================================================
+       DAY / NIGHT MODE
+    ===================================================== */
 
-            tab.addEventListener("click", () => {
+    const savedTheme =
+        localStorage.getItem(
+            "pixoraTheme"
+        );
 
-                tabs.forEach(item =>
-                    item.classList.remove("active")
+
+    if (
+        savedTheme === "light"
+    ) {
+
+        document.body.classList.add(
+            "light"
+        );
+
+        themeButton.textContent =
+            "🌙";
+
+    }
+
+
+    themeButton.addEventListener(
+        "click",
+        () => {
+
+            document.body.classList.toggle(
+                "light"
+            );
+
+
+            const light =
+                document.body.classList.contains(
+                    "light"
                 );
 
-                tab.classList.add("active");
 
-            });
+            themeButton.textContent =
+                light
+                    ? "🌙"
+                    : "☀️";
 
-        });
 
-    </script>
+            localStorage.setItem(
+                "pixoraTheme",
+                light
+                    ? "light"
+                    : "dark"
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       BOTTOM NAVIGATION
+    ===================================================== */
+
+    const tabs =
+        document.querySelectorAll(
+            ".tab"
+        );
+
+
+    tabs.forEach(
+        tab => {
+
+            tab.addEventListener(
+                "click",
+                () => {
+
+                    tabs.forEach(
+                        item =>
+                            item.classList.remove(
+                                "active"
+                            )
+                    );
+
+
+                    tab.classList.add(
+                        "active"
+                    );
+
+
+                    if (
+                        tab.dataset.target
+                    ) {
+
+                        document
+                            .getElementById(
+                                tab.dataset.target
+                            )
+                            .scrollIntoView({
+                                behavior:
+                                    "smooth"
+                            });
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       RANDOM WALLPAPER
+    ===================================================== */
+
+    const randomButton =
+        document.getElementById(
+            "randomButton"
+        );
+
+
+    randomButton.addEventListener(
+        "click",
+        () => {
+
+            const visibleCards =
+                [...wallpaperCards]
+                    .filter(
+                        card =>
+                            card.style.display !==
+                            "none"
+                    );
+
+
+            if (!visibleCards.length) {
+                return;
+            }
+
+
+            const randomCard =
+                visibleCards[
+                    Math.floor(
+                        Math.random() *
+                        visibleCards.length
+                    )
+                ];
+
+
+            openPreview(
+                randomCard
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
+
+    filterWallpapers();
+
+</script>
 
 </body>
-</html>
+</html>               
