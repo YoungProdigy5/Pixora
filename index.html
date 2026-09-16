@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="PIXORA — Discover beautiful wallpapers for every mood, style and screen."
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b0b10"
+    >
+
+    <title>PIXORA — Discover Your Screen</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     TOP BAR
+========================= -->
+
+<header class="topbar">
+
+    <div class="logo">
+        PIX<span>ORA</span>
+    </div>
+
+    <div class="top-actions">
+
+        <button
+            class="search-trigger"
+            id="searchTrigger"
+            aria-label="Search wallpapers"
+            type="button"
+        >
+            🔍
+        </button>
+
+        <button
+            class="theme-switch"
+            id="themeToggle"
+            aria-label="Toggle day and night mode"
+            type="button"
+        >
+            <span class="theme-sun">☀️</span>
+            <span class="theme-moon">🌙</span>
+            <span class="theme-knob"></span>
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     SEARCH
+========================= -->
+
+<div
+    class="search-panel"
+    id="searchPanel"
+>
+
+    <div class="search-box">
+
+        <input
+            type="search"
+            id="searchInput"
+            placeholder="Search wallpapers..."
+            autocomplete="off"
+        >
+
+        <button
+            class="clear-search"
+            id="clearSearch"
+            type="button"
+        >
+            ×
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main id="home">
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div
+        class="hero-slider"
+        id="heroSlider"
+    >
+
+        <div class="hero-slide active">
+
+            <div class="hero-content">
+
+                <span class="hero-tag">
+                    ✨ PIXORA
+                </span>
+
+                <h1>
+                    Discover Your
+                    <span>Screen.</span>
+                </h1>
+
+                <p>
+                    Beautiful wallpapers for every mood,
+                    style and device.
+                </p>
+
+                <button
+                    class="hero-button"
+                    id="exploreBtn"
+                    type="button"
+                >
+                    Explore Wallpapers →
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-slide">
+
+            <div class="hero-content">
+
+                <span class="hero-tag">
+                    🔥 TRENDING
+                </span>
+
+                <h1>
+                    Make Your
+                    <span>Screen Pop.</span>
+                </h1>
+
+                <p>
+                    Discover wallpapers people are loving
+                    right now.
+                </p>
+
+                <button
+                    class="hero-button"
+                    data-scroll="trending"
+                    type="button"
+                >
+                    See Trending →
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-slide">
+
+            <div class="hero-content">
+
+                <span class="hero-tag">
+                    🚀 FRESH DROPS
+                </span>
+
+                <h1>
+                    Something New
+                    <span>Every Time.</span>
+                </h1>
+
+                <p>
+                    Fresh wallpaper designs waiting for you.
+                </p>
+
+                <button
+                    class="hero-button"
+                    data-scroll="new"
+                    type="button"
+                >
+                    View New Wallpapers →
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="hero-dots">
+
+        <button
+            class="hero-dot active"
+            data-slide="0"
+            aria-label="Slide 1"
+            type="button"
+        ></button>
+
+        <button
+            class="hero-dot"
+            data-slide="1"
+            aria-label="Slide 2"
+            type="button"
+        ></button>
+
+        <button
+            class="hero-dot"
+            data-slide="2"
+            aria-label="Slide 3"
+            type="button"
+        ></button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CATEGORIES
+========================= -->
+
+<section
+    class="categories-section"
+    id="categories"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-label">
+                EXPLORE
+            </span>
+
+            <h2>
+                Categories
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="category-scroll"
+        id="categoryScroll"
+    >
+
+        <button class="category-btn active" data-category="all" type="button">
+            ✨ All
+        </button>
+
+        <button class="category-btn" data-category="gaming" type="button">
+            🎮 Gaming
+        </button>
+
+        <button class="category-btn" data-category="anime" type="button">
+            🌸 Anime
+        </button>
+
+        <button class="category-btn" data-category="cars" type="button">
+            🏎️ Cars
+        </button>
+
+        <button class="category-btn" data-category="sports" type="button">
+            ⚽ Sports
+        </button>
+
+        <button class="category-btn" data-category="nature" type="button">
+            🌿 Nature
+        </button>
+
+        <button class="category-btn" data-category="space" type="button">
+            🌌 Space
+        </button>
+
+        <button class="category-btn" data-category="luxury" type="button">
+            💎 Luxury
+        </button>
+
+        <button class="category-btn" data-category="technology" type="button">
+            💻 Technology
+        </button>
+
+        <button class="category-btn" data-category="movies" type="button">
+            🎬 Movies
+        </button>
+
+        <button class="category-btn" data-category="music" type="button">
+            🎵 Music
+        </button>
+
+        <button class="category-btn" data-category="amoled" type="button">
+            🖤 AMOLED
+        </button>
+
+        <button class="category-btn" data-category="aesthetic" type="button">
+            🌙 Aesthetic
+        </button>
+
+        <button class="category-btn" data-category="horror" type="button">
+            👻 Horror
+        </button>
+
+        <button class="category-btn" data-category="fantasy" type="button">
+            🐉 Fantasy
+        </button>
+
+        <button class="category-btn" data-category="travel" type="button">
+            ✈️ Travel
+        </button>
+
+        <button class="category-btn" data-category="fitness" type="button">
+            🏋️ Fitness
+        </button>
+
+        <button class="category-btn" data-category="animals" type="button">
+            🐺 Animals
+        </button>
+
+        <button class="category-btn" data-category="cities" type="button">
+            🌆 Cities
+        </button>
+
+        <button class="category-btn" data-category="love" type="button">
+            ❤️ Love
+        </button>
+
+        <button class="category-btn" data-category="retro" type="button">
+            📼 Retro
+        </button>
+
+        <button class="category-btn" data-category="cute" type="button">
+            🧸 Cute
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     TRENDING
+========================= -->
+
+<section
+    class="wallpaper-section"
+    id="trending"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-label">
+                HOT RIGHT NOW
+            </span>
+
+            <h2>
+                🔥 Trending
+            </h2>
+
+        </div>
+
+        <button
+            class="view-all"
+            data-category="all"
+            type="button"
+        >
+            View all →
+        </button>
+
+    </div>
+
+
+    <div class="wallpaper-grid trending-grid">
+
+
+        <article
+            class="wallpaper-card"
+            data-category="gaming"
+            data-title="Neon Gaming"
+        >
+
+            <div class="wallpaper-art art-neon-gaming">
+
+                <button
+                    class="like-btn"
+                    type="button"
+                    aria-label="Like wallpaper"
+                >
+                    ♡
+                </button>
+
+                <button
+                    class="preview-btn"
+                    type="button"
+                >
+                    👁
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Neon Gaming
+                    </h3>
+
+                    <span>
+                        Gaming
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <article
+            class="wallpaper-card"
+            data-category="nature"
+            data-title="Emerald Nature"
+        >
+
+            <div class="wallpaper-art art-emerald">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Emerald Nature
+                    </h3>
+
+                    <span>
+                        Nature
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <article
+            class="wallpaper-card"
+            data-category="luxury"
+            data-title="Golden Luxury"
+        >
+
+            <div class="wallpaper-art art-gold">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Golden Luxury
+                    </h3>
+
+                    <span>
+                        Luxury
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <article
+            class="wallpaper-card"
+            data-category="aesthetic"
+            data-title="Purple Dream"
+        >
+
+            <div class="wallpaper-art art-purple">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Purple Dream
+                    </h3>
+
+                    <span>
+                        Aesthetic
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FRESH DROPS
+========================= -->
+
+<section
+    class="wallpaper-section"
+    id="new"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-label">
+                JUST ARRIVED
+            </span>
+
+            <h2>
+                ✨ Fresh Drops
+            </h2>
+
+        </div>
+
+        <span
+            class="results-count"
+            id="resultsCount"
+        >
+            12 wallpapers
+        </span>
+
+    </div>
+
+
+    <div
+        class="wallpaper-grid"
+        id="wallpaperGrid"
+    >
+
+
+        <!-- 1. CYBER CITY -->
+
+        <article
+            class="wallpaper-card"
+            data-category="technology"
+            data-title="Cyber City"
+            data-image="wallpapers/cyber-city.jpg"
+        >
+
+            <div class="wallpaper-art art-cyber">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <button class="download-btn" type="button">
+                    ↓
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Cyber City
+                    </h3>
+
+                    <span>
+                        Technology
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- 2. FOREST MIST -->
+
+        <article
+            class="wallpaper-card"
+            data-category="nature"
+            data-title="Forest Mist"
+            data-image="wallpapers/forest-mist.jpg"
+        >
+
+            <div class="wallpaper-art art-forest">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <button class="download-btn" type="button">
+                    ↓
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Forest Mist
+                    </h3>
+
+                    <span>
+                        Nature
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- 3. MIDNIGHT SUPERCAR -->
+
+        <article
+            class="wallpaper-card"
+            data-category="cars"
+            data-title="Midnight Supercar"
+            data-image="wallpapers/midnight-supercar.jpg"
+        >
+
+            <div class="wallpaper-art art-supercar">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <button class="download-btn" type="button">
+                    ↓
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Midnight Supercar
+                    </h3>
+
+                    <span>
+                        Cars
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- 4. DEEP SPACE -->
+
+        <article
+            class="wallpaper-card"
+            data-category="space"
+            data-title="Deep Space"
+            data-image="wallpapers/deep-space.jpg"
+        >
+
+            <div class="wallpaper-art art-space">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <button class="download-btn" type="button">
+                    ↓
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Deep Space
+                    </h3>
+
+                    <span>
+                        Space
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- 5. OKARUN / DANDADAN -->
+
+        <article
+            class="wallpaper-card"
+            data-category="anime"
+            data-title="Okarun Dandadan"
+            data-image="wallpapers/Anime-Okarun%20Wallpaper%20-dandadan%20-okarun.jpeg"
+        >
+
+            <div
+                class="wallpaper-art art-samurai"
+                style="background-image: url('wallpapers/Anime-Okarun%20Wallpaper%20-dandadan%20-okarun.jpeg');"
+            >
+
+                <button
+                    class="like-btn"
+                    type="button"
+                    aria-label="Like Okarun wallpaper"
+                >
+                    ♡
+                </button>
+
+                <button
+                    class="preview-btn"
+                    type="button"
+                    aria-label="Preview Okarun wallpaper"
+                >
+                    👁
+                </button>
+
+                <button
+                    class="download-btn"
+                    type="button"
+                    aria-label="Download Okarun wallpaper"
+                >
+                    ↓
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Okarun
+                    </h3>
+
+                    <span>
+                        Anime • Dandadan
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- 6. AMOLED VOID -->
+
+        <article
+            class="wallpaper-card"
+            data-category="amoled"
+            data-title="AMOLED Void"
+            data-image="wallpapers/amoled-void.jpg"
+        >
+
+            <div class="wallpaper-art art-amoled">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <button class="download-btn" type="button">
+                    ↓
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        AMOLED Void
+                    </h3>
+
+                    <span>
+                        AMOLED
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- 7. PURPLE DREAM -->
+
+        <article
+            class="wallpaper-card"
+            data-category="aesthetic"
+            data-title="Purple Dream"
+            data-image="wallpapers/purple-dream.jpg"
+        >
+
+            <div class="wallpaper-art art-purple">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <button class="download-btn" type="button">
+                    ↓
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Purple Dream
+                    </h3>
+
+                    <span>
+                        Aesthetic
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- 8. LUXURY GOLD -->
+
+        <article
+            class="wallpaper-card"
+            data-category="luxury"
+            data-title="Luxury Gold"
+            data-image="wallpapers/luxury-gold.jpg"
+        >
+
+            <div class="wallpaper-art art-luxury">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <button class="download-btn" type="button">
+                    ↓
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Luxury Gold
+                    </h3>
+
+                    <span>
+                        Luxury
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- 9. NEON RACING -->
+
+        <article
+            class="wallpaper-card"
+            data-category="gaming"
+            data-title="Neon Racing"
+            data-image="wallpapers/neon-racing.jpg"
+        >
+
+            <div class="wallpaper-art art-racing">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <button class="download-btn" type="button">
+                    ↓
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Neon Racing
+                    </h3>
+
+                    <span>
+                        Gaming
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- 10. OCEAN BLUE -->
+
+        <article
+            class="wallpaper-card"
+            data-category="nature"
+            data-title="Ocean Blue"
+            data-image="wallpapers/ocean-blue.jpg"
+        >
+
+            <div class="wallpaper-art art-ocean">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <button class="download-btn" type="button">
+                    ↓
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Ocean Blue
+                    </h3>
+
+                    <span>
+                        Nature
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- 11. FUTURE INTERFACE -->
+
+        <article
+            class="wallpaper-card"
+            data-category="technology"
+            data-title="Future Interface"
+            data-image="wallpapers/future-interface.jpg"
+        >
+
+            <div class="wallpaper-art art-interface">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <button class="download-btn" type="button">
+                    ↓
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Future Interface
+                    </h3>
+
+                    <span>
+                        Technology
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- 12. MOONLIGHT -->
+
+        <article
+            class="wallpaper-card"
+            data-category="space"
+            data-title="Moonlight"
+            data-image="wallpapers/moonlight.jpg"
+        >
+
+            <div class="wallpaper-art art-moon">
+
+                <button class="like-btn" type="button">
+                    ♡
+                </button>
+
+                <button class="preview-btn" type="button">
+                    👁
+                </button>
+
+                <button class="download-btn" type="button">
+                    ↓
+                </button>
+
+                <div class="wallpaper-info">
+
+                    <h3>
+                        Moonlight
+                    </h3>
+
+                    <span>
+                        Space
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+    </div>
+
+
+    <!-- EMPTY STATE -->
+
+    <div
+        class="empty-state"
+        id="emptyState"
+        hidden
+    >
+
+        <div class="empty-icon">
+            🔍
+        </div>
+
+        <h3>
+            No wallpapers found
+        </h3>
+
+        <p>
+            Try another search or category.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     RANDOM WALLPAPER
+========================= -->
+
+<section class="random-section">
+
+    <div class="random-card">
+
+        <div>
+
+            <span class="section-label">
+                CAN'T DECIDE?
+            </span>
+
+            <h2>
+                🎲 Surprise Me
+            </h2>
+
+            <p>
+                Let PIXORA choose a wallpaper for you.
+            </p>
+
+        </div>
+
+        <button
+            id="randomBtn"
+            class="random-btn"
+            type="button"
+        >
+            Random Wallpaper
+        </button>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<!-- =========================
+     PREVIEW MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="previewModal"
+    aria-hidden="true"
+>
+
+    <div class="modal-backdrop"></div>
+
+    <div class="modal-content">
+
+        <button
+            class="modal-close"
+            id="modalClose"
+            type="button"
+            aria-label="Close preview"
+        >
+            ×
+        </button>
+
+
+        <div
+            class="modal-art"
+            id="modalArt"
+        ></div>
+
+
+        <div class="modal-info">
+
+            <h2 id="modalTitle">
+                Wallpaper
+            </h2>
+
+            <p id="modalDetails">
+                PIXORA Wallpaper
+            </p>
+
+
+            <div class="modal-actions">
+
+                <button
+                    id="modalLike"
+                    class="modal-action"
+                    type="button"
+                >
+                    ♡ Like
+                </button>
+
+                <button
+                    id="modalDownload"
+                    class="modal-action primary"
+                    type="button"
+                >
+                    ↓ Download
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     BOTTOM NAVIGATION
+========================= -->
+
+<nav class="bottom-nav">
+
+    <button
+        class="nav-item active"
+        data-target="home"
+        type="button"
+    >
+
+        <span>
+            ⌂
+        </span>
+
+        <small>
+            Home
+        </small>
+
+    </button>
+
+
+    <button
+        class="nav-item"
+        data-target="trending"
+        type="button"
+    >
+
+        <span>
+            🔥
+        </span>
+
+        <small>
+            Trending
+        </small>
+
+    </button>
+
+
+    <button
+        class="nav-item"
+        data-target="new"
+        type="button"
+    >
+
+        <span>
+            ✨
+        </span>
+
+        <small>
+            New
+        </small>
+
+    </button>
+
+
+    <button
+        class="nav-item"
+        data-target="categories"
+        type="button"
+    >
+
+        <span>
+            ◉
+        </span>
+
+        <small>
+            Categories
+        </small>
+
+    </button>
+
+</nav>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
