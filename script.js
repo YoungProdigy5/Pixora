@@ -1896,20 +1896,3 @@ document.addEventListener("DOMContentLoaded", () => {
 // =========================================================
 // PIXORA — SUPABASE CONNECTION TEST
 // =========================================================
-
-async function testSupabaseConnection() {
-    const { data, error } = await supabase
-        .from("wallpapers")
-        .select("id")
-        .limit(1);
-
-    if (error) {
-        console.error("PIXORA Supabase connection failed:", error);
-        return;
-    }
-
-    console.log("PIXORA Supabase connection successful!");
-    console.log("Database response:", data);
-}
-
-testSupabaseConnection();
