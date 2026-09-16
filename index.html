@@ -1,6 +1,6 @@
-
-     <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
@@ -14,10 +14,23 @@
         content="PIXORA — Discover beautiful wallpapers for every mood, style and screen."
     >
 
+    <meta
+        name="theme-color"
+        content="#0b0b10"
+    >
+
     <title>PIXORA — Wallpaper Discovery</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
@@ -26,14 +39,15 @@
 
     <style>
 
-        /* =====================================================
-           PIXORA DESIGN SYSTEM
-        ===================================================== */
+        /* =========================
+           PIXORA VARIABLES
+        ========================= */
 
         :root {
             --bg: #0b0b10;
             --surface: #15151c;
-            --surface-2: #1c1c25;
+            --surface-2: #1d1d26;
+
             --border: rgba(255,255,255,.08);
 
             --text: #f5f5f7;
@@ -45,17 +59,35 @@
             --amber: #f2b84b;
 
             --radius: 20px;
+
+            --shadow:
+                0 18px 50px rgba(0,0,0,.28);
         }
 
+
+        /* =========================
+           LIGHT MODE
+        ========================= */
+
         body.light {
-            --bg: #f5f5f7;
+
+            --bg: #f4f5f8;
             --surface: #ffffff;
-            --surface-2: #eeeeF2;
+            --surface-2: #eceef4;
+
             --border: rgba(0,0,0,.08);
 
             --text: #111116;
-            --muted: #666672;
+            --muted: #686875;
+
+            --shadow:
+                0 18px 50px rgba(0,0,0,.08);
         }
+
+
+        /* =========================
+           RESET
+        ========================= */
 
         * {
             margin: 0;
@@ -68,18 +100,16 @@
         }
 
         body {
+            font-family: "Inter", sans-serif;
             background: var(--bg);
             color: var(--text);
-
-            font-family: "Inter", sans-serif;
-
-            padding-bottom: 90px;
-
-            overflow-x: hidden;
+            min-height: 100vh;
 
             transition:
-                background .4s ease,
-                color .4s ease;
+                background .45s ease,
+                color .45s ease;
+
+            padding-bottom: 90px;
         }
 
         button,
@@ -88,7 +118,12 @@
         }
 
         button {
-            cursor: pointer;
+            border: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
         }
 
         a {
@@ -97,1337 +132,1548 @@
         }
 
 
-        /* =====================================================
+        /* =========================
            TOP BAR
-        ===================================================== */
+        ========================= */
 
         .topbar {
-            position: fixed;
 
+            position: sticky;
             top: 0;
-            left: 0;
+            z-index: 1000;
 
-            width: 100%;
-            height: 68px;
+            height: 72px;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
 
-            padding: 0 18px;
+            padding: 0 5%;
 
             background:
                 color-mix(
                     in srgb,
-                    var(--bg) 82%,
+                    var(--bg) 86%,
                     transparent
                 );
 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(18px);
 
             border-bottom:
                 1px solid var(--border);
-
-            z-index: 1000;
         }
 
+
         .brand {
+
             display: flex;
             align-items: center;
-
             gap: 10px;
 
             font-family:
                 "Space Grotesk",
                 sans-serif;
 
+            font-size: 21px;
             font-weight: 700;
-
-            font-size: 1.15rem;
-
             letter-spacing: -.6px;
         }
 
-        .pixel-mark {
-            width: 25px;
-            height: 25px;
+
+        .brand-mark {
+
+            width: 32px;
+            height: 32px;
 
             display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
 
-            grid-template-columns:
-                1fr 1fr;
+            gap: 3px;
 
-            grid-template-rows:
-                1fr 1fr;
+            padding: 5px;
 
-            gap: 2px;
+            border-radius: 9px;
 
-            border-radius: 5px;
-
-            overflow: hidden;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--violet),
+                    var(--coral)
+                );
         }
 
-        .pixel-mark span:nth-child(1) {
-            background: var(--violet);
+
+        .brand-mark span {
+            background: white;
+            border-radius: 2px;
+            opacity: .9;
         }
 
-        .pixel-mark span:nth-child(2) {
-            background: var(--coral);
+
+        .brand span {
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--violet),
+                    var(--coral)
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
         }
 
-        .pixel-mark span:nth-child(3) {
-            background: var(--teal);
-        }
-
-        .pixel-mark span:nth-child(4) {
-            background: var(--amber);
-        }
 
         .top-actions {
+
             display: flex;
-            gap: 8px;
+            align-items: center;
+            gap: 12px;
         }
 
-        .icon-button {
-            width: 40px;
-            height: 40px;
+
+        /* =========================
+           DAY / NIGHT TOGGLE
+        ========================= */
+
+        .theme-switch {
+
+            position: relative;
+
+            width: 72px;
+            height: 38px;
+
+            padding: 0;
+
+            border:
+                1px solid rgba(255,255,255,.12);
+
+            border-radius: 999px;
+
+            background: #171722;
+
+            box-shadow:
+                inset 0 2px 8px rgba(0,0,0,.35),
+                0 4px 18px rgba(0,0,0,.18);
+
+            cursor: pointer;
+
+            overflow: hidden;
+
+            transition:
+                background .45s ease,
+                border .45s ease;
+        }
+
+
+        .theme-switch span {
+
+            position: absolute;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            z-index: 2;
+
+            pointer-events: none;
+        }
+
+
+        .theme-sun {
+
+            left: 10px;
+
+            font-size: 15px;
+
+            opacity: .45;
+
+            transition: .4s ease;
+        }
+
+
+        .theme-moon {
+
+            right: 10px;
+
+            font-size: 15px;
+
+            opacity: .9;
+
+            transition: .4s ease;
+        }
+
+
+        .theme-knob {
+
+            left: 4px;
+
+            width: 30px;
+            height: 30px;
+
+            border-radius: 50%;
+
+            background: #f7f7fb;
+
+            box-shadow:
+                0 3px 10px rgba(0,0,0,.35),
+                0 0 12px rgba(255,255,255,.12);
+
+            transition:
+                left .45s cubic-bezier(.4,1.6,.4,1),
+                background .45s ease,
+                box-shadow .45s ease;
+        }
+
+
+        body.light .theme-switch {
+
+            background: #e9edf7;
+
+            border-color:
+                rgba(0,0,0,.08);
+
+            box-shadow:
+                inset 0 2px 8px rgba(0,0,0,.08),
+                0 4px 18px rgba(0,0,0,.08);
+        }
+
+
+        body.light .theme-knob {
+
+            left: 37px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 3px 10px rgba(0,0,0,.18),
+                0 0 14px rgba(255,190,60,.35);
+        }
+
+
+        body.light .theme-sun {
+            opacity: .95;
+        }
+
+
+        body.light .theme-moon {
+            opacity: .35;
+        }
+
+
+        .theme-switch:active .theme-knob {
+            width: 34px;
+        }
+
+
+        /* =========================
+           SEARCH BUTTON
+        ========================= */
+
+        .search-trigger {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            background: var(--surface);
 
             border:
                 1px solid var(--border);
 
-            border-radius: 50%;
-
-            background:
-                var(--surface);
-
             color: var(--text);
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            cursor: pointer;
 
-            font-size: 1.1rem;
+            font-size: 18px;
 
-            transition: .25s;
-        }
-
-        .icon-button:hover {
-            transform: translateY(-2px);
-
-            border-color:
-                var(--violet);
+            transition: .25s ease;
         }
 
 
-        /* =====================================================
-           SEARCH
-        ===================================================== */
+        .search-trigger:hover {
+            transform: scale(1.06);
+            background: var(--surface-2);
+        }
+
+
+        /* =========================
+           SEARCH PANEL
+        ========================= */
 
         .search-panel {
+
             position: fixed;
 
-            top: 68px;
-            left: 0;
+            inset: 72px 0 auto 0;
 
-            width: 100%;
+            z-index: 900;
 
-            padding: 14px 16px;
+            padding: 18px 5%;
 
             background:
                 color-mix(
                     in srgb,
-                    var(--bg) 96%,
+                    var(--bg) 94%,
                     transparent
                 );
+
+            backdrop-filter: blur(20px);
 
             border-bottom:
                 1px solid var(--border);
 
             transform:
-                translateY(-150%);
+                translateY(-130%);
 
-            transition:
-                transform .35s ease;
-
-            z-index: 999;
+            transition: .4s ease;
         }
 
-        .search-panel.open {
-            transform:
-                translateY(0);
+
+        .search-panel.active {
+            transform: translateY(0);
         }
+
 
         .search-box {
+
+            max-width: 800px;
+
+            margin: auto;
+
             position: relative;
         }
 
-        .search-input {
+
+        .search-box input {
+
             width: 100%;
 
             padding:
-                15px 48px 15px 16px;
+                16px
+                50px
+                16px
+                20px;
+
+            border-radius: 16px;
 
             border:
                 1px solid var(--border);
 
-            border-radius: 15px;
+            background: var(--surface);
+
+            color: var(--text);
 
             outline: none;
-
-            background:
-                var(--surface);
-
-            color:
-                var(--text);
         }
 
-        .search-input:focus {
+
+        .search-box input:focus {
+
             border-color:
                 var(--violet);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(139,108,255,.12);
         }
 
+
         .clear-search {
+
             position: absolute;
 
-            right: 8px;
+            right: 12px;
             top: 50%;
 
-            transform:
-                translateY(-50%);
+            transform: translateY(-50%);
 
-            width: 34px;
-            height: 34px;
-
-            border: none;
+            width: 32px;
+            height: 32px;
 
             border-radius: 50%;
 
-            background:
-                var(--surface-2);
+            background: var(--surface-2);
 
-            color:
-                var(--text);
+            color: var(--text);
+
+            cursor: pointer;
         }
 
 
-        /* =====================================================
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            width: min(1400px, 90%);
+            margin: auto;
+        }
+
+
+        /* =========================
            HERO
-        ===================================================== */
+        ========================= */
 
         .hero {
+
             position: relative;
 
-            height:
-                min(78vh, 760px);
+            margin-top: 28px;
 
-            margin-top: 68px;
+            height: 430px;
+
+            border-radius: 28px;
 
             overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #24243b,
+                    #111118
+                );
+
+            box-shadow: var(--shadow);
         }
 
-        .slides {
-            height: 100%;
+
+        .hero-track {
 
             display: flex;
 
-            overflow-x: auto;
-
-            scroll-snap-type:
-                x mandatory;
-
-            scrollbar-width: none;
-
-            -webkit-overflow-scrolling:
-                touch;
-        }
-
-        .slides::-webkit-scrollbar {
-            display: none;
-        }
-
-        .slide {
-            position: relative;
-
-            min-width: 100%;
             height: 100%;
 
-            scroll-snap-align:
-                start;
+            transition:
+                transform .65s
+                cubic-bezier(.2,.8,.2,1);
+        }
+
+
+        .hero-slide {
+
+            min-width: 100%;
+
+            height: 100%;
+
+            position: relative;
 
             display: flex;
 
             align-items: flex-end;
 
-            background-size: cover;
-            background-position: center;
+            padding: 40px;
+
+            overflow: hidden;
         }
 
-        .slide::after {
-            content: "";
+
+        .hero-art {
 
             position: absolute;
 
             inset: 0;
 
             background:
-                linear-gradient(
-                    to top,
-                    rgba(0,0,0,.9),
-                    rgba(0,0,0,.35) 45%,
-                    rgba(0,0,0,.08)
-                );
-        }
-
-        .slide-1 {
-            background:
                 radial-gradient(
-                    circle at 70% 25%,
-                    #8b6cff,
-                    transparent 24%
+                    circle at 75% 25%,
+                    rgba(139,108,255,.65),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 25% 75%,
+                    rgba(255,118,104,.45),
+                    transparent 30%
                 ),
                 linear-gradient(
-                    145deg,
-                    #08080d,
-                    #302858,
-                    #14141c
+                    135deg,
+                    #171725,
+                    #08080d
                 );
         }
 
-        .slide-2 {
+
+        .hero-slide:nth-child(2) .hero-art {
+
             background:
                 radial-gradient(
-                    circle at 35% 25%,
-                    #75a98b,
-                    transparent 26%
+                    circle at 70% 30%,
+                    rgba(82,199,184,.6),
+                    transparent 30%
                 ),
                 linear-gradient(
-                    145deg,
-                    #07100b,
-                    #31543e,
-                    #101713
+                    135deg,
+                    #08231f,
+                    #08090d
                 );
         }
 
-        .slide-3 {
+
+        .hero-slide:nth-child(3) .hero-art {
+
             background:
                 radial-gradient(
-                    circle at 70% 28%,
-                    #df856f,
-                    transparent 25%
-                ),
-                linear-gradient(
-                    145deg,
-                    #100d10,
-                    #59352f,
-                    #1b1517
-                );
-        }
-
-        .slide-content {
-            position: relative;
-
-            z-index: 2;
-
-            width: 100%;
-
-            padding:
-                28px 20px 70px;
-        }
-
-        .slide-meta {
-            display: flex;
-
-            gap: 8px;
-
-            margin-bottom: 13px;
-        }
-
-        .tag {
-            padding:
-                6px 9px;
-
-            border:
-                1px solid
-                rgba(255,255,255,.15);
-
-            border-radius: 8px;
-
-            background:
-                rgba(0,0,0,.25);
-
-            font-size:
-                .66rem;
-
-            font-weight:
-                600;
-        }
-
-        .slide h1 {
-            font-family:
-                "Space Grotesk",
-                sans-serif;
-
-            font-size:
-                clamp(2.4rem, 9vw, 5rem);
-
-            line-height:
-                .95;
-
-            letter-spacing:
-                -2.5px;
-
-            margin-bottom:
-                10px;
-        }
-
-        .creator {
-            color:
-                #c4c4cc;
-
-            font-size:
-                .78rem;
-        }
-
-        .dots {
-            position: absolute;
-
-            left: 20px;
-            bottom: 24px;
-
-            z-index: 10;
-
-            display: flex;
-
-            gap: 6px;
-        }
-
-        .dot {
-            width: 18px;
-            height: 4px;
-
-            border: none;
-
-            border-radius:
-                20px;
-
-            background:
-                rgba(255,255,255,.3);
-
-            transition:
-                .3s;
-        }
-
-        .dot.active {
-            width: 30px;
-
-            background:
-                white;
-        }
-
-
-        /* =====================================================
-           SECTIONS
-        ===================================================== */
-
-        .section {
-            padding:
-                44px 16px 0;
-        }
-
-        .section-header {
-            display: flex;
-
-            align-items: center;
-            justify-content: space-between;
-
-            margin-bottom:
-                17px;
-        }
-
-        .section-header h2 {
-            font-family:
-                "Space Grotesk",
-                sans-serif;
-
-            font-size:
-                1.45rem;
-
-            letter-spacing:
-                -.8px;
-        }
-
-        .section-header span {
-            color:
-                var(--muted);
-
-            font-size:
-                .72rem;
-        }
-
-
-        /* =====================================================
-           CATEGORY CHIPS
-        ===================================================== */
-
-        .chips {
-            display: flex;
-
-            gap: 9px;
-
-            overflow-x: auto;
-
-            scrollbar-width:
-                none;
-
-            padding-bottom:
-                5px;
-        }
-
-        .chips::-webkit-scrollbar {
-            display: none;
-        }
-
-        .chip {
-            flex:
-                0 0 auto;
-
-            padding:
-                10px 13px;
-
-            border:
-                1px solid var(--border);
-
-            border-radius:
-                100px;
-
-            background:
-                var(--surface);
-
-            color:
-                var(--text);
-
-            font-size:
-                .76rem;
-
-            transition:
-                .25s;
-        }
-
-        .chip.active,
-        .chip:hover {
-            border-color:
-                var(--violet);
-
-            background:
-                rgba(139,108,255,.13);
-        }
-
-
-        /* =====================================================
-           TRENDING
-        ===================================================== */
-
-        .rail {
-            display: flex;
-
-            gap: 13px;
-
-            overflow-x: auto;
-
-            scrollbar-width:
-                none;
-        }
-
-        .rail::-webkit-scrollbar {
-            display: none;
-        }
-
-        .rank-card {
-            position: relative;
-
-            flex:
-                0 0 150px;
-
-            aspect-ratio:
-                3 / 4;
-
-            border-radius:
-                18px;
-
-            overflow:
-                hidden;
-
-            border:
-                1px solid var(--border);
-
-            background:
-                var(--surface);
-
-            cursor:
-                pointer;
-        }
-
-        .rank-card::after {
-            content: "";
-
-            position: absolute;
-
-            inset: 0;
-
-            background:
-                linear-gradient(
-                    to top,
-                    rgba(0,0,0,.85),
-                    transparent 60%
-                );
-        }
-
-        .rank-number {
-            position: absolute;
-
-            top: 10px;
-            left: 11px;
-
-            z-index: 2;
-
-            font-family:
-                "Space Grotesk",
-                sans-serif;
-
-            font-size:
-                2rem;
-        }
-
-        .rank-title {
-            position: absolute;
-
-            left: 11px;
-            right: 10px;
-            bottom: 11px;
-
-            z-index: 2;
-
-            font-size:
-                .75rem;
-
-            font-weight:
-                600;
-        }
-
-        .trend-1 {
-            background:
-                linear-gradient(
-                    145deg,
-                    #211947,
-                    #806ce2
-                );
-        }
-
-        .trend-2 {
-            background:
-                linear-gradient(
-                    145deg,
-                    #102d27,
-                    #6b9c82
-                );
-        }
-
-        .trend-3 {
-            background:
-                linear-gradient(
-                    145deg,
-                    #321d24,
-                    #c46e63
-                );
-        }
-
-        .trend-4 {
-            background:
-                linear-gradient(
-                    145deg,
-                    #141a35,
-                    #6376c5
-                );
-        }
-
-        .trend-5 {
-            background:
-                linear-gradient(
-                    145deg,
-                    #332719,
-                    #b99c5c
-                );
-        }
-
-
-        /* =====================================================
-           MASONRY
-        ===================================================== */
-
-        .masonry {
-            columns: 2;
-
-            column-gap:
-                12px;
-        }
-
-        .masonry-card {
-            position: relative;
-
-            break-inside:
-                avoid;
-
-            margin-bottom:
-                12px;
-
-            border-radius:
-                17px;
-
-            overflow:
-                hidden;
-
-            border:
-                1px solid var(--border);
-
-            background:
-                var(--surface);
-
-            cursor:
-                pointer;
-        }
-
-        .masonry-image {
-            position: relative;
-
-            width: 100%;
-
-            min-height:
-                190px;
-
-            display: flex;
-
-            align-items:
-                flex-end;
-
-            background-size:
-                cover;
-
-            background-position:
-                center;
-        }
-
-        .tall {
-            min-height:
-                320px;
-        }
-
-        .short {
-            min-height:
-                215px;
-        }
-
-        .medium {
-            min-height:
-                265px;
-        }
-
-        .fresh-1 {
-            background:
-                radial-gradient(
-                    circle at 60% 25%,
-                    #9a86f1,
+                    circle at 75% 25%,
+                    rgba(242,184,75,.7),
                     transparent 28%
                 ),
                 linear-gradient(
-                    145deg,
-                    #11111b,
-                    #473b79
+                    135deg,
+                    #291d0b,
+                    #090909
                 );
         }
 
-        .fresh-2 {
+
+        .hero-content {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 650px;
+        }
+
+
+        .eyebrow {
+
+            display: inline-flex;
+
+            padding:
+                7px 12px;
+
+            border-radius: 999px;
+
             background:
-                radial-gradient(
-                    circle at 30% 25%,
-                    #8bb69a,
-                    transparent 25%
-                ),
+                rgba(255,255,255,.1);
+
+            backdrop-filter: blur(10px);
+
+            font-size: 12px;
+
+            margin-bottom: 15px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .hero h1 {
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size:
+                clamp(38px, 6vw, 72px);
+
+            line-height: .98;
+
+            letter-spacing: -3px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .hero p {
+
+            color:
+                rgba(255,255,255,.72);
+
+            max-width: 520px;
+
+            line-height: 1.7;
+        }
+
+
+        .hero-dots {
+
+            position: absolute;
+
+            bottom: 20px;
+            right: 25px;
+
+            display: flex;
+
+            gap: 7px;
+
+            z-index: 5;
+        }
+
+
+        .hero-dot {
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.35);
+
+            cursor: pointer;
+
+            transition: .3s ease;
+        }
+
+
+        .hero-dot.active {
+
+            width: 25px;
+
+            border-radius: 999px;
+
+            background: white;
+        }
+
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        section {
+            margin-top: 48px;
+        }
+
+
+        .section-head {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 18px;
+        }
+
+
+        .section-head h2 {
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size: 25px;
+
+            letter-spacing: -.8px;
+        }
+
+
+        .section-head small {
+            color: var(--muted);
+        }
+
+
+        /* =========================
+           CATEGORY CHIPS
+        ========================= */
+
+        .categories {
+
+            display: flex;
+
+            gap: 10px;
+
+            overflow-x: auto;
+
+            padding-bottom: 5px;
+
+            scrollbar-width: none;
+        }
+
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+
+        .category {
+
+            flex: 0 0 auto;
+
+            padding:
+                10px
+                16px;
+
+            border-radius: 999px;
+
+            border:
+                1px solid var(--border);
+
+            background: var(--surface);
+
+            color: var(--muted);
+
+            cursor: pointer;
+
+            transition: .25s ease;
+        }
+
+
+        .category:hover {
+
+            color: var(--text);
+
+            transform: translateY(-2px);
+        }
+
+
+        .category.active {
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--violet),
+                    #6e56db
+                );
+
+            border-color: transparent;
+        }
+
+
+        /* =========================
+           TRENDING
+        ========================= */
+
+        .trending {
+
+            display: flex;
+
+            gap: 16px;
+
+            overflow-x: auto;
+
+            padding-bottom: 8px;
+
+            scrollbar-width: none;
+        }
+
+
+        .trending::-webkit-scrollbar {
+            display: none;
+        }
+
+
+        .trend-card {
+
+            position: relative;
+
+            flex:
+                0 0
+                clamp(190px, 28vw, 270px);
+
+            height: 340px;
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            background:
+                var(--surface);
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,0,0,.18);
+        }
+
+
+        .trend-art {
+
+            width: 100%;
+            height: 100%;
+
+            background:
                 linear-gradient(
                     145deg,
-                    #122219,
-                    #577963
+                    #272744,
+                    #101015
                 );
         }
 
-        .fresh-3 {
+
+        .trend-card:nth-child(2) .trend-art {
+
             background:
-                radial-gradient(
-                    circle at 65% 25%,
-                    #e49b72,
-                    transparent 25%
-                ),
                 linear-gradient(
                     145deg,
-                    #241516,
-                    #743e36
+                    #123b37,
+                    #0a1110
                 );
         }
 
-        .fresh-4 {
+
+        .trend-card:nth-child(3) .trend-art {
+
             background:
-                radial-gradient(
-                    circle at 45% 20%,
-                    #7daecc,
-                    transparent 25%
-                ),
                 linear-gradient(
                     145deg,
-                    #101d26,
-                    #355a6e
+                    #49351a,
+                    #11100d
                 );
         }
 
-        .fresh-5 {
+
+        .trend-card:nth-child(4) .trend-art {
+
             background:
-                radial-gradient(
-                    circle at 70% 35%,
-                    #bd94e9,
-                    transparent 27%
-                ),
                 linear-gradient(
                     145deg,
-                    #1d1329,
-                    #67477d
+                    #3c1d38,
+                    #100c11
                 );
         }
 
-        .fresh-6 {
+
+        .trend-number {
+
+            position: absolute;
+
+            top: 15px;
+            left: 15px;
+
+            width: 38px;
+            height: 38px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 50%;
+
             background:
-                radial-gradient(
-                    circle at 30% 30%,
-                    #d4c58f,
-                    transparent 25%
-                ),
+                rgba(0,0,0,.4);
+
+            backdrop-filter:
+                blur(10px);
+
+            font-weight: 700;
+        }
+
+
+        .trend-info {
+
+            position: absolute;
+
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            padding: 24px 16px 16px;
+
+            background:
+                linear-gradient(
+                    transparent,
+                    rgba(0,0,0,.85)
+                );
+        }
+
+
+        .trend-info h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+
+        .trend-info span {
+
+            font-size: 12px;
+
+            color:
+                rgba(255,255,255,.6);
+        }
+
+
+        /* =========================
+           WALLPAPER GRID
+        ========================= */
+
+        .wallpaper-grid {
+
+            columns: 4 220px;
+
+            column-gap: 16px;
+        }
+
+
+        .wallpaper-card {
+
+            position: relative;
+
+            break-inside: avoid;
+
+            margin-bottom: 16px;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            background: var(--surface);
+
+            cursor: pointer;
+
+            min-height: 220px;
+
+            transition:
+                transform .3s ease,
+                box-shadow .3s ease;
+        }
+
+
+        .wallpaper-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            box-shadow:
+                var(--shadow);
+        }
+
+
+        .wallpaper-art {
+
+            min-height: 260px;
+
+            background:
                 linear-gradient(
                     145deg,
-                    #17150e,
-                    #685d38
+                    #252538,
+                    #111117
                 );
         }
 
-        .card-overlay {
+
+        .wallpaper-card:nth-child(2n)
+        .wallpaper-art {
+
+            min-height: 330px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #153d39,
+                    #0b1110
+                );
+        }
+
+
+        .wallpaper-card:nth-child(3n)
+        .wallpaper-art {
+
+            min-height: 290px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #412e4b,
+                    #100d13
+                );
+        }
+
+
+        .wallpaper-card:nth-child(4n)
+        .wallpaper-art {
+
+            min-height: 370px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #49381a,
+                    #110f0a
+                );
+        }
+
+
+        .wallpaper-overlay {
+
             position: absolute;
 
             inset: 0;
 
             display: flex;
 
-            align-items:
-                flex-end;
+            align-items: flex-end;
 
-            justify-content:
-                space-between;
-
-            padding:
-                12px;
+            padding: 16px;
 
             background:
                 linear-gradient(
-                    to top,
-                    rgba(0,0,0,.72),
-                    transparent 55%
+                    transparent 45%,
+                    rgba(0,0,0,.8)
                 );
 
-            opacity:
-                0;
+            opacity: 0;
 
-            transition:
-                .3s;
-
-            z-index:
-                5;
+            transition: .3s ease;
         }
 
-        .masonry-card:hover
-        .card-overlay,
 
-        .masonry-card.tapped
-        .card-overlay {
-            opacity:
-                1;
+        .wallpaper-card:hover
+        .wallpaper-overlay {
+
+            opacity: 1;
         }
 
-        .resolution {
-            padding:
-                6px 8px;
 
-            border-radius:
-                7px;
+        .wallpaper-info {
 
-            background:
-                rgba(0,0,0,.55);
+            width: 100%;
 
-            font-size:
-                .62rem;
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-end;
+
+            gap: 10px;
         }
 
-        .card-actions {
-            display:
-                flex;
 
-            gap:
-                7px;
+        .wallpaper-info h3 {
+
+            font-size: 15px;
+
+            margin-bottom: 5px;
         }
 
-        .card-actions button {
-            width:
-                36px;
 
-            height:
-                36px;
+        .wallpaper-info p {
 
-            border:
-                1px solid
-                rgba(255,255,255,.15);
-
-            border-radius:
-                50%;
-
-            background:
-                rgba(0,0,0,.55);
+            font-size: 11px;
 
             color:
-                white;
+                rgba(255,255,255,.65);
+        }
+
+
+        .card-actions {
+
+            display: flex;
+
+            gap: 7px;
+        }
+
+
+        .card-btn {
+
+            width: 36px;
+            height: 36px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.12);
+
+            color: white;
+
+            cursor: pointer;
 
             backdrop-filter:
                 blur(8px);
 
-            transition:
-                .2s;
+            transition: .25s ease;
         }
 
-        .card-actions button:hover {
-            transform:
-                scale(1.08);
+
+        .card-btn:hover {
+            background:
+                rgba(255,255,255,.22);
+
+            transform: scale(1.08);
         }
 
-        .card-actions .liked {
-            color:
+
+        .card-btn.liked {
+            background:
                 var(--coral);
         }
 
 
-        /* =====================================================
-           EMPTY SEARCH
-        ===================================================== */
+        /* =========================
+           EMPTY STATE
+        ========================= */
 
         .empty-state {
-            display:
-                none;
 
-            text-align:
-                center;
+            display: none;
 
-            padding:
-                70px 20px;
+            text-align: center;
 
-            color:
-                var(--muted);
+            padding: 70px 20px;
+
+            color: var(--muted);
         }
+
 
         .empty-state.show {
-            display:
-                block;
-        }
-
-        .empty-icon {
-            font-size:
-                2.5rem;
-
-            margin-bottom:
-                12px;
+            display: block;
         }
 
 
-        /* =====================================================
-           PREVIEW MODAL
-        ===================================================== */
+        .empty-state strong {
 
-        .modal {
-            position:
-                fixed;
+            display: block;
 
-            inset:
-                0;
-
-            z-index:
-                5000;
-
-            display:
-                none;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            padding:
-                20px;
-
-            background:
-                rgba(0,0,0,.82);
-
-            backdrop-filter:
-                blur(20px);
-        }
-
-        .modal.open {
-            display:
-                flex;
-        }
-
-        .modal-content {
-            position:
-                relative;
-
-            width:
-                min(100%, 650px);
-
-            max-height:
-                92vh;
-
-            overflow:
-                auto;
-
-            border:
-                1px solid
-                rgba(255,255,255,.12);
-
-            border-radius:
-                24px;
-
-            background:
-                var(--surface);
-        }
-
-        .modal-image {
-            width:
-                100%;
-
-            height:
-                55vh;
-
-            min-height:
-                350px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #25213d,
-                    #8b6cff
-                );
-
-            background-size:
-                cover;
-
-            background-position:
-                center;
-        }
-
-        .modal-info {
-            padding:
-                20px;
-        }
-
-        .modal-category {
-            color:
-                var(--violet);
-
-            font-size:
-                .72rem;
-
-            font-weight:
-                700;
-
-            margin-bottom:
-                7px;
-        }
-
-        .modal-title {
             font-family:
                 "Space Grotesk",
                 sans-serif;
 
-            font-size:
-                1.7rem;
+            font-size: 22px;
 
-            margin-bottom:
-                7px;
+            color: var(--text);
+
+            margin-bottom: 8px;
         }
 
-        .modal-meta {
-            color:
-                var(--muted);
 
-            font-size:
-                .78rem;
+        /* =========================
+           RANDOM BUTTON
+        ========================= */
 
-            margin-bottom:
-                18px;
-        }
+        .random-btn {
 
-        .modal-actions {
-            display:
-                flex;
+            position: fixed;
 
-            gap:
-                9px;
-        }
+            right: 24px;
+            bottom: 90px;
 
-        .modal-button {
-            flex:
-                1;
+            z-index: 800;
 
-            padding:
-                13px;
+            width: 54px;
+            height: 54px;
 
-            border:
-                1px solid
-                var(--border);
-
-            border-radius:
-                13px;
+            border-radius: 50%;
 
             background:
-                var(--surface-2);
+                linear-gradient(
+                    135deg,
+                    var(--violet),
+                    var(--coral)
+                );
 
-            color:
-                var(--text);
+            color: white;
 
-            font-weight:
-                600;
-        }
+            font-size: 20px;
 
-        .modal-button.primary {
-            background:
-                var(--violet);
+            cursor: pointer;
 
-            border-color:
-                var(--violet);
+            box-shadow:
+                0 10px 30px
+                rgba(0,0,0,.3);
 
-            color:
-                white;
-        }
-
-        .close-modal {
-            position:
-                absolute;
-
-            top:
-                12px;
-
-            right:
-                12px;
-
-            z-index:
-                10;
-
-            width:
-                38px;
-
-            height:
-                38px;
-
-            border:
-                1px solid
-                rgba(255,255,255,.2);
-
-            border-radius:
-                50%;
-
-            background:
-                rgba(0,0,0,.55);
-
-            color:
-                white;
-
-            font-size:
-                1.2rem;
+            transition: .25s ease;
         }
 
 
-        /* =====================================================
+        .random-btn:hover {
+            transform:
+                translateY(-4px)
+                scale(1.05);
+        }
+
+
+        /* =========================
            BOTTOM NAV
-        ===================================================== */
+        ========================= */
 
         .bottom-nav {
-            position:
-                fixed;
 
-            left:
-                10px;
+            position: fixed;
 
-            right:
-                10px;
+            left: 50%;
 
-            bottom:
-                10px;
+            bottom: 14px;
 
-            height:
-                65px;
+            transform:
+                translateX(-50%);
 
-            display:
-                grid;
+            z-index: 1000;
 
-            grid-template-columns:
-                repeat(5,1fr);
+            width:
+                min(600px, 92%);
+
+            display: flex;
+
+            justify-content: space-around;
+
+            align-items: center;
+
+            padding: 9px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 22px;
 
             background:
                 color-mix(
                     in srgb,
-                    var(--surface) 94%,
+                    var(--surface) 88%,
                     transparent
                 );
 
             backdrop-filter:
                 blur(20px);
 
-            border:
-                1px solid
-                var(--border);
-
-            border-radius:
-                20px;
-
-            z-index:
-                2000;
+            box-shadow:
+                0 15px 40px
+                rgba(0,0,0,.25);
         }
 
-        .tab {
-            border:
-                none;
+
+        .nav-item {
+
+            flex: 1;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            gap: 4px;
+
+            padding: 8px;
+
+            border-radius: 15px;
+
+            color: var(--muted);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            transition: .25s ease;
+        }
+
+
+        .nav-item span:first-child {
+            font-size: 19px;
+        }
+
+
+        .nav-item.active {
+
+            color: var(--text);
 
             background:
-                transparent;
-
-            color:
-                var(--muted);
-
-            display:
-                flex;
-
-            flex-direction:
-                column;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            gap:
-                4px;
-
-            font-size:
-                .62rem;
-        }
-
-        .tab-icon {
-            font-size:
-                1.05rem;
-        }
-
-        .tab.active {
-            color:
-                var(--text);
-        }
-
-        .tab.active
-        .tab-icon {
-            color:
-                var(--violet);
+                var(--surface-2);
         }
 
 
-        /* =====================================================
-           DESKTOP
-        ===================================================== */
+        /* =========================
+           MODAL
+        ========================= */
 
-        @media (min-width:800px) {
+        .modal {
 
-            body {
-                padding-bottom:
-                    20px;
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 2000;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(0,0,0,.82);
+
+            backdrop-filter:
+                blur(14px);
+        }
+
+
+        .modal.active {
+            display: flex;
+        }
+
+
+        .modal-content {
+
+            position: relative;
+
+            width:
+                min(900px, 100%);
+
+            max-height: 92vh;
+
+            overflow: hidden;
+
+            border-radius: 25px;
+
+            background:
+                var(--surface);
+
+            box-shadow:
+                0 30px 80px
+                rgba(0,0,0,.5);
+        }
+
+
+        .modal-art {
+
+            height: 65vh;
+
+            min-height: 350px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #292949,
+                    #0b0b10
+                );
+        }
+
+
+        .modal-bottom {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 18px 20px;
+        }
+
+
+        .modal-bottom h3 {
+            margin-bottom: 5px;
+        }
+
+
+        .modal-bottom p {
+
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+
+        .modal-actions {
+
+            display: flex;
+
+            gap: 8px;
+        }
+
+
+        .modal-btn {
+
+            padding:
+                11px 16px;
+
+            border-radius: 12px;
+
+            background:
+                var(--surface-2);
+
+            color: var(--text);
+
+            cursor: pointer;
+        }
+
+
+        .modal-btn.primary {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--violet),
+                    var(--coral)
+                );
+
+            color: white;
+        }
+
+
+        .modal-close {
+
+            position: absolute;
+
+            top: 15px;
+            right: 15px;
+
+            z-index: 5;
+
+            width: 40px;
+            height: 40px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(0,0,0,.5);
+
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 18px;
+
+            backdrop-filter:
+                blur(10px);
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .wallpaper-grid {
+                columns: 3 180px;
             }
+
+            .hero {
+                height: 400px;
+            }
+        }
+
+
+        @media (max-width: 650px) {
 
             .topbar {
-                padding:
-                    0 4%;
+                padding: 0 4%;
+            }
+
+            main {
+                width: 92%;
             }
 
             .hero {
-                height:
-                    720px;
+                height: 430px;
+                border-radius: 22px;
             }
 
-            .slide-content {
-                padding:
-                    50px 7% 75px;
+            .hero-slide {
+                padding: 26px;
             }
 
-            .section {
-                padding:
-                    70px 5% 0;
+            .hero h1 {
+                font-size: 45px;
+                letter-spacing: -2px;
             }
 
-            .masonry {
-                columns:
-                    4;
-
-                column-gap:
-                    18px;
+            .wallpaper-grid {
+                columns: 2 140px;
+                column-gap: 10px;
             }
 
-            .rank-card {
-                flex-basis:
-                    190px;
+            .wallpaper-card {
+                margin-bottom: 10px;
+                border-radius: 15px;
             }
 
-            .bottom-nav {
-                left:
-                    50%;
+            .wallpaper-art {
+                min-height: 220px;
+            }
 
-                right:
-                    auto;
+            .wallpaper-card:nth-child(2n)
+            .wallpaper-art {
+                min-height: 280px;
+            }
 
-                width:
-                    600px;
+            .wallpaper-card:nth-child(4n)
+            .wallpaper-art {
+                min-height: 310px;
+            }
 
-                transform:
-                    translateX(-50%);
+            .wallpaper-overlay {
+                opacity: 1;
+            }
+
+            .theme-switch {
+                width: 64px;
+            }
+
+            .theme-knob {
+                width: 28px;
+                height: 28px;
+            }
+
+            body.light .theme-knob {
+                left: 32px;
+            }
+
+            .search-trigger {
+                width: 40px;
+                height: 40px;
+            }
+
+            .modal-art {
+                height: 60vh;
+            }
+
+            .modal-bottom {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .modal-actions {
+                width: 100%;
+            }
+
+            .modal-btn {
+                flex: 1;
+            }
+
+            .random-btn {
+                right: 16px;
+                bottom: 88px;
             }
         }
 
-        @media (min-width:1200px) {
 
-            .hero {
-                height:
-                    780px;
+        @media (max-width: 400px) {
+
+            .brand {
+                font-size: 18px;
             }
 
-            .section {
-                max-width:
-                    1450px;
-
-                margin:
-                    auto;
+            .brand-mark {
+                width: 29px;
+                height: 29px;
             }
 
-            .masonry {
-                columns:
-                    5;
+            .theme-switch {
+                width: 58px;
+            }
+
+            .theme-knob {
+                width: 26px;
+                height: 26px;
+            }
+
+            body.light .theme-knob {
+                left: 28px;
+            }
+
+            .theme-sun {
+                left: 7px;
+            }
+
+            .theme-moon {
+                right: 7px;
             }
         }
 
@@ -1438,794 +1684,1404 @@
 <body>
 
 
-<!-- =====================================================
-     TOP BAR
-===================================================== -->
+    <!-- =========================
+         TOP BAR
+    ========================= -->
 
-<header class="topbar">
+    <header class="topbar">
 
-    <a href="#" class="brand">
-
-        <span class="pixel-mark">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </span>
-
-        PIXORA
-
-    </a>
-
-
-    <div class="top-actions">
-
-        <button
-            class="icon-button"
-            id="themeButton"
-            aria-label="Change theme"
-        >
-            ☀️
-        </button>
-
-        <button
-            class="icon-button"
-            id="searchButton"
-            aria-label="Search"
-        >
-            ⌕
-        </button>
-
-    </div>
-
-</header>
-
-
-<!-- =====================================================
-     SEARCH
-===================================================== -->
-
-<div
-    class="search-panel"
-    id="searchPanel"
->
-
-    <div class="search-box">
-
-        <input
-            type="search"
-            class="search-input"
-            id="searchInput"
-            placeholder="Search wallpapers, categories..."
+        <a
+            href="#"
+            class="brand"
+            aria-label="PIXORA Home"
         >
 
-        <button
-            class="clear-search"
-            id="clearSearch"
-        >
-            ×
-        </button>
+            <div class="brand-mark">
 
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     HERO
-===================================================== -->
-
-<section
-    class="hero"
-    id="home"
->
-
-    <div
-        class="slides"
-        id="slides"
-    >
-
-        <article
-            class="slide slide-1"
-            data-title="Midnight Aura"
-        >
-
-            <div class="slide-content">
-
-                <div class="slide-meta">
-
-                    <span class="tag">
-                        ABSTRACT
-                    </span>
-
-                    <span class="tag">
-                        4K
-                    </span>
-
-                </div>
-
-                <h1>
-                    Midnight Aura
-                </h1>
-
-                <p class="creator">
-                    Curated by PIXORA
-                </p>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
 
             </div>
 
-        </article>
+            PIXO<span>RA</span>
 
+        </a>
 
-        <article
-            class="slide slide-2"
-            data-title="Quiet Forest"
-        >
 
-            <div class="slide-content">
+        <div class="top-actions">
 
-                <div class="slide-meta">
+            <!-- DAY / NIGHT -->
 
-                    <span class="tag">
-                        NATURE
-                    </span>
+            <button
+                class="theme-switch"
+                id="themeToggle"
+                aria-label="Toggle day and night mode"
+            >
 
-                    <span class="tag">
-                        4K
-                    </span>
+                <span class="theme-sun">☀️</span>
 
-                </div>
+                <span class="theme-moon">🌙</span>
 
-                <h1>
-                    Quiet Forest
-                </h1>
+                <span class="theme-knob"></span>
 
-                <p class="creator">
-                    Curated by PIXORA
-                </p>
+            </button>
 
-            </div>
 
-        </article>
+            <!-- SEARCH -->
 
+            <button
+                class="search-trigger"
+                id="searchTrigger"
+                aria-label="Search"
+            >
+                🔍
+            </button>
 
-        <article
-            class="slide slide-3"
-            data-title="After Midnight"
-        >
-
-            <div class="slide-content">
-
-                <div class="slide-meta">
-
-                    <span class="tag">
-                        CARS
-                    </span>
-
-                    <span class="tag">
-                        2K
-                    </span>
-
-                </div>
-
-                <h1>
-                    After Midnight
-                </h1>
-
-                <p class="creator">
-                    Curated by PIXORA
-                </p>
-
-            </div>
-
-        </article>
-
-    </div>
-
-
-    <div class="dots">
-
-        <button class="dot active"></button>
-        <button class="dot"></button>
-        <button class="dot"></button>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     CATEGORIES
-===================================================== -->
-
-<section
-    class="section"
-    id="categories"
->
-
-    <div class="section-header">
-
-        <h2>
-            Explore
-        </h2>
-
-        <span>
-            24 categories
-        </span>
-
-    </div>
-
-
-    <div class="chips">
-
-        <button class="chip active" data-category="all">
-            🌐 All
-        </button>
-
-        <button class="chip" data-category="Gaming">
-            🎮 Gaming
-        </button>
-
-        <button class="chip" data-category="Anime">
-            🎌 Anime
-        </button>
-
-        <button class="chip" data-category="Cars">
-            🚗 Cars
-        </button>
-
-        <button class="chip" data-category="Sports">
-            ⚽ Sports
-        </button>
-
-        <button class="chip" data-category="Nature">
-            🌿 Nature
-        </button>
-
-        <button class="chip" data-category="Space">
-            🌌 Space
-        </button>
-
-        <button class="chip" data-category="Luxury">
-            💎 Luxury
-        </button>
-
-        <button class="chip" data-category="Technology">
-            👨‍💻 Technology
-        </button>
-
-        <button class="chip" data-category="Movies">
-            🎬 Movies & TV
-        </button>
-
-        <button class="chip" data-category="Music">
-            🎵 Music
-        </button>
-
-        <button class="chip" data-category="Dark">
-            🖤 Dark & AMOLED
-        </button>
-
-        <button class="chip" data-category="Aesthetic">
-            ✨ Aesthetic
-        </button>
-
-        <button class="chip" data-category="Art">
-            🎨 Art
-        </button>
-
-        <button class="chip" data-category="Horror">
-            👻 Horror
-        </button>
-
-        <button class="chip" data-category="Fantasy">
-            🧙 Fantasy
-        </button>
-
-        <button class="chip" data-category="Travel">
-            ✈️ Travel
-        </button>
-
-        <button class="chip" data-category="Fitness">
-            🏋️ Fitness
-        </button>
-
-        <button class="chip" data-category="Quotes">
-            💬 Quotes
-        </button>
-
-        <button class="chip" data-category="Animals">
-            🐾 Animals
-        </button>
-
-        <button class="chip" data-category="Cities">
-            🏙️ Cities
-        </button>
-
-        <button class="chip" data-category="Love">
-            ❤️ Love
-        </button>
-
-        <button class="chip" data-category="Retro">
-            🕹️ Retro
-        </button>
-
-        <button class="chip" data-category="Cute">
-            🧸 Cute & Fun
-        </button>
-
-        <button class="chip" data-category="Culture">
-            🌍 Culture
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     TRENDING
-===================================================== -->
-
-<section
-    class="section"
-    id="trending"
->
-
-    <div class="section-header">
-
-        <h2>
-            Trending
-        </h2>
-
-        <span>
-            Popular now
-        </span>
-
-    </div>
-
-
-    <div class="rail">
-
-        <article
-            class="rank-card trend-1"
-            data-title="Violet Dreams"
-            data-category="Aesthetic"
-            data-resolution="4K"
-        >
-
-            <span class="rank-number">
-                01
-            </span>
-
-            <span class="rank-title">
-                Violet Dreams
-            </span>
-
-        </article>
-
-
-        <article
-            class="rank-card trend-2"
-            data-title="Wild Calm"
-            data-category="Nature"
-            data-resolution="4K"
-        >
-
-            <span class="rank-number">
-                02
-            </span>
-
-            <span class="rank-title">
-                Wild Calm
-            </span>
-
-        </article>
-
-
-        <article
-            class="rank-card trend-3"
-            data-title="Redline"
-            data-category="Cars"
-            data-resolution="2K"
-        >
-
-            <span class="rank-number">
-                03
-            </span>
-
-            <span class="rank-title">
-                Redline
-            </span>
-
-        </article>
-
-
-        <article
-            class="rank-card trend-4"
-            data-title="Digital Night"
-            data-category="Technology"
-            data-resolution="4K"
-        >
-
-            <span class="rank-number">
-                04
-            </span>
-
-            <span class="rank-title">
-                Digital Night
-            </span>
-
-        </article>
-
-
-        <article
-            class="rank-card trend-5"
-            data-title="Golden Hour"
-            data-category="Nature"
-            data-resolution="4K"
-        >
-
-            <span class="rank-number">
-                05
-            </span>
-
-            <span class="rank-title">
-                Golden Hour
-            </span>
-
-        </article>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     FRESH DROPS
-===================================================== -->
-
-<section
-    class="section"
-    id="fresh"
->
-
-    <div class="section-header">
-
-        <h2>
-            Fresh drops
-        </h2>
-
-        <span id="resultsCount">
-            6 wallpapers
-        </span>
-
-    </div>
-
-
-    <div
-        class="masonry"
-        id="wallpaperGrid"
-    >
-
-
-        <!-- CARD 1 -->
-
-        <article
-            class="masonry-card"
-            data-title="Violet Dreams"
-            data-category="Aesthetic"
-            data-resolution="1440 × 2560"
-            data-creator="PIXORA"
-        >
-
-            <div class="masonry-image tall fresh-1">
-
-                <div class="card-overlay">
-
-                    <span class="resolution">
-                        1440 × 2560
-                    </span>
-
-                    <div class="card-actions">
-
-                        <button
-                            class="like"
-                            aria-label="Like"
-                        >
-                            ♡
-                        </button>
-
-                        <button
-                            class="download"
-                            aria-label="Download"
-                        >
-                            ↓
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- CARD 2 -->
-
-        <article
-            class="masonry-card"
-            data-title="Wild Calm"
-            data-category="Nature"
-            data-resolution="1080 × 1920"
-            data-creator="PIXORA"
-        >
-
-            <div class="masonry-image short fresh-2">
-
-                <div class="card-overlay">
-
-                    <span class="resolution">
-                        1080 × 1920
-                    </span>
-
-                    <div class="card-actions">
-
-                        <button class="like">
-                            ♡
-                        </button>
-
-                        <button class="download">
-                            ↓
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- CARD 3 -->
-
-        <article
-            class="masonry-card"
-            data-title="Redline"
-            data-category="Cars"
-            data-resolution="4K"
-            data-creator="PIXORA"
-        >
-
-            <div class="masonry-image medium fresh-3">
-
-                <div class="card-overlay">
-
-                    <span class="resolution">
-                        4K
-                    </span>
-
-                    <div class="card-actions">
-
-                        <button class="like">
-                            ♡
-                        </button>
-
-                        <button class="download">
-                            ↓
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- CARD 4 -->
-
-        <article
-            class="masonry-card"
-            data-title="Digital Night"
-            data-category="Technology"
-            data-resolution="1440 × 2560"
-            data-creator="PIXORA"
-        >
-
-            <div class="masonry-image tall fresh-4">
-
-                <div class="card-overlay">
-
-                    <span class="resolution">
-                        1440 × 2560
-                    </span>
-
-                    <div class="card-actions">
-
-                        <button class="like">
-                            ♡
-                        </button>
-
-                        <button class="download">
-                            ↓
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- CARD 5 -->
-
-        <article
-            class="masonry-card"
-            data-title="Purple Fantasy"
-            data-category="Fantasy"
-            data-resolution="2K"
-            data-creator="PIXORA"
-        >
-
-            <div class="masonry-image short fresh-5">
-
-                <div class="card-overlay">
-
-                    <span class="resolution">
-                        2K
-                    </span>
-
-                    <div class="card-actions">
-
-                        <button class="like">
-                            ♡
-                        </button>
-
-                        <button class="download">
-                            ↓
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- CARD 6 -->
-
-        <article
-            class="masonry-card"
-            data-title="Golden Hour"
-            data-category="Nature"
-            data-resolution="4K"
-            data-creator="PIXORA"
-        >
-
-            <div class="masonry-image medium fresh-6">
-
-                <div class="card-overlay">
-
-                    <span class="resolution">
-                        4K
-                    </span>
-
-                    <div class="card-actions">
-
-                        <button class="like">
-                            ♡
-                        </button>
-
-                        <button class="download">
-                            ↓
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </article>
-
-
-    </div>
-
-
-    <div
-        class="empty-state"
-        id="emptyState"
-    >
-
-        <div class="empty-icon">
-            🔎
         </div>
 
-        <h3>
-            No wallpapers found
-        </h3>
+    </header>
 
-        <p>
-            Try another search or category.
-        </p>
+
+
+    <!-- =========================
+         SEARCH
+    ========================= -->
+
+    <div
+        class="search-panel"
+        id="searchPanel"
+    >
+
+        <div class="search-box">
+
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Search wallpapers..."
+                autocomplete="off"
+            >
+
+            <button
+                class="clear-search"
+                id="clearSearch"
+            >
+                ×
+            </button>
+
+        </div>
 
     </div>
 
-</section>
 
 
-<!-- =====================================================
-     PREVIEW MODAL
-===================================================== -->
+    <main>
 
-<div
-    class="modal"
-    id="previewModal"
->
 
-    <div class="modal-content">
+        <!-- =========================
+             HERO
+        ========================= -->
 
-        <button
-            class="close-modal"
-            id="closeModal"
+        <section class="hero">
+
+            <div
+                class="hero-track"
+                id="heroTrack"
+            >
+
+                <article class="hero-slide">
+
+                    <div class="hero-art"></div>
+
+                    <div class="hero-content">
+
+                        <span class="eyebrow">
+                            PIXORA FEATURED
+                        </span>
+
+                        <h1>
+                            Your screen.
+                            Your mood.
+                        </h1>
+
+                        <p>
+                            Discover wallpapers designed
+                            to make every screen feel
+                            different.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="hero-slide">
+
+                    <div class="hero-art"></div>
+
+                    <div class="hero-content">
+
+                        <span class="eyebrow">
+                            CALM COLLECTION
+                        </span>
+
+                        <h1>
+                            Find your
+                            quiet space.
+                        </h1>
+
+                        <p>
+                            Soft visuals, peaceful
+                            colors and wallpapers
+                            made for a calmer screen.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="hero-slide">
+
+                    <div class="hero-art"></div>
+
+                    <div class="hero-content">
+
+                        <span class="eyebrow">
+                            PREMIUM VIBES
+                        </span>
+
+                        <h1>
+                            Make your
+                            screen stand out.
+                        </h1>
+
+                        <p>
+                            Explore bold, luxurious
+                            and futuristic wallpapers.
+                        </p>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <div
+                class="hero-dots"
+                id="heroDots"
+            >
+
+                <span
+                    class="hero-dot active"
+                    data-slide="0"
+                ></span>
+
+                <span
+                    class="hero-dot"
+                    data-slide="1"
+                ></span>
+
+                <span
+                    class="hero-dot"
+                    data-slide="2"
+                ></span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             CATEGORIES
+        ========================= -->
+
+        <section>
+
+            <div class="section-head">
+
+                <h2>
+                    Explore
+                </h2>
+
+                <small>
+                    Discover more
+                </small>
+
+            </div>
+
+
+            <div
+                class="categories"
+                id="categories"
+            >
+
+                <button
+                    class="category active"
+                    data-category="all"
+                >
+                    All
+                </button>
+
+                <button
+                    class="category"
+                    data-category="gaming"
+                >
+                    🎮 Gaming
+                </button>
+
+                <button
+                    class="category"
+                    data-category="anime"
+                >
+                    🌸 Anime
+                </button>
+
+                <button
+                    class="category"
+                    data-category="cars"
+                >
+                    🚘 Cars
+                </button>
+
+                <button
+                    class="category"
+                    data-category="sports"
+                >
+                    ⚽ Sports
+                </button>
+
+                <button
+                    class="category"
+                    data-category="nature"
+                >
+                    🌿 Nature
+                </button>
+
+                <button
+                    class="category"
+                    data-category="space"
+                >
+                    🚀 Space
+                </button>
+
+                <button
+                    class="category"
+                    data-category="luxury"
+                >
+                    💎 Luxury
+                </button>
+
+                <button
+                    class="category"
+                    data-category="technology"
+                >
+                    💻 Technology
+                </button>
+
+                <button
+                    class="category"
+                    data-category="movies"
+                >
+                    🎬 Movies
+                </button>
+
+                <button
+                    class="category"
+                    data-category="music"
+                >
+                    🎵 Music
+                </button>
+
+                <button
+                    class="category"
+                    data-category="amoled"
+                >
+                    🖤 AMOLED
+                </button>
+
+                <button
+                    class="category"
+                    data-category="aesthetic"
+                >
+                    ✨ Aesthetic
+                </button>
+
+                <button
+                    class="category"
+                    data-category="horror"
+                >
+                    👻 Horror
+                </button>
+
+                <button
+                    class="category"
+                    data-category="fantasy"
+                >
+                    🐉 Fantasy
+                </button>
+
+                <button
+                    class="category"
+                    data-category="travel"
+                >
+                    🌍 Travel
+                </button>
+
+                <button
+                    class="category"
+                    data-category="fitness"
+                >
+                    🏋️ Fitness
+                </button>
+
+                <button
+                    class="category"
+                    data-category="animals"
+                >
+                    🐺 Animals
+                </button>
+
+                <button
+                    class="category"
+                    data-category="cities"
+                >
+                    🌃 Cities
+                </button>
+
+                <button
+                    class="category"
+                    data-category="love"
+                >
+                    ❤️ Love
+                </button>
+
+                <button
+                    class="category"
+                    data-category="retro"
+                >
+                    📼 Retro
+                </button>
+
+                <button
+                    class="category"
+                    data-category="cute"
+                >
+                    🧸 Cute
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             TRENDING
+        ========================= -->
+
+        <section id="trendingSection">
+
+            <div class="section-head">
+
+                <h2>
+                    🔥 Trending
+                </h2>
+
+                <small>
+                    Popular now
+                </small>
+
+            </div>
+
+
+            <div class="trending">
+
+                <article
+                    class="trend-card"
+                    data-title="Neon Gaming"
+                    data-category="gaming"
+                >
+
+                    <div class="trend-art"></div>
+
+                    <div class="trend-number">
+                        01
+                    </div>
+
+                    <div class="trend-info">
+
+                        <h3>
+                            Neon Gaming
+                        </h3>
+
+                        <span>
+                            Gaming • 4K
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+                <article
+                    class="trend-card"
+                    data-title="Emerald Nature"
+                    data-category="nature"
+                >
+
+                    <div class="trend-art"></div>
+
+                    <div class="trend-number">
+                        02
+                    </div>
+
+                    <div class="trend-info">
+
+                        <h3>
+                            Emerald Nature
+                        </h3>
+
+                        <span>
+                            Nature • 4K
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+                <article
+                    class="trend-card"
+                    data-title="Golden Luxury"
+                    data-category="luxury"
+                >
+
+                    <div class="trend-art"></div>
+
+                    <div class="trend-number">
+                        03
+                    </div>
+
+                    <div class="trend-info">
+
+                        <h3>
+                            Golden Luxury
+                        </h3>
+
+                        <span>
+                            Luxury • 4K
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+                <article
+                    class="trend-card"
+                    data-title="Purple Dream"
+                    data-category="aesthetic"
+                >
+
+                    <div class="trend-art"></div>
+
+                    <div class="trend-number">
+                        04
+                    </div>
+
+                    <div class="trend-info">
+
+                        <h3>
+                            Purple Dream
+                        </h3>
+
+                        <span>
+                            Aesthetic • 4K
+                        </span>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             FRESH DROPS
+        ========================= -->
+
+        <section id="newSection">
+
+            <div class="section-head">
+
+                <h2>
+                    ✨ Fresh Drops
+                </h2>
+
+                <small>
+                    New wallpapers
+                </small>
+
+            </div>
+
+
+            <div
+                class="wallpaper-grid"
+                id="wallpaperGrid"
+            >
+
+
+                <!-- CARD 1 -->
+
+                <article
+                    class="wallpaper-card"
+                    data-title="Cyber City"
+                    data-category="technology"
+                    data-resolution="1440 × 2560"
+                >
+
+                    <div class="wallpaper-art"></div>
+
+                    <div class="wallpaper-overlay">
+
+                        <div class="wallpaper-info">
+
+                            <div>
+
+                                <h3>
+                                    Cyber City
+                                </h3>
+
+                                <p>
+                                    Technology • 1440×2560
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-actions">
+
+                                <button
+                                    class="card-btn like-btn"
+                                    aria-label="Like"
+                                >
+                                    ♡
+                                </button>
+
+                                <button
+                                    class="card-btn preview-btn"
+                                    aria-label="Preview"
+                                >
+                                    👁
+                                </button>
+
+                                <button
+                                    class="card-btn download-btn"
+                                    aria-label="Download"
+                                >
+                                    ↓
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- CARD 2 -->
+
+                <article
+                    class="wallpaper-card"
+                    data-title="Forest Mist"
+                    data-category="nature"
+                    data-resolution="1440 × 2560"
+                >
+
+                    <div class="wallpaper-art"></div>
+
+                    <div class="wallpaper-overlay">
+
+                        <div class="wallpaper-info">
+
+                            <div>
+
+                                <h3>
+                                    Forest Mist
+                                </h3>
+
+                                <p>
+                                    Nature • 1440×2560
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-actions">
+
+                                <button
+                                    class="card-btn like-btn"
+                                >
+                                    ♡
+                                </button>
+
+                                <button
+                                    class="card-btn preview-btn"
+                                >
+                                    👁
+                                </button>
+
+                                <button
+                                    class="card-btn download-btn"
+                                >
+                                    ↓
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- CARD 3 -->
+
+                <article
+                    class="wallpaper-card"
+                    data-title="Midnight Supercar"
+                    data-category="cars"
+                    data-resolution="1440 × 2560"
+                >
+
+                    <div class="wallpaper-art"></div>
+
+                    <div class="wallpaper-overlay">
+
+                        <div class="wallpaper-info">
+
+                            <div>
+
+                                <h3>
+                                    Midnight Supercar
+                                </h3>
+
+                                <p>
+                                    Cars • 1440×2560
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-actions">
+
+                                <button
+                                    class="card-btn like-btn"
+                                >
+                                    ♡
+                                </button>
+
+                                <button
+                                    class="card-btn preview-btn"
+                                >
+                                    👁
+                                </button>
+
+                                <button
+                                    class="card-btn download-btn"
+                                >
+                                    ↓
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- CARD 4 -->
+
+                <article
+                    class="wallpaper-card"
+                    data-title="Deep Space"
+                    data-category="space"
+                    data-resolution="1440 × 2560"
+                >
+
+                    <div class="wallpaper-art"></div>
+
+                    <div class="wallpaper-overlay">
+
+                        <div class="wallpaper-info">
+
+                            <div>
+
+                                <h3>
+                                    Deep Space
+                                </h3>
+
+                                <p>
+                                    Space • 1440×2560
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-actions">
+
+                                <button
+                                    class="card-btn like-btn"
+                                >
+                                    ♡
+                                </button>
+
+                                <button
+                                    class="card-btn preview-btn"
+                                >
+                                    👁
+                                </button>
+
+                                <button
+                                    class="card-btn download-btn"
+                                >
+                                    ↓
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- CARD 5 -->
+
+                <article
+                    class="wallpaper-card"
+                    data-title="Dark Samurai"
+                    data-category="anime"
+                    data-resolution="1440 × 2560"
+                >
+
+                    <div class="wallpaper-art"></div>
+
+                    <div class="wallpaper-overlay">
+
+                        <div class="wallpaper-info">
+
+                            <div>
+
+                                <h3>
+                                    Dark Samurai
+                                </h3>
+
+                                <p>
+                                    Anime • 1440×2560
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-actions">
+
+                                <button
+                                    class="card-btn like-btn"
+                                >
+                                    ♡
+                                </button>
+
+                                <button
+                                    class="card-btn preview-btn"
+                                >
+                                    👁
+                                </button>
+
+                                <button
+                                    class="card-btn download-btn"
+                                >
+                                    ↓
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- CARD 6 -->
+
+                <article
+                    class="wallpaper-card"
+                    data-title="AMOLED Void"
+                    data-category="amoled"
+                    data-resolution="1440 × 2560"
+                >
+
+                    <div class="wallpaper-art"></div>
+
+                    <div class="wallpaper-overlay">
+
+                        <div class="wallpaper-info">
+
+                            <div>
+
+                                <h3>
+                                    AMOLED Void
+                                </h3>
+
+                                <p>
+                                    AMOLED • 1440×2560
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-actions">
+
+                                <button
+                                    class="card-btn like-btn"
+                                >
+                                    ♡
+                                </button>
+
+                                <button
+                                    class="card-btn preview-btn"
+                                >
+                                    👁
+                                </button>
+
+                                <button
+                                    class="card-btn download-btn"
+                                >
+                                    ↓
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- CARD 7 -->
+
+                <article
+                    class="wallpaper-card"
+                    data-title="Purple Dream"
+                    data-category="aesthetic"
+                    data-resolution="1440 × 2560"
+                >
+
+                    <div class="wallpaper-art"></div>
+
+                    <div class="wallpaper-overlay">
+
+                        <div class="wallpaper-info">
+
+                            <div>
+
+                                <h3>
+                                    Purple Dream
+                                </h3>
+
+                                <p>
+                                    Aesthetic • 1440×2560
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-actions">
+
+                                <button
+                                    class="card-btn like-btn"
+                                >
+                                    ♡
+                                </button>
+
+                                <button
+                                    class="card-btn preview-btn"
+                                >
+                                    👁
+                                </button>
+
+                                <button
+                                    class="card-btn download-btn"
+                                >
+                                    ↓
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- CARD 8 -->
+
+                <article
+                    class="wallpaper-card"
+                    data-title="Luxury Gold"
+                    data-category="luxury"
+                    data-resolution="1440 × 2560"
+                >
+
+                    <div class="wallpaper-art"></div>
+
+                    <div class="wallpaper-overlay">
+
+                        <div class="wallpaper-info">
+
+                            <div>
+
+                                <h3>
+                                    Luxury Gold
+                                </h3>
+
+                                <p>
+                                    Luxury • 1440×2560
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-actions">
+
+                                <button
+                                    class="card-btn like-btn"
+                                >
+                                    ♡
+                                </button>
+
+                                <button
+                                    class="card-btn preview-btn"
+                                >
+                                    👁
+                                </button>
+
+                                <button
+                                    class="card-btn download-btn"
+                                >
+                                    ↓
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- CARD 9 -->
+
+                <article
+                    class="wallpaper-card"
+                    data-title="Neon Racing"
+                    data-category="gaming"
+                    data-resolution="1440 × 2560"
+                >
+
+                    <div class="wallpaper-art"></div>
+
+                    <div class="wallpaper-overlay">
+
+                        <div class="wallpaper-info">
+
+                            <div>
+
+                                <h3>
+                                    Neon Racing
+                                </h3>
+
+                                <p>
+                                    Gaming • 1440×2560
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-actions">
+
+                                <button
+                                    class="card-btn like-btn"
+                                >
+                                    ♡
+                                </button>
+
+                                <button
+                                    class="card-btn preview-btn"
+                                >
+                                    👁
+                                </button>
+
+                                <button
+                                    class="card-btn download-btn"
+                                >
+                                    ↓
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- CARD 10 -->
+
+                <article
+                    class="wallpaper-card"
+                    data-title="Ocean Blue"
+                    data-category="nature"
+                    data-resolution="1440 × 2560"
+                >
+
+                    <div class="wallpaper-art"></div>
+
+                    <div class="wallpaper-overlay">
+
+                        <div class="wallpaper-info">
+
+                            <div>
+
+                                <h3>
+                                    Ocean Blue
+                                </h3>
+
+                                <p>
+                                    Nature • 1440×2560
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-actions">
+
+                                <button
+                                    class="card-btn like-btn"
+                                >
+                                    ♡
+                                </button>
+
+                                <button
+                                    class="card-btn preview-btn"
+                                >
+                                    👁
+                                </button>
+
+                                <button
+                                    class="card-btn download-btn"
+                                >
+                                    ↓
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- CARD 11 -->
+
+                <article
+                    class="wallpaper-card"
+                    data-title="Future Interface"
+                    data-category="technology"
+                    data-resolution="1440 × 2560"
+                >
+
+                    <div class="wallpaper-art"></div>
+
+                    <div class="wallpaper-overlay">
+
+                        <div class="wallpaper-info">
+
+                            <div>
+
+                                <h3>
+                                    Future Interface
+                                </h3>
+
+                                <p>
+                                    Technology • 1440×2560
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-actions">
+
+                                <button
+                                    class="card-btn like-btn"
+                                >
+                                    ♡
+                                </button>
+
+                                <button
+                                    class="card-btn preview-btn"
+                                >
+                                    👁
+                                </button>
+
+                                <button
+                                    class="card-btn download-btn"
+                                >
+                                    ↓
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- CARD 12 -->
+
+                <article
+                    class="wallpaper-card"
+                    data-title="Moonlight"
+                    data-category="space"
+                    data-resolution="1440 × 2560"
+                >
+
+                    <div class="wallpaper-art"></div>
+
+                    <div class="wallpaper-overlay">
+
+                        <div class="wallpaper-info">
+
+                            <div>
+
+                                <h3>
+                                    Moonlight
+                                </h3>
+
+                                <p>
+                                    Space • 1440×2560
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-actions">
+
+                                <button
+                                    class="card-btn like-btn"
+                                >
+                                    ♡
+                                </button>
+
+                                <button
+                                    class="card-btn preview-btn"
+                                >
+                                    👁
+                                </button>
+
+                                <button
+                                    class="card-btn download-btn"
+                                >
+                                    ↓
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+
+            <div
+                class="empty-state"
+                id="emptyState"
+            >
+
+                <strong>
+                    Nothing found
+                </strong>
+
+                Try another search or category.
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================
+         RANDOM BUTTON
+    ========================= -->
+
+    <button
+        class="random-btn"
+        id="randomBtn"
+        aria-label="Random wallpaper"
+    >
+        🎲
+    </button>
+
+
+
+    <!-- =========================
+         BOTTOM NAVIGATION
+    ========================= -->
+
+    <nav class="bottom-nav">
+
+        <div
+            class="nav-item active"
+            data-target="home"
         >
-            ×
-        </button>
+
+            <span>⌂</span>
+            <span>Home</span>
+
+        </div>
 
 
         <div
-            class="modal-image"
-            id="modalImage"
-        ></div>
+            class="nav-item"
+            data-target="trending"
+        >
+
+            <span>🔥</span>
+            <span>Trending</span>
+
+        </div>
 
 
-        <div class="modal-info">
+        <div
+            class="nav-item"
+            data-target="new"
+        >
+
+            <span>✨</span>
+            <span>New</span>
+
+        </div>
+
+
+        <div
+            class="nav-item"
+            data-target="categories"
+        >
+
+            <span>◉</span>
+            <span>Categories</span>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         PREVIEW MODAL
+    ========================= -->
+
+    <div
+        class="modal"
+        id="previewModal"
+    >
+
+        <div class="modal-content">
+
+            <button
+                class="modal-close"
+                id="modalClose"
+            >
+                ×
+            </button>
+
 
             <div
-                class="modal-category"
-                id="modalCategory"
-            >
-                AESTHETIC
-            </div>
-
-            <h2
-                class="modal-title"
-                id="modalTitle"
-            >
-                Violet Dreams
-            </h2>
-
-            <p
-                class="modal-meta"
-                id="modalMeta"
-            >
-                1440 × 2560 • Curated by PIXORA
-            </p>
+                class="modal-art"
+                id="modalArt"
+            ></div>
 
 
-            <div class="modal-actions">
+            <div class="modal-bottom">
 
-                <button
-                    class="modal-button"
-                    id="modalLike"
-                >
-                    ♡ Like
-                </button>
+                <div>
 
-                <button
-                    class="modal-button primary"
-                    id="modalDownload"
-                >
-                    ↓ Download
-                </button>
+                    <h3 id="modalTitle">
+                        Wallpaper
+                    </h3>
+
+                    <p id="modalDetails">
+                        1440 × 2560
+                    </p>
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        class="modal-btn"
+                        id="modalLike"
+                    >
+                        ♡ Like
+                    </button>
+
+                    <button
+                        class="modal-btn primary"
+                        id="modalDownload"
+                    >
+                        ↓ Download
+                    </button>
+
+                </div>
 
             </div>
 
@@ -2233,183 +3089,171 @@
 
     </div>
 
-</div>
 
 
-<!-- =====================================================
-     BOTTOM NAV
-===================================================== -->
+    <script>
 
-<nav class="bottom-nav">
+        /* =========================
+           THEME
+        ========================= */
 
-    <button
-        class="tab active"
-        data-target="home"
-    >
-
-        <span class="tab-icon">
-            ⌂
-        </span>
-
-        Home
-
-    </button>
+        const themeToggle =
+            document.getElementById("themeToggle");
 
 
-    <button
-        class="tab"
-        data-target="trending"
-    >
+        function updateThemeMeta() {
 
-        <span class="tab-icon">
-            🔥
-        </span>
-
-        Trending
-
-    </button>
-
-
-    <button
-        class="tab"
-        data-target="fresh"
-    >
-
-        <span class="tab-icon">
-            ✦
-        </span>
-
-        New
-
-    </button>
-
-
-    <button
-        class="tab"
-        data-target="categories"
-    >
-
-        <span class="tab-icon">
-            ▦
-        </span>
-
-        Categories
-
-    </button>
-
-
-    <button
-        class="tab"
-        id="randomButton"
-    >
-
-        <span class="tab-icon">
-            ⌘
-        </span>
-
-        Random
-
-    </button>
-
-</nav>
-
-
-<script>
-
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
-
-    const searchButton =
-        document.getElementById("searchButton");
-
-    const searchPanel =
-        document.getElementById("searchPanel");
-
-    const searchInput =
-        document.getElementById("searchInput");
-
-    const clearSearch =
-        document.getElementById("clearSearch");
-
-    const themeButton =
-        document.getElementById("themeButton");
-
-    const wallpaperCards =
-        document.querySelectorAll(".masonry-card");
-
-    const chips =
-        document.querySelectorAll(".chip");
-
-    const resultsCount =
-        document.getElementById("resultsCount");
-
-    const emptyState =
-        document.getElementById("emptyState");
-
-
-    /* =====================================================
-       SEARCH PANEL
-    ===================================================== */
-
-    searchButton.addEventListener(
-        "click",
-        () => {
-
-            searchPanel.classList.toggle(
-                "open"
-            );
-
-            if (
-                searchPanel.classList.contains(
-                    "open"
-                )
-            ) {
-
-                setTimeout(
-                    () => searchInput.focus(),
-                    250
+            const meta =
+                document.querySelector(
+                    'meta[name="theme-color"]'
                 );
 
+            if (!meta) return;
+
+            meta.setAttribute(
+                "content",
+                document.body.classList.contains("light")
+                    ? "#f4f5f8"
+                    : "#0b0b10"
+            );
+        }
+
+
+        themeToggle.addEventListener(
+            "click",
+            () => {
+
+                document.body.classList.toggle("light");
+
+                const theme =
+                    document.body.classList.contains("light")
+                        ? "light"
+                        : "dark";
+
+                localStorage.setItem(
+                    "pixoraTheme",
+                    theme
+                );
+
+                updateThemeMeta();
+
             }
+        );
+
+
+        if (
+            localStorage.getItem("pixoraTheme")
+            === "light"
+        ) {
+
+            document.body.classList.add("light");
 
         }
-    );
 
 
-    clearSearch.addEventListener(
-        "click",
-        () => {
-
-            searchInput.value = "";
-
-            filterWallpapers();
-
-            searchInput.focus();
-
-        }
-    );
+        updateThemeMeta();
 
 
-    /* =====================================================
-       SEARCH + CATEGORY FILTER
-    ===================================================== */
 
-    let selectedCategory = "all";
+        /* =========================
+           SEARCH PANEL
+        ========================= */
+
+        const searchTrigger =
+            document.getElementById(
+                "searchTrigger"
+            );
+
+        const searchPanel =
+            document.getElementById(
+                "searchPanel"
+            );
+
+        const searchInput =
+            document.getElementById(
+                "searchInput"
+            );
+
+        const clearSearch =
+            document.getElementById(
+                "clearSearch"
+            );
 
 
-    function filterWallpapers() {
+        searchTrigger.addEventListener(
+            "click",
+            () => {
 
-        const search =
-            searchInput.value
-                .toLowerCase()
-                .trim();
+                searchPanel.classList.toggle(
+                    "active"
+                );
 
-        let visible = 0;
+                if (
+                    searchPanel.classList.contains(
+                        "active"
+                    )
+                ) {
+
+                    setTimeout(
+                        () =>
+                            searchInput.focus(),
+                        300
+                    );
+
+                }
+
+            }
+        );
 
 
-        wallpaperCards.forEach(
-            card => {
+        clearSearch.addEventListener(
+            "click",
+            () => {
+
+                searchInput.value = "";
+
+                filterWallpapers();
+
+                searchInput.focus();
+
+            }
+        );
+
+
+
+        /* =========================
+           WALLPAPER FILTER
+        ========================= */
+
+        const cards =
+            document.querySelectorAll(
+                ".wallpaper-card"
+            );
+
+        const categories =
+            document.querySelectorAll(
+                ".category"
+            );
+
+        const emptyState =
+            document.getElementById(
+                "emptyState"
+            );
+
+        let activeCategory = "all";
+
+
+        function filterWallpapers() {
+
+            const query =
+                searchInput.value
+                    .trim()
+                    .toLowerCase();
+
+            let visible = 0;
+
+
+            cards.forEach(card => {
 
                 const title =
                     card.dataset.title
@@ -2421,63 +3265,60 @@
 
 
                 const matchesSearch =
-                    title.includes(search) ||
-                    category.includes(search);
+                    !query ||
+                    title.includes(query) ||
+                    category.includes(query);
 
 
                 const matchesCategory =
-                    selectedCategory === "all" ||
-                    card.dataset.category ===
-                    selectedCategory;
+                    activeCategory === "all" ||
+                    category === activeCategory;
 
 
-                const show =
+                if (
                     matchesSearch &&
-                    matchesCategory;
+                    matchesCategory
+                ) {
 
+                    card.style.display = "";
 
-                card.style.display =
-                    show ? "" : "none";
-
-
-                if (show) {
                     visible++;
+
+                } else {
+
+                    card.style.display = "none";
+
                 }
 
-            }
+            });
+
+
+            emptyState.classList.toggle(
+                "show",
+                visible === 0
+            );
+
+        }
+
+
+        searchInput.addEventListener(
+            "input",
+            filterWallpapers
         );
 
 
-        resultsCount.textContent =
-            `${visible} wallpaper${visible === 1 ? "" : "s"}`;
 
+        /* =========================
+           CATEGORIES
+        ========================= */
 
-        emptyState.classList.toggle(
-            "show",
-            visible === 0
-        );
+        categories.forEach(button => {
 
-    }
-
-
-    searchInput.addEventListener(
-        "input",
-        filterWallpapers
-    );
-
-
-    /* =====================================================
-       CATEGORY FILTER
-    ===================================================== */
-
-    chips.forEach(
-        chip => {
-
-            chip.addEventListener(
+            button.addEventListener(
                 "click",
                 () => {
 
-                    chips.forEach(
+                    categories.forEach(
                         item =>
                             item.classList.remove(
                                 "active"
@@ -2485,408 +3326,50 @@
                     );
 
 
-                    chip.classList.add(
+                    button.classList.add(
                         "active"
                     );
 
 
-                    selectedCategory =
-                        chip.dataset.category;
+                    activeCategory =
+                        button.dataset.category;
 
 
                     filterWallpapers();
 
-
-                    document
-                        .getElementById("fresh")
-                        .scrollIntoView({
-                            behavior: "smooth"
-                        });
-
                 }
             );
 
-        }
-    );
+        });
 
 
-    /* =====================================================
-       WALLPAPER PREVIEW
-    ===================================================== */
 
-    const previewModal =
-        document.getElementById(
-            "previewModal"
-        );
+        /* =========================
+           HERO CAROUSEL
+        ========================= */
 
-    const modalImage =
-        document.getElementById(
-            "modalImage"
-        );
-
-    const modalTitle =
-        document.getElementById(
-            "modalTitle"
-        );
-
-    const modalCategory =
-        document.getElementById(
-            "modalCategory"
-        );
-
-    const modalMeta =
-        document.getElementById(
-            "modalMeta"
-        );
-
-    const closeModal =
-        document.getElementById(
-            "closeModal"
-        );
-
-    const modalLike =
-        document.getElementById(
-            "modalLike"
-        );
-
-    const modalDownload =
-        document.getElementById(
-            "modalDownload"
-        );
-
-
-    let currentCard = null;
-
-
-    wallpaperCards.forEach(
-        card => {
-
-            card.addEventListener(
-                "click",
-                event => {
-
-                    if (
-                        event.target.closest(
-                            ".card-actions"
-                        )
-                    ) {
-                        return;
-                    }
-
-
-                    openPreview(card);
-
-                }
+        const heroTrack =
+            document.getElementById(
+                "heroTrack"
             );
 
-        }
-    );
-
-
-    function openPreview(card) {
-
-        currentCard = card;
-
-
-        modalTitle.textContent =
-            card.dataset.title;
-
-
-        modalCategory.textContent =
-            card.dataset.category
-                .toUpperCase();
-
-
-        modalMeta.textContent =
-            `${card.dataset.resolution} • Curated by ${card.dataset.creator}`;
-
-
-        const image =
-            card.querySelector(
-                ".masonry-image"
+        const heroDots =
+            document.querySelectorAll(
+                ".hero-dot"
             );
 
+        let currentSlide = 0;
 
-        modalImage.style.background =
-            getComputedStyle(
-                image
-            ).background;
 
+        function showSlide(index) {
 
-        modalLike.innerHTML =
-            card.querySelector(
-                ".like"
-            ).classList.contains("liked")
-                ? "♥ Liked"
-                : "♡ Like";
+            currentSlide = index;
 
+            heroTrack.style.transform =
+                `translateX(-${index * 100}%)`;
 
-        previewModal.classList.add(
-            "open"
-        );
 
-
-        document.body.style.overflow =
-            "hidden";
-
-    }
-
-
-    function closePreview() {
-
-        previewModal.classList.remove(
-            "open"
-        );
-
-        document.body.style.overflow =
-            "";
-
-    }
-
-
-    closeModal.addEventListener(
-        "click",
-        closePreview
-    );
-
-
-    previewModal.addEventListener(
-        "click",
-        event => {
-
-            if (
-                event.target ===
-                previewModal
-            ) {
-
-                closePreview();
-
-            }
-
-        }
-    );
-
-
-    document.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "Escape"
-            ) {
-
-                closePreview();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       LIKE SYSTEM
-    ===================================================== */
-
-    const savedLikes =
-        JSON.parse(
-            localStorage.getItem(
-                "pixoraLikes"
-            ) || "{}"
-        );
-
-
-    wallpaperCards.forEach(
-        card => {
-
-            const title =
-                card.dataset.title;
-
-            const like =
-                card.querySelector(
-                    ".like"
-                );
-
-
-            if (savedLikes[title]) {
-
-                like.classList.add(
-                    "liked"
-                );
-
-                like.textContent =
-                    "♥";
-
-            }
-
-
-            like.addEventListener(
-                "click",
-                event => {
-
-                    event.stopPropagation();
-
-
-                    const liked =
-                        like.classList.toggle(
-                            "liked"
-                        );
-
-
-                    like.textContent =
-                        liked
-                            ? "♥"
-                            : "♡";
-
-
-                    savedLikes[title] =
-                        liked;
-
-
-                    localStorage.setItem(
-                        "pixoraLikes",
-                        JSON.stringify(
-                            savedLikes
-                        )
-                    );
-
-
-                    if (
-                        currentCard === card
-                    ) {
-
-                        modalLike.innerHTML =
-                            liked
-                                ? "♥ Liked"
-                                : "♡ Like";
-
-                    }
-
-                }
-            );
-
-        }
-    );
-
-
-    /* =====================================================
-       MODAL LIKE
-    ===================================================== */
-
-    modalLike.addEventListener(
-        "click",
-        () => {
-
-            if (!currentCard) {
-                return;
-            }
-
-
-            const like =
-                currentCard.querySelector(
-                    ".like"
-                );
-
-
-            like.click();
-
-        }
-    );
-
-
-    /* =====================================================
-       DOWNLOAD SYSTEM
-    ===================================================== */
-
-    document
-        .querySelectorAll(".download")
-        .forEach(
-            button => {
-
-                button.addEventListener(
-                    "click",
-                    event => {
-
-                        event.stopPropagation();
-
-
-                        const card =
-                            button.closest(
-                                ".masonry-card"
-                            );
-
-
-                        downloadWallpaper(
-                            card
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-
-    modalDownload.addEventListener(
-        "click",
-        () => {
-
-            if (currentCard) {
-
-                downloadWallpaper(
-                    currentCard
-                );
-
-            }
-
-        }
-    );
-
-
-    function downloadWallpaper(card) {
-
-        /*
-            REAL DOWNLOAD:
-
-            When you add actual image URLs,
-            we will replace this function
-            with the real download code.
-        */
-
-
-        alert(
-            `Download ready for "${card.dataset.title}".\n\nAdd the real wallpaper file and PIXORA will download it here.`
-        );
-
-    }
-
-
-    /* =====================================================
-       HERO CAROUSEL
-    ===================================================== */
-
-    const slides =
-        document.getElementById(
-            "slides"
-        );
-
-    const dots =
-        document.querySelectorAll(
-            ".dot"
-        );
-
-
-    slides.addEventListener(
-        "scroll",
-        () => {
-
-            const index =
-                Math.round(
-                    slides.scrollLeft /
-                    slides.clientWidth
-                );
-
-
-            dots.forEach(
+            heroDots.forEach(
                 (dot, i) => {
 
                     dot.classList.toggle(
@@ -2898,219 +3381,564 @@
             );
 
         }
-    );
 
 
-    dots.forEach(
-        (dot, index) => {
+        heroDots.forEach(dot => {
 
             dot.addEventListener(
                 "click",
                 () => {
 
-                    slides.scrollTo({
-                        left:
-                            index *
-                            slides.clientWidth,
-
-                        behavior:
-                            "smooth"
-                    });
+                    showSlide(
+                        Number(
+                            dot.dataset.slide
+                        )
+                    );
 
                 }
             );
 
-        }
-    );
+        });
 
 
-    /* =====================================================
-       AUTO HERO SLIDES
-    ===================================================== */
+        setInterval(
+            () => {
 
-    let heroIndex = 0;
+                currentSlide =
+                    (currentSlide + 1) % 3;
 
+                showSlide(currentSlide);
 
-    setInterval(
-        () => {
-
-            heroIndex++;
-
-            if (heroIndex >= 3) {
-                heroIndex = 0;
-            }
+            },
+            6000
+        );
 
 
-            slides.scrollTo({
-                left:
-                    heroIndex *
-                    slides.clientWidth,
 
-                behavior:
-                    "smooth"
+        /* =========================
+           LIKE SYSTEM
+        ========================= */
+
+        let likedWallpapers =
+            JSON.parse(
+                localStorage.getItem(
+                    "pixoraLikes"
+                ) || "[]"
+            );
+
+
+        function refreshLikes() {
+
+            cards.forEach(card => {
+
+                const title =
+                    card.dataset.title;
+
+                const button =
+                    card.querySelector(
+                        ".like-btn"
+                    );
+
+                if (
+                    likedWallpapers.includes(
+                        title
+                    )
+                ) {
+
+                    button.classList.add(
+                        "liked"
+                    );
+
+                    button.textContent = "♥";
+
+                } else {
+
+                    button.classList.remove(
+                        "liked"
+                    );
+
+                    button.textContent = "♡";
+
+                }
+
             });
 
-        },
-        6000
-    );
+        }
 
 
-    /* =====================================================
-       TRENDING CARD PREVIEW
-    ===================================================== */
+        cards.forEach(card => {
 
-    document
-        .querySelectorAll(".rank-card")
-        .forEach(
-            card => {
-
-                card.addEventListener(
-                    "click",
-                    () => {
-
-                        const matchingCard =
-                            [...wallpaperCards]
-                                .find(
-                                    item =>
-                                        item.dataset.title ===
-                                        card.dataset.title
-                                );
+            const likeButton =
+                card.querySelector(
+                    ".like-btn"
+                );
 
 
-                        if (
-                            matchingCard
-                        ) {
+            likeButton.addEventListener(
+                "click",
+                event => {
 
-                            openPreview(
-                                matchingCard
+                    event.stopPropagation();
+
+                    const title =
+                        card.dataset.title;
+
+
+                    if (
+                        likedWallpapers.includes(
+                            title
+                        )
+                    ) {
+
+                        likedWallpapers =
+                            likedWallpapers.filter(
+                                item =>
+                                    item !== title
                             );
 
-                        } else {
+                    } else {
 
-                            modalTitle.textContent =
-                                card.dataset.title;
-
-                            modalCategory.textContent =
-                                card.dataset.category
-                                    .toUpperCase();
-
-                            modalMeta.textContent =
-                                `${card.dataset.resolution} • Curated by PIXORA`;
-
-                            modalImage.style.background =
-                                getComputedStyle(
-                                    card
-                                ).background;
-
-                            previewModal.classList.add(
-                                "open"
-                            );
-
-                            document.body.style.overflow =
-                                "hidden";
-
-                        }
+                        likedWallpapers.push(
+                            title
+                        );
 
                     }
-                );
-
-            }
-        );
 
 
-    /* =====================================================
-       DAY / NIGHT MODE
-    ===================================================== */
-
-    const savedTheme =
-        localStorage.getItem(
-            "pixoraTheme"
-        );
+                    localStorage.setItem(
+                        "pixoraLikes",
+                        JSON.stringify(
+                            likedWallpapers
+                        )
+                    );
 
 
-    if (
-        savedTheme === "light"
-    ) {
+                    refreshLikes();
 
-        document.body.classList.add(
-            "light"
-        );
-
-        themeButton.textContent =
-            "🌙";
-
-    }
-
-
-    themeButton.addEventListener(
-        "click",
-        () => {
-
-            document.body.classList.toggle(
-                "light"
+                }
             );
 
+        });
 
-            const light =
-                document.body.classList.contains(
-                    "light"
+
+        refreshLikes();
+
+
+
+        /* =========================
+           PREVIEW MODAL
+        ========================= */
+
+        const modal =
+            document.getElementById(
+                "previewModal"
+            );
+
+        const modalClose =
+            document.getElementById(
+                "modalClose"
+            );
+
+        const modalTitle =
+            document.getElementById(
+                "modalTitle"
+            );
+
+        const modalDetails =
+            document.getElementById(
+                "modalDetails"
+            );
+
+        const modalArt =
+            document.getElementById(
+                "modalArt"
+            );
+
+        const modalLike =
+            document.getElementById(
+                "modalLike"
+            );
+
+        const modalDownload =
+            document.getElementById(
+                "modalDownload"
+            );
+
+        let selectedCard = null;
+
+
+
+        function openPreview(card) {
+
+            selectedCard = card;
+
+            modalTitle.textContent =
+                card.dataset.title;
+
+            modalDetails.textContent =
+                `${card.dataset.category}
+                •
+                ${card.dataset.resolution}`;
+
+
+            const originalArt =
+                card.querySelector(
+                    ".wallpaper-art"
                 );
 
 
-            themeButton.textContent =
-                light
-                    ? "🌙"
-                    : "☀️";
+            modalArt.style.background =
+                getComputedStyle(
+                    originalArt
+                ).background;
 
 
-            localStorage.setItem(
-                "pixoraTheme",
-                light
-                    ? "light"
-                    : "dark"
+            updateModalLike();
+
+
+            modal.classList.add(
+                "active"
             );
 
         }
-    );
 
 
-    /* =====================================================
-       BOTTOM NAVIGATION
-    ===================================================== */
 
-    const tabs =
-        document.querySelectorAll(
-            ".tab"
-        );
+        function updateModalLike() {
+
+            if (!selectedCard)
+                return;
 
 
-    tabs.forEach(
-        tab => {
+            const liked =
+                likedWallpapers.includes(
+                    selectedCard.dataset.title
+                );
 
-            tab.addEventListener(
+
+            modalLike.textContent =
+                liked
+                    ? "♥ Liked"
+                    : "♡ Like";
+
+        }
+
+
+
+        cards.forEach(card => {
+
+            const previewButton =
+                card.querySelector(
+                    ".preview-btn"
+                );
+
+
+            previewButton.addEventListener(
+                "click",
+                event => {
+
+                    event.stopPropagation();
+
+                    openPreview(card);
+
+                }
+            );
+
+
+            card.addEventListener(
                 "click",
                 () => {
 
-                    tabs.forEach(
-                        item =>
-                            item.classList.remove(
+                    openPreview(card);
+
+                }
+            );
+
+        });
+
+
+
+        modalClose.addEventListener(
+            "click",
+            () => {
+
+                modal.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+        modal.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target === modal
+                ) {
+
+                    modal.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    modal.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+
+
+        /* =========================
+           MODAL LIKE
+        ========================= */
+
+        modalLike.addEventListener(
+            "click",
+            () => {
+
+                if (!selectedCard)
+                    return;
+
+
+                const title =
+                    selectedCard.dataset.title;
+
+
+                if (
+                    likedWallpapers.includes(
+                        title
+                    )
+                ) {
+
+                    likedWallpapers =
+                        likedWallpapers.filter(
+                            item =>
+                                item !== title
+                        );
+
+                } else {
+
+                    likedWallpapers.push(
+                        title
+                    );
+
+                }
+
+
+                localStorage.setItem(
+                    "pixoraLikes",
+                    JSON.stringify(
+                        likedWallpapers
+                    )
+                );
+
+
+                refreshLikes();
+
+                updateModalLike();
+
+            }
+        );
+
+
+
+        /* =========================
+           DOWNLOAD
+        ========================= */
+
+        function downloadWallpaper(card) {
+
+            alert(
+                `Download ready for "${card.dataset.title}".\n\nAdd the real wallpaper file and PIXORA will download it here.`
+            );
+
+        }
+
+
+        cards.forEach(card => {
+
+            const button =
+                card.querySelector(
+                    ".download-btn"
+                );
+
+
+            button.addEventListener(
+                "click",
+                event => {
+
+                    event.stopPropagation();
+
+                    downloadWallpaper(card);
+
+                }
+            );
+
+        });
+
+
+        modalDownload.addEventListener(
+            "click",
+            () => {
+
+                if (selectedCard) {
+
+                    downloadWallpaper(
+                        selectedCard
+                    );
+
+                }
+
+            }
+        );
+
+
+
+        /* =========================
+           RANDOM WALLPAPER
+        ========================= */
+
+        const randomBtn =
+            document.getElementById(
+                "randomBtn"
+            );
+
+
+        randomBtn.addEventListener(
+            "click",
+            () => {
+
+                const visibleCards =
+                    [...cards].filter(
+                        card =>
+                            card.style.display
+                            !== "none"
+                    );
+
+
+                if (!visibleCards.length)
+                    return;
+
+
+                const randomCard =
+                    visibleCards[
+                        Math.floor(
+                            Math.random() *
+                            visibleCards.length
+                        )
+                    ];
+
+
+                openPreview(randomCard);
+
+            }
+        );
+
+
+
+        /* =========================
+           BOTTOM NAVIGATION
+        ========================= */
+
+        const navItems =
+            document.querySelectorAll(
+                ".nav-item"
+            );
+
+
+        navItems.forEach(item => {
+
+            item.addEventListener(
+                "click",
+                () => {
+
+                    navItems.forEach(
+                        nav =>
+                            nav.classList.remove(
                                 "active"
                             )
                     );
 
 
-                    tab.classList.add(
+                    item.classList.add(
                         "active"
                     );
 
 
+                    const target =
+                        item.dataset.target;
+
+
                     if (
-                        tab.dataset.target
+                        target === "home"
+                    ) {
+
+                        window.scrollTo({
+                            top: 0,
+                            behavior: "smooth"
+                        });
+
+                    }
+
+
+                    if (
+                        target === "trending"
                     ) {
 
                         document
                             .getElementById(
-                                tab.dataset.target
+                                "trendingSection"
+                            )
+                            .scrollIntoView({
+                                behavior:
+                                    "smooth"
+                            });
+
+                    }
+
+
+                    if (
+                        target === "new"
+                    ) {
+
+                        document
+                            .getElementById(
+                                "newSection"
+                            )
+                            .scrollIntoView({
+                                behavior:
+                                    "smooth"
+                            });
+
+                    }
+
+
+                    if (
+                        target === "categories"
+                    ) {
+
+                        document
+                            .getElementById(
+                                "categories"
                             )
                             .scrollIntoView({
                                 behavior:
@@ -3122,62 +3950,33 @@
                 }
             );
 
-        }
-    );
+        });
 
 
-    /* =====================================================
-       RANDOM WALLPAPER
-    ===================================================== */
 
-    const randomButton =
-        document.getElementById(
-            "randomButton"
-        );
+        /* =========================
+           CLOSE SEARCH ON ESCAPE
+        ========================= */
 
+        document.addEventListener(
+            "keydown",
+            event => {
 
-    randomButton.addEventListener(
-        "click",
-        () => {
+                if (
+                    event.key === "Escape"
+                ) {
 
-            const visibleCards =
-                [...wallpaperCards]
-                    .filter(
-                        card =>
-                            card.style.display !==
-                            "none"
+                    searchPanel.classList.remove(
+                        "active"
                     );
 
+                }
 
-            if (!visibleCards.length) {
-                return;
             }
+        );
 
-
-            const randomCard =
-                visibleCards[
-                    Math.floor(
-                        Math.random() *
-                        visibleCards.length
-                    )
-                ];
-
-
-            openPreview(
-                randomCard
-            );
-
-        }
-    );
-
-
-    /* =====================================================
-       INITIALIZE
-    ===================================================== */
-
-    filterWallpapers();
-
-</script>
+    </script>
 
 </body>
-</html>               
+
+</html>
