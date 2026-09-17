@@ -1897,6 +1897,3 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 });
-// =========================================================
-// PIXORA — SUPABASE CONNECTION TEST
-// =========================================================
