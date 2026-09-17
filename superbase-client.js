@@ -6,7 +6,7 @@ const PIXORA_SUPABASE_URL =
     "https://hlldyvzgvblxmnygldqd.supabase.co";
 
 const PIXORA_SUPABASE_PUBLISHABLE_KEY =
-    "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+    "sb_publishable_mg6WiPQq2BTk_2YTdJkaJA_f4zQwPF-";
 
 window.pixoraSupabase =
     window.supabase.createClient(
