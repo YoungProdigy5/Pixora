@@ -105,12 +105,90 @@ document.addEventListener("DOMContentLoaded", () => {
      * }
      */
 
-    const wallpapers =
+    let wallpapers =
         Array.isArray(window.pixoraWallpapers)
             ? window.pixoraWallpapers
             : [];
 
+/* =====================================================
+   SUPABASE WALLPAPER LOADER
+===================================================== */
 
+async function loadSupabaseWallpapers() {
+
+    if (!window.pixoraSupabase) {
+        console.warn("PIXORA: Supabase client not available.");
+        return;
+    }
+
+    const { data, error } =
+        await window.pixoraSupabase
+            .from("wallpapers")
+            .select(
+                "id,created_at,title,category,tags,image_url,views,downloads"
+            )
+            .order(
+                "created_at",
+                { ascending: false }
+            );
+
+    if (error) {
+        console.error(
+            "PIXORA Supabase error:",
+            error
+        );
+        return;
+    }
+
+    if (Array.isArray(data) && data.length) {
+
+        wallpapers = data.map(row => ({
+
+            id:
+                `supabase-${row.id}`,
+
+            title:
+                row.title ||
+                "Untitled",
+
+            category:
+                normalize(row.category) ||
+                "all",
+
+            image:
+                row.image_url ||
+                "",
+
+            keywords:
+                row.tags
+                    ? String(row.tags)
+                        .split(",")
+                        .map(tag => normalize(tag))
+                        .filter(Boolean)
+                    : [],
+
+            description:
+                row.title ||
+                "PIXORA Wallpaper",
+
+            views:
+                row.views || 0,
+
+            downloads:
+                row.downloads || 0,
+
+            created_at:
+                row.created_at
+
+        }));
+
+        renderWallpapers();
+    }
+}
+
+/* Load wallpapers from Supabase */
+loadSupabaseWallpapers();
+   
     /* =====================================================
        SETTINGS
     ===================================================== */
