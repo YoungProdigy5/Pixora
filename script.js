@@ -1900,3 +1900,21 @@ document.addEventListener("DOMContentLoaded", () => {
 // =========================================================
 // PIXORA — SUPABASE CONNECTION TEST
 // =========================================================
+// =========================================================
+// PIXORA — DATABASE CONNECTION TEST
+// =========================================================
+
+async function checkPixoraDatabase() {
+    const { data, error } = await supabase
+        .from("wallpapers")
+        .select("id")
+        .limit(1);
+
+    if (error) {
+        console.error("PIXORA DATABASE ERROR:", error);
+    } else {
+        console.log("PIXORA DATABASE CONNECTED:", data);
+    }
+}
+
+checkPixoraDatabase();
