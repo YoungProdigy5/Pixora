@@ -2743,3 +2743,111 @@ button,
     transform: scale(1.2);
     box-shadow: 0 0 14px rgba(255, 23, 68, .65);
    }
+
+/* =========================================================
+   PIXORA — ORIGINAL CALM HERO/BACKGROUND TRANSITION
+   ========================================================= */
+
+body {
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(180, 220, 255, 0.45),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 80% 30%,
+            rgba(210, 190, 255, 0.35),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #f8fbff,
+            #eef7f4,
+            #f7f1ff
+        );
+
+    background-size: 180% 180%;
+
+    animation: calmColors 25s ease infinite;
+
+    transition:
+        background 1.5s ease,
+        color 0.8s ease;
+}
+
+@keyframes calmColors {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    25% {
+        background-position: 50% 100%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    75% {
+        background-position: 50% 0%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* =========================================================
+   PIXORA — ORIGINAL CALM HERO/BACKGROUND TRANSITION
+   ========================================================= */
+
+body {
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(180, 220, 255, 0.45),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 80% 30%,
+            rgba(210, 190, 255, 0.35),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #f8fbff,
+            #eef7f4,
+            #f7f1ff
+        );
+
+    background-size: 180% 180%;
+
+    animation: calmColors 25s ease infinite;
+
+    transition:
+        background 1.5s ease,
+        color 0.8s ease;
+}
+
+@keyframes calmColors {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    25% {
+        background-position: 50% 100%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    75% {
+        background-position: 50% 0%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+           }
