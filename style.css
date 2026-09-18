@@ -2578,3 +2578,87 @@ textarea:focus-visible {
 [hidden] {
     display: none !important;
   }
+
+/* YOUR EXISTING CSS */
+...
+/* whatever your current final CSS rule is */
+
+
+/* =========================================================
+   PIXORA COLOR RESTORATION
+   ========================================================= */
+
+.logo span {
+    color: #ff1744;
+}
+
+.light-mode .logo span {
+    color: #ff1744;
+}
+
+.explore-btn,
+#exploreBtn {
+    background: linear-gradient(135deg, #ff1744, #ff4d6d, #7c3aed);
+    color: #fff;
+    border: none;
+    transition: transform .3s ease, box-shadow .3s ease, background .5s ease;
+}
+
+.explore-btn:hover,
+#exploreBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 23, 68, .35);
+}
+
+button,
+.category-btn,
+.wallpaper-card,
+.video-card,
+.nav-item,
+.auth-btn,
+.explore-btn,
+.random-btn,
+.text-btn,
+.wallpaper-art img,
+.video-card-media img {
+    transition:
+        color .3s ease,
+        background-color .3s ease,
+        border-color .3s ease,
+        transform .3s ease,
+        opacity .3s ease,
+        box-shadow .3s ease,
+        filter .3s ease;
+}
+
+.hero-slide {
+    transition: opacity .8s ease, transform .8s ease, filter .8s ease;
+}
+
+.wallpaper-card:hover .wallpaper-art img,
+.video-card:hover .video-card-media img {
+    transform: scale(1.04);
+}
+
+.category-btn.active {
+    background: linear-gradient(135deg, #ff1744, #ff4d6d);
+    color: #fff;
+    border-color: transparent;
+}
+
+.text-btn,
+.auth-btn,
+.random-btn {
+    color: #fff;
+}
+
+.text-btn {
+    background: #ff1744;
+}
+
+.text-btn:hover,
+.random-btn:hover,
+.auth-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 23, 68, .3);
+}
