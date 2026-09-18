@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>PIXORA | Admin Dashboard</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #0b0b0f;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      height: 70px;
+      background: #111118;
+      border-bottom: 1px solid #24242d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #ff1744;
+    }
+
+    .logout-btn {
+      border: none;
+      background: #ff1744;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 35px 20px;
+    }
+
+    .welcome {
+      margin-bottom: 30px;
+    }
+
+    .welcome h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: #aaa;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #111118;
+      border: 1px solid #24242d;
+      border-radius: 16px;
+      padding: 25px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #aaa;
+      line-height: 1.5;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: #aaa;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+
+    <div class="logo">
+      PIXORA<span>.</span>
+    </div>
+
+    <button class="logout-btn" id="logoutButton">
+      Logout
+    </button>
+
+  </nav>
+
+  <main class="container">
+
+    <section class="welcome">
+      <h1>Admin Dashboard</h1>
+      <p id="adminEmail">Checking authentication...</p>
+    </section>
+
+    <section class="admin-grid">
+
+      <div class="card">
+        <h2>🖼️ Wallpapers</h2>
+        <p>
+          Manage PIXORA wallpapers and categories.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>📊 Dashboard</h2>
+        <p>
+          View and manage PIXORA content.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>⚙️ Settings</h2>
+        <p>
+          PIXORA administration settings.
+        </p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+
+    // ==========================================
+    // PIXORA SUPABASE CONNECTION
+    // ==========================================
+
+    const SUPABASE_URL =
+      "https://hlldyvzgvblxmnygldqd.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_mg6WiPQq2BTk_2YTdJkaJA_f4zQwPF-";
+
+    const supabaseClient = supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+
+
+    // ==========================================
+    // PROTECT ADMIN PAGE
+    // ==========================================
+
+    async function checkAdminAccess() {
+
+      const {
+        data: { session }
+      } = await supabaseClient.auth.getSession();
+
+      if (!session) {
+
+        window.location.href = "login.html";
+
+        return;
+      }
+
+      document.getElementById("adminEmail").textContent =
+        "Logged in as: " + session.user.email;
+    }
+
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+
+    document
+      .getElementById("logoutButton")
+      .addEventListener("click", async () => {
+
+        await supabaseClient.auth.signOut();
+
+        window.location.href = "login.html";
+      });
+
+
+    // ==========================================
+    // START
+    // ==========================================
+
+    checkAdminAccess();
+
+  </script>
+
+</body>
+  </html>
