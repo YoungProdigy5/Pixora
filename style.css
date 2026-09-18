@@ -2662,3 +2662,84 @@ button,
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(255, 23, 68, .3);
 }
+
+/* =========================================================
+   PIXORA HERO SLIDE TRANSITION
+   ========================================================= */
+
+.hero-slider {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-slide {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    inset: 0;
+    transform: scale(1.03);
+    transition:
+        opacity 1s ease,
+        transform 1.2s ease,
+        visibility 1s ease;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    visibility: visible;
+    position: relative;
+    transform: scale(1);
+}
+
+/* Smooth colorful glow during slide changes */
+.hero-slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            circle at 20% 40%,
+            rgba(255, 23, 68, 0.22),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at 80% 60%,
+            rgba(124, 58, 237, 0.20),
+            transparent 45%
+        );
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.hero-slide.active::before {
+    opacity: 1;
+}
+
+/* Smooth hero content movement */
+.hero-slide .hero-content {
+    transform: translateY(18px);
+    opacity: 0;
+    transition:
+        transform .8s ease,
+        opacity .8s ease;
+}
+
+.hero-slide.active .hero-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Animated hero dots */
+.hero-dot {
+    transition:
+        background-color .4s ease,
+        transform .4s ease,
+        opacity .4s ease,
+        box-shadow .4s ease;
+}
+
+.hero-dot.active {
+    transform: scale(1.2);
+    box-shadow: 0 0 14px rgba(255, 23, 68, .65);
+   }
