@@ -3357,3 +3357,64 @@ document.addEventListener("DOMContentLoaded", async () => {
         `PIXORA initialized — ${wallpapers.length} wallpapers, ${videos.length} videos.`
     );
 });
+
+/* =========================================================
+   PIXORA HERO SLIDER — COLOR / SLIDE TRANSITION
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const heroSlides = document.querySelectorAll(".hero-slide");
+    const heroDots = document.querySelectorAll(".hero-dot");
+
+    if (!heroSlides.length) return;
+
+    let currentHeroSlide = 0;
+    let heroTimer;
+
+    function showHeroSlide(index) {
+
+        if (index >= heroSlides.length) {
+            index = 0;
+        }
+
+        if (index < 0) {
+            index = heroSlides.length - 1;
+        }
+
+        heroSlides.forEach((slide, i) => {
+            slide.classList.toggle("active", i === index);
+        });
+
+        heroDots.forEach((dot, i) => {
+            dot.classList.toggle("active", i === index);
+        });
+
+        currentHeroSlide = index;
+    }
+
+    function nextHeroSlide() {
+        showHeroSlide(currentHeroSlide + 1);
+    }
+
+    function startHeroSlider() {
+        clearInterval(heroTimer);
+
+        heroTimer = setInterval(() => {
+            nextHeroSlide();
+        }, 5000);
+    }
+
+    heroDots.forEach((dot, index) => {
+
+        dot.addEventListener("click", () => {
+            showHeroSlide(index);
+            startHeroSlider();
+        });
+
+    });
+
+    showHeroSlide(0);
+    startHeroSlider();
+
+});
