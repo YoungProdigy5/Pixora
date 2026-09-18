@@ -1,0 +1,2226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>PIXORA | Admin Dashboard</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #0b0b0f;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      min-height: 70px;
+      background: #111118;
+      border-bottom: 1px solid #24242d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #ff1744;
+    }
+
+    .logout-btn {
+      border: none;
+      background: #ff1744;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 35px 20px;
+    }
+
+    .welcome {
+      margin-bottom: 30px;
+    }
+
+    .welcome h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: #aaa;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #111118;
+      border: 1px solid #24242d;
+      border-radius: 16px;
+      padding: 25px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #aaa;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #30303a;
+      background: #0b0b0f;
+      color: white;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #ff1744;
+    }
+
+    .upload-btn,
+    .refresh-btn,
+    .save-btn,
+    .cancel-btn,
+    .delete-btn {
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .upload-btn {
+      width: 100%;
+      padding: 13px;
+      background: #ff1744;
+      margin-top: 5px;
+    }
+
+    .upload-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #181820;
+      color: #aaa;
+      display: none;
+      line-height: 1.4;
+    }
+
+    /* ==========================================
+       STATS
+       ========================================== */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .stat-box {
+      background: #111118;
+      border: 1px solid #24242d;
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    /* ==========================================
+       LIBRARY
+       ========================================== */
+
+    .library-card {
+      margin-top: 25px;
+    }
+
+    .library-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .library-header p {
+      margin-bottom: 0;
+    }
+
+    .refresh-btn {
+      background: #24242d;
+      padding: 10px 15px;
+      white-space: nowrap;
+    }
+
+    .library-controls {
+      display: grid;
+      grid-template-columns: 1fr 180px;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .wallpaper-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .wallpaper-item {
+      background: #0b0b0f;
+      border: 1px solid #24242d;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .wallpaper-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: block;
+      background: #181820;
+    }
+
+    .wallpaper-info {
+      padding: 15px;
+    }
+
+    .wallpaper-info h3 {
+      font-size: 17px;
+      margin-bottom: 7px;
+      word-break: break-word;
+    }
+
+    .wallpaper-category {
+      display: inline-block;
+      background: #181820;
+      color: #ff1744;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .wallpaper-tags {
+      color: #aaa;
+      font-size: 12px;
+      line-height: 1.4;
+      margin-bottom: 10px;
+      word-break: break-word;
+    }
+
+    .wallpaper-stats {
+      color: #888;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .wallpaper-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .edit-btn {
+      background: #30303a;
+      padding: 9px;
+      border: none;
+      border-radius: 7px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .delete-btn {
+      background: #ff1744;
+      padding: 9px;
+    }
+
+    .empty-library {
+      text-align: center;
+      padding: 50px 20px;
+      color: #888;
+      grid-column: 1 / -1;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 50px 20px;
+      color: #aaa;
+      grid-column: 1 / -1;
+    }
+
+    /* ==========================================
+       EDIT MODAL
+       ========================================== */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 999;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 500px;
+      background: #111118;
+      border: 1px solid #30303a;
+      border-radius: 16px;
+      padding: 25px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-box h2 {
+      margin-bottom: 20px;
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .save-btn {
+      background: #ff1744;
+      padding: 12px;
+    }
+
+    .cancel-btn {
+      background: #30303a;
+      padding: 12px;
+    }
+
+    .edit-status {
+      margin-top: 12px;
+      color: #aaa;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    /* ==========================================
+       MOBILE
+       ========================================== */
+
+    @media (max-width: 700px) {
+
+      .container {
+        padding: 25px 15px;
+      }
+
+      .welcome h1 {
+        font-size: 25px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .library-controls {
+        grid-template-columns: 1fr;
+      }
+
+      .library-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .wallpaper-list {
+        grid-template-columns: 1fr;
+      }
+
+      .wallpaper-image {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==========================================
+       NAVBAR
+       ========================================== -->
+
+  <nav class="navbar">
+
+    <div class="logo">
+      PIXORA<span>.</span>
+    </div>
+
+    <button
+      class="logout-btn"
+      id="logoutButton">
+      Logout
+    </button>
+
+  </nav>
+
+
+  <!-- ==========================================
+       MAIN
+       ========================================== -->
+
+  <main class="container">
+
+    <!-- WELCOME -->
+
+    <section class="welcome">
+
+      <h1>
+        Admin Dashboard
+      </h1>
+
+      <p id="adminEmail">
+        Checking authentication...
+      </p>
+
+    </section>
+
+
+    <!-- ========================================
+         STATS
+         ======================================== -->
+
+    <section class="stats-grid">
+
+      <div class="stat-box">
+
+        <div
+          class="stat-number"
+          id="totalWallpapers">
+          0
+        </div>
+
+        <div class="stat-label">
+          Total Wallpapers
+        </div>
+
+      </div>
+
+
+      <div class="stat-box">
+
+        <div
+          class="stat-number"
+          id="totalViews">
+          0
+        </div>
+
+        <div class="stat-label">
+          Total Views
+        </div>
+
+      </div>
+
+
+      <div class="stat-box">
+
+        <div
+          class="stat-number"
+          id="totalDownloads">
+          0
+        </div>
+
+        <div class="stat-label">
+          Total Downloads
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================
+         ADMIN GRID
+         ======================================== -->
+
+    <section class="admin-grid">
+
+
+      <!-- ADD WALLPAPER -->
+
+      <div class="card">
+
+        <h2>
+          🖼️ Add Wallpaper
+        </h2>
+
+        <p>
+          Upload a new wallpaper to PIXORA.
+        </p>
+
+
+        <form id="wallpaperForm">
+
+
+          <div class="form-group">
+
+            <label for="wallpaperFile">
+              Wallpaper Image
+            </label>
+
+            <input
+              type="file"
+              id="wallpaperFile"
+              accept="image/*"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="wallpaperTitle">
+              Title
+            </label>
+
+            <input
+              type="text"
+              id="wallpaperTitle"
+              placeholder="Example: Gojo"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="wallpaperCategory">
+              Category
+            </label>
+
+            <input
+              type="text"
+              id="wallpaperCategory"
+              list="categorySuggestions"
+              placeholder="Search or type a category"
+              autocomplete="off"
+              required
+            >
+
+            <datalist
+              id="categorySuggestions">
+            </datalist>
+
+            <button
+              type="button"
+              class="refresh-btn"
+              id="addCategoryButton"
+              style="width:100%; margin-top:8px;">
+
+              ➕ Add New Category
+
+            </button>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="wallpaperTags">
+              Tags
+            </label>
+
+            <input
+              type="text"
+              id="wallpaperTags"
+              placeholder="gojo, anime, jujutsu kaisen"
+              required
+            >
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="upload-btn"
+            id="uploadButton">
+
+            🚀 Publish Wallpaper
+
+          </button>
+
+        </form>
+
+
+        <div
+          class="status"
+          id="uploadStatus">
+        </div>
+
+      </div>
+
+
+      <!-- DASHBOARD -->
+
+      <div class="card">
+
+        <h2>
+          📊 Dashboard
+        </h2>
+
+        <p>
+          Manage PIXORA content and monitor your wallpaper collection.
+        </p>
+
+        <p>
+          Your statistics and published wallpapers are shown below.
+        </p>
+
+      </div>
+
+
+      <!-- SETTINGS -->
+
+      <div class="card">
+
+        <h2>
+          ⚙️ Settings
+        </h2>
+
+        <p>
+          PIXORA administration settings.
+        </p>
+
+        <p>
+          Your admin account controls publishing, editing and deleting wallpapers.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================
+         WALLPAPER LIBRARY
+         ======================================== -->
+
+    <section class="card library-card">
+
+      <div class="library-header">
+
+        <div>
+
+          <h2>
+            📚 Wallpaper Library
+          </h2>
+
+          <p>
+            View and manage all wallpapers published on PIXORA.
+          </p>
+
+        </div>
+
+
+        <button
+          class="refresh-btn"
+          id="refreshButton">
+
+          🔄 Refresh
+
+        </button>
+
+      </div>
+
+
+      <!-- SEARCH + FILTER -->
+
+      <div class="library-controls">
+
+        <input
+          type="search"
+          id="wallpaperSearch"
+          placeholder="🔎 Search wallpapers..."
+        >
+
+
+        <select
+          id="categoryFilter">
+
+          <option value="all">
+            All Categories
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- WALLPAPERS -->
+
+      <div
+        class="wallpaper-list"
+        id="wallpaperLibrary">
+
+        <div class="loading">
+          Loading wallpapers...
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ==========================================
+       EDIT MODAL
+       ========================================== -->
+
+  <div
+    class="modal"
+    id="editModal">
+
+    <div class="modal-box">
+
+      <h2>
+        ✏️ Edit Wallpaper
+      </h2>
+
+
+      <input
+        type="hidden"
+        id="editWallpaperId"
+      >
+
+
+      <div class="form-group">
+
+        <label for="editTitle">
+          Title
+        </label>
+
+        <input
+          type="text"
+          id="editTitle"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="editCategory">
+          Category
+        </label>
+
+        <input
+          type="text"
+          id="editCategory"
+          list="editCategorySuggestions"
+          placeholder="Search or type a category"
+          autocomplete="off"
+        >
+
+        <datalist
+          id="editCategorySuggestions">
+        </datalist>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="editTags">
+          Tags
+        </label>
+
+        <input
+          type="text"
+          id="editTags"
+          required
+        >
+
+      </div>
+
+
+      <div
+        class="edit-status"
+        id="editStatus">
+      </div>
+
+
+      <div class="modal-actions">
+
+        <button
+          class="save-btn"
+          id="saveEditButton">
+
+          💾 Save Changes
+
+        </button>
+
+
+        <button
+          class="cancel-btn"
+          id="cancelEditButton">
+
+          Cancel
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       JAVASCRIPT
+       ========================================== -->
+
+  <script>
+
+    // ==========================================
+    // PIXORA SUPABASE CONNECTION
+    // ==========================================
+
+    const SUPABASE_URL =
+      "https://hlldyvzgvblxmnygldqd.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_mg6WiPQq2BT_2YTdJkaJA_f4zQwPF-";
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
+
+
+    // ==========================================
+    // GLOBAL DATA
+    // ==========================================
+
+    let allWallpapers = [];
+    let allCategories = [];
+
+
+    // ==========================================
+    // PROTECT ADMIN PAGE
+    // ==========================================
+
+    async function checkAdminAccess() {
+
+      const {
+        data: { session }
+      } =
+        await supabaseClient.auth.getSession();
+
+
+      if (!session) {
+
+        window.location.href =
+          "login.html";
+
+        return false;
+      }
+
+
+      document
+        .getElementById("adminEmail")
+        .textContent =
+        "Logged in as: " +
+        session.user.email;
+
+
+      return true;
+    }
+
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+
+    document
+      .getElementById("logoutButton")
+      .addEventListener(
+        "click",
+        async () => {
+
+          await supabaseClient.auth.signOut();
+
+          window.location.href =
+            "login.html";
+        }
+      );
+
+
+    // ==========================================
+    // LOAD CATEGORIES
+    // ==========================================
+
+    async function loadCategories() {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("categories")
+          .select("id,name")
+          .order(
+            "name",
+            {
+              ascending: true
+            }
+          );
+
+
+      if (error) {
+
+        console.error(
+          "PIXORA category error:",
+          error
+        );
+
+        return;
+      }
+
+
+      allCategories =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      updateCategoryFields();
+
+    }
+
+
+    // ==========================================
+    // UPDATE CATEGORY FIELDS
+    // ==========================================
+
+    function updateCategoryFields() {
+
+      const suggestions =
+        document.getElementById(
+          "categorySuggestions"
+        );
+
+
+      const editSuggestions =
+        document.getElementById(
+          "editCategorySuggestions"
+        );
+
+
+      const filter =
+        document.getElementById(
+          "categoryFilter"
+        );
+
+
+      const names =
+        allCategories.map(
+          category =>
+            category.name
+        );
+
+
+      suggestions.innerHTML =
+        names
+          .map(
+            name =>
+              `<option value="${escapeHtml(name)}"></option>`
+          )
+          .join("");
+
+
+      editSuggestions.innerHTML =
+        names
+          .map(
+            name =>
+              `<option value="${escapeHtml(name)}"></option>`
+          )
+          .join("");
+
+
+      filter.innerHTML =
+        `
+          <option value="all">
+            All Categories
+          </option>
+        ` +
+        names
+          .map(
+            name =>
+              `
+                <option value="${escapeHtml(name)}">
+                  ${escapeHtml(name)}
+                </option>
+              `
+          )
+          .join("");
+
+    }
+
+
+    // ==========================================
+    // ADD NEW CATEGORY
+    // ==========================================
+
+    document
+      .getElementById(
+        "addCategoryButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          const input =
+            document.getElementById(
+              "wallpaperCategory"
+            );
+
+
+          const categoryName =
+            input.value.trim();
+
+
+          const status =
+            document.getElementById(
+              "uploadStatus"
+            );
+
+
+          if (!categoryName) {
+
+            status.style.display =
+              "block";
+
+            status.textContent =
+              "Please type a category name first.";
+
+            return;
+          }
+
+
+          const existing =
+            allCategories.find(
+              category =>
+                category.name.toLowerCase() ===
+                categoryName.toLowerCase()
+            );
+
+
+          if (existing) {
+
+            input.value =
+              existing.name;
+
+            status.style.display =
+              "block";
+
+            status.textContent =
+              "ℹ️ That category already exists.";
+
+            return;
+          }
+
+
+          try {
+
+            status.style.display =
+              "block";
+
+            status.textContent =
+              "Adding category...";
+
+
+            const {
+              data,
+              error
+            } =
+              await supabaseClient
+                .from("categories")
+                .insert({
+                  name:
+                    categoryName
+                })
+                .select("id,name")
+                .single();
+
+
+            if (error) {
+
+              throw error;
+            }
+
+
+            allCategories.push(data);
+
+            allCategories.sort(
+              (a, b) =>
+                a.name.localeCompare(
+                  b.name
+                )
+            );
+
+
+            updateCategoryFields();
+
+
+            input.value =
+              data.name;
+
+
+            status.textContent =
+              "✅ Category added successfully.";
+
+          } catch (error) {
+
+            console.error(
+              "PIXORA category add error:",
+              error
+            );
+
+
+            status.textContent =
+              "❌ Failed to add category: " +
+              error.message;
+
+          }
+
+        }
+      );
+
+
+    // ==========================================
+    // UPLOAD FORM
+    // ==========================================
+
+    document
+      .getElementById("wallpaperForm")
+      .addEventListener(
+        "submit",
+        async (event) => {
+
+          event.preventDefault();
+
+
+          const file =
+            document.getElementById(
+              "wallpaperFile"
+            ).files[0];
+
+
+          const title =
+            document.getElementById(
+              "wallpaperTitle"
+            ).value.trim();
+
+
+          const category =
+            document.getElementById(
+              "wallpaperCategory"
+            ).value.trim();
+
+
+          const tags =
+            document.getElementById(
+              "wallpaperTags"
+            ).value.trim();
+
+
+          const uploadButton =
+            document.getElementById(
+              "uploadButton"
+            );
+
+
+          const status =
+            document.getElementById(
+              "uploadStatus"
+            );
+
+
+          if (!file) {
+
+            status.style.display =
+              "block";
+
+            status.textContent =
+              "Please select a wallpaper image.";
+
+            return;
+          }
+
+
+          if (!category) {
+
+            status.style.display =
+              "block";
+
+            status.textContent =
+              "Please select or type a category.";
+
+            return;
+          }
+
+
+          try {
+
+            uploadButton.disabled =
+              true;
+
+            uploadButton.textContent =
+              "Uploading...";
+
+
+            status.style.display =
+              "block";
+
+            status.textContent =
+              "Uploading wallpaper...";
+
+
+            // ==================================
+            // CREATE UNIQUE FILE NAME
+            // ==================================
+
+            const fileName =
+              Date.now() +
+              "-" +
+              file.name.replace(
+                /[^a-zA-Z0-9._-]/g,
+                "-"
+              );
+
+
+            // ==================================
+            // UPLOAD TO STORAGE
+            // ==================================
+
+            const {
+              error: storageError
+            } =
+              await supabaseClient.storage
+                .from("wallpapers")
+                .upload(
+                  fileName,
+                  file,
+                  {
+                    cacheControl: "3600",
+                    upsert: false
+                  }
+                );
+
+
+            if (storageError) {
+
+              throw storageError;
+            }
+
+
+            // ==================================
+            // GET PUBLIC URL
+            // ==================================
+
+            const {
+              data: publicUrlData
+            } =
+              supabaseClient.storage
+                .from("wallpapers")
+                .getPublicUrl(
+                  fileName
+                );
+
+
+            const imageUrl =
+              publicUrlData.publicUrl;
+
+
+            // ==================================
+            // INSERT DATABASE ROW
+            // ==================================
+
+            const {
+              error: databaseError
+            } =
+              await supabaseClient
+                .from("wallpapers")
+                .insert({
+
+                  title:
+                    title,
+
+                  category:
+                    category,
+
+                  tags:
+                    tags,
+
+                  image_url:
+                    imageUrl,
+
+                  views:
+                    0,
+
+                  downloads:
+                    0
+
+                });
+
+
+            if (databaseError) {
+
+              throw databaseError;
+            }
+
+
+            // ==================================
+            // SUCCESS
+            // ==================================
+
+            status.textContent =
+              "✅ Wallpaper published successfully!";
+
+
+            document
+              .getElementById(
+                "wallpaperForm"
+              )
+              .reset();
+
+
+            await loadWallpapers();
+
+
+          } catch (error) {
+
+            console.error(
+              "PIXORA upload error:",
+              error
+            );
+
+
+            status.textContent =
+              "❌ Upload failed: " +
+              error.message;
+
+
+          } finally {
+
+            uploadButton.disabled =
+              false;
+
+            uploadButton.textContent =
+              "🚀 Publish Wallpaper";
+          }
+
+        }
+      );
+
+
+    // ==========================================
+    // LOAD WALLPAPERS
+    // ==========================================
+
+    async function loadWallpapers() {
+
+      const library =
+        document.getElementById(
+          "wallpaperLibrary"
+        );
+
+
+      library.innerHTML =
+        '<div class="loading">Loading wallpapers...</div>';
+
+
+      const {
+        data,
+        error
+      } =
+      await supabaseClient
+        .from("wallpapers")
+        .select(
+          "id,created_at,title,category,tags,image_url,views,downloads"
+        )
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        );
+
+
+      if (error) {
+
+        console.error(
+          "PIXORA library error:",
+          error
+        );
+
+
+        library.innerHTML =
+          '<div class="empty-library">❌ Failed to load wallpapers.</div>';
+
+        return;
+      }
+
+
+      allWallpapers =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      updateStats();
+
+      renderWallpapers();
+
+    }
+
+
+    // ==========================================
+    // UPDATE STATS
+    // ==========================================
+
+    function updateStats() {
+
+      const total =
+        allWallpapers.length;
+
+
+      const views =
+        allWallpapers.reduce(
+          (sum, wallpaper) =>
+            sum +
+            Number(
+              wallpaper.views || 0
+            ),
+          0
+        );
+
+
+      const downloads =
+        allWallpapers.reduce(
+          (sum, wallpaper) =>
+            sum +
+            Number(
+              wallpaper.downloads || 0
+            ),
+          0
+        );
+
+
+      document
+        .getElementById(
+          "totalWallpapers"
+        )
+        .textContent =
+        total;
+
+
+      document
+        .getElementById(
+          "totalViews"
+        )
+        .textContent =
+        views;
+
+
+      document
+        .getElementById(
+          "totalDownloads"
+        )
+        .textContent =
+        downloads;
+    }
+
+
+    // ==========================================
+    // RENDER WALLPAPERS
+    // ==========================================
+
+    function renderWallpapers() {
+
+      const library =
+        document.getElementById(
+          "wallpaperLibrary"
+        );
+
+
+      const search =
+        document
+          .getElementById(
+            "wallpaperSearch"
+          )
+          .value
+          .trim()
+          .toLowerCase();
+
+
+      const category =
+        document.getElementById(
+          "categoryFilter"
+        ).value;
+
+
+      const filtered =
+        allWallpapers.filter(
+          wallpaper => {
+
+            const title =
+              String(
+                wallpaper.title || ""
+              ).toLowerCase();
+
+
+            const tags =
+              String(
+                wallpaper.tags || ""
+              ).toLowerCase();
+
+
+            const wallpaperCategory =
+              String(
+                wallpaper.category || ""
+              );
+
+
+            const matchesSearch =
+              !search ||
+              title.includes(search) ||
+              tags.includes(search);
+
+
+            const matchesCategory =
+              category === "all" ||
+              wallpaperCategory === category;
+
+
+            return (
+              matchesSearch &&
+              matchesCategory
+            );
+          }
+        );
+
+
+      if (!filtered.length) {
+
+        library.innerHTML =
+          '<div class="empty-library">No wallpapers found.</div>';
+
+        return;
+      }
+
+
+      library.innerHTML =
+        filtered
+          .map(
+            wallpaper => {
+
+              const safeTitle =
+                escapeHtml(
+                  wallpaper.title ||
+                  "Untitled"
+                );
+
+
+              const safeCategory =
+                escapeHtml(
+                  wallpaper.category ||
+                  "Other"
+                );
+
+
+              const safeTags =
+                escapeHtml(
+                  wallpaper.tags ||
+                  "No tags"
+                );
+
+
+              const imageUrl =
+                escapeHtml(
+                  wallpaper.image_url ||
+                  ""
+                );
+
+
+              return `
+
+                <div class="wallpaper-item">
+
+                  <img
+                    class="wallpaper-image"
+                    src="${imageUrl}"
+                    alt="${safeTitle}"
+                    loading="lazy"
+                  >
+
+                  <div class="wallpaper-info">
+
+                    <h3>
+                      ${safeTitle}
+                    </h3>
+
+                    <span class="wallpaper-category">
+                      ${safeCategory}
+                    </span>
+
+                    <div class="wallpaper-tags">
+                      🏷️ ${safeTags}
+                    </div>
+
+                    <div class="wallpaper-stats">
+                      👁️ ${Number(wallpaper.views || 0)}
+                      &nbsp; • &nbsp;
+                      ⬇️ ${Number(wallpaper.downloads || 0)}
+                    </div>
+
+                    <div class="wallpaper-actions">
+
+                      <button
+                        class="edit-btn"
+                        onclick="openEditModal(${wallpaper.id})">
+
+                        ✏️ Edit
+
+                      </button>
+
+                      <button
+                        class="delete-btn"
+                        onclick="deleteWallpaper(${wallpaper.id})">
+
+                        🗑️ Delete
+
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              `;
+            }
+          )
+          .join("");
+
+    }
+
+
+    // ==========================================
+    // ESCAPE HTML
+    // ==========================================
+
+    function escapeHtml(value) {
+
+      return String(value)
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+    }
+
+
+    // ==========================================
+    // OPEN EDIT MODAL
+    // ==========================================
+
+    function openEditModal(id) {
+
+      const wallpaper =
+        allWallpapers.find(
+          item =>
+            Number(item.id) ===
+            Number(id)
+        );
+
+
+      if (!wallpaper) {
+        return;
+      }
+
+
+      document
+        .getElementById(
+          "editWallpaperId"
+        )
+        .value =
+        wallpaper.id;
+
+
+      document
+        .getElementById(
+          "editTitle"
+        )
+        .value =
+        wallpaper.title || "";
+
+
+      document
+        .getElementById(
+          "editCategory"
+        )
+        .value =
+        wallpaper.category || "";
+
+
+      document
+        .getElementById(
+          "editTags"
+        )
+        .value =
+        wallpaper.tags || "";
+
+
+      document
+        .getElementById(
+          "editStatus"
+        )
+        .textContent =
+        "";
+
+
+      document
+        .getElementById(
+          "editModal"
+        )
+        .classList
+        .add("active");
+    }
+
+
+    // ==========================================
+    // CLOSE EDIT MODAL
+    // ==========================================
+
+    document
+      .getElementById(
+        "cancelEditButton"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          document
+            .getElementById(
+              "editModal"
+            )
+            .classList
+            .remove("active");
+
+        }
+      );
+
+
+    // ==========================================
+    // SAVE EDIT
+    // ==========================================
+
+    document
+      .getElementById(
+        "saveEditButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          const id =
+            document
+              .getElementById(
+                "editWallpaperId"
+              )
+              .value;
+
+
+          const title =
+            document
+              .getElementById(
+                "editTitle"
+              )
+              .value
+              .trim();
+
+
+          const category =
+            document
+              .getElementById(
+                "editCategory"
+              )
+              .value
+              .trim();
+
+
+          const tags =
+            document
+              .getElementById(
+                "editTags"
+              )
+              .value
+              .trim();
+
+
+          const status =
+            document
+              .getElementById(
+                "editStatus"
+              );
+
+
+          const saveButton =
+            document
+              .getElementById(
+                "saveEditButton"
+              );
+
+
+          if (!title || !category || !tags) {
+
+            status.textContent =
+              "Please complete all fields.";
+
+            return;
+          }
+
+
+          try {
+
+            saveButton.disabled =
+              true;
+
+            saveButton.textContent =
+              "Saving...";
+
+            status.textContent =
+              "Saving changes...";
+
+
+            const {
+              error
+            } =
+              await supabaseClient
+                .from("wallpapers")
+                .update({
+
+                  title:
+                    title,
+
+                  category:
+                    category,
+
+                  tags:
+                    tags
+
+                })
+                .eq(
+                  "id",
+                  id
+                );
+
+
+            if (error) {
+
+              throw error;
+            }
+
+
+            status.textContent =
+              "✅ Changes saved.";
+
+
+            await loadWallpapers();
+
+
+            setTimeout(
+              () => {
+
+                document
+                  .getElementById(
+                    "editModal"
+                  )
+                  .classList
+                  .remove("active");
+
+              },
+              700
+            );
+
+
+          } catch (error) {
+
+            console.error(
+              "PIXORA edit error:",
+              error
+            );
+
+
+            status.textContent =
+              "❌ Update failed: " +
+              error.message;
+
+
+          } finally {
+
+            saveButton.disabled =
+              false;
+
+            saveButton.textContent =
+              "💾 Save Changes";
+          }
+
+        }
+      );
+
+
+    // ==========================================
+    // DELETE WALLPAPER
+    // ==========================================
+
+    async function deleteWallpaper(id) {
+
+      const wallpaper =
+        allWallpapers.find(
+          item =>
+            Number(item.id) ===
+            Number(id)
+        );
+
+
+      if (!wallpaper) {
+        return;
+      }
+
+
+      const confirmed =
+        confirm(
+          "Delete \"" +
+          (wallpaper.title || "this wallpaper") +
+          "\"?\n\nThis will remove the wallpaper from PIXORA."
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      try {
+
+        // ======================================
+        // DELETE DATABASE ROW
+        // ======================================
+
+        const {
+          error: databaseError
+        } =
+          await supabaseClient
+            .from("wallpapers")
+            .delete()
+            .eq(
+              "id",
+              id
+            );
+
+
+        if (databaseError) {
+
+          throw databaseError;
+        }
+
+
+        // ======================================
+        // DELETE STORAGE FILE
+        // ======================================
+
+        const fileName =
+          getStorageFileName(
+            wallpaper.image_url
+          );
+
+
+        if (fileName) {
+
+          const {
+            error: storageError
+          } =
+            await supabaseClient.storage
+              .from("wallpapers")
+              .remove([
+                fileName
+              ]);
+
+
+          if (storageError) {
+
+            console.warn(
+              "PIXORA storage delete warning:",
+              storageError
+            );
+          }
+        }
+
+
+        await loadWallpapers();
+
+
+        alert(
+          "✅ Wallpaper deleted successfully."
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "PIXORA delete error:",
+          error
+        );
+
+
+        alert(
+          "❌ Delete failed: " +
+          error.message
+        );
+
+      }
+
+    }
+
+
+    // ==========================================
+    // GET STORAGE FILE NAME
+    // ==========================================
+
+    function getStorageFileName(imageUrl) {
+
+      if (!imageUrl) {
+        return null;
+      }
+
+
+      try {
+
+        const url =
+          new URL(imageUrl);
+
+
+        const marker =
+          "/storage/v1/object/public/wallpapers/";
+
+
+        const index =
+          url.pathname.indexOf(
+            marker
+          );
+
+
+        if (index === -1) {
+          return null;
+        }
+
+
+        return decodeURIComponent(
+          url.pathname.substring(
+            index + marker.length
+          )
+        );
+
+
+      } catch (error) {
+
+        return null;
+      }
+
+    }
+
+
+    // ==========================================
+    // SEARCH
+    // ==========================================
+
+    document
+      .getElementById(
+        "wallpaperSearch"
+      )
+      .addEventListener(
+        "input",
+        renderWallpapers
+      );
+
+
+    // ==========================================
+    // CATEGORY FILTER
+    // ==========================================
+
+    document
+      .getElementById(
+        "categoryFilter"
+      )
+      .addEventListener(
+        "change",
+        renderWallpapers
+      );
+
+
+    // ==========================================
+    // REFRESH
+    // ==========================================
+
+    document
+      .getElementById(
+        "refreshButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          await loadCategories();
+          await loadWallpapers();
+
+        }
+      );
+
+
+    // ==========================================
+    // CLOSE MODAL WHEN CLICKING OUTSIDE
+    // ==========================================
+
+    document
+      .getElementById(
+        "editModal"
+      )
+      .addEventListener(
+        "click",
+        event => {
+
+          if (
+            event.target.id ===
+            "editModal"
+          ) {
+
+            event.currentTarget
+              .classList
+              .remove("active");
+
+          }
+
+        }
+      );
+
+
+    // ==========================================
+    // START PIXORA ADMIN
+    // ==========================================
+
+    async function startAdmin() {
+
+      const allowed =
+        await checkAdminAccess();
+
+
+      if (!allowed) {
+        return;
+      }
+
+
+      await loadCategories();
+      await loadWallpapers();
+
+    }
+
+
+    startAdmin();
+
+  </script>
+
+</body>
+  </html>
