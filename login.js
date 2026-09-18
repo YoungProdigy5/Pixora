@@ -5,7 +5,7 @@
 
 // Supabase client
 const supabaseClient = window.supabase.createClient(
-    "hlldyvzgvblxmnygldqd",
+    "https://hlldyvzgvblxmnygldqd.supabase.co",
     "sb_publishable_mg6WiPQq2BTk_2YTdJkaJA_f4zQwPF-"
 );
 
