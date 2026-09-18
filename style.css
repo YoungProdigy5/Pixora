@@ -772,7 +772,7 @@ body.light .category-btn.active {
 ========================= */
 
 .wallpaper-card {
-   position: relative;
+position: relative;
    min-width: 0;
 
     border-radius: 18px;
