@@ -73,7 +73,7 @@
 
     .admin-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
     }
 
@@ -92,6 +92,61 @@
     .card p {
       color: #aaa;
       line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #30303a;
+      background: #0b0b0f;
+      color: white;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #ff1744;
+    }
+
+    .upload-btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      background: #ff1744;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .upload-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #181820;
+      color: #aaa;
+      display: none;
+      line-height: 1.4;
     }
 
     .loading {
@@ -125,30 +180,146 @@
 
     <section class="admin-grid">
 
-      <div class="card">
-        <h2>🖼️ Wallpapers</h2>
-        <p>
-          Manage PIXORA wallpapers and categories.
-        </p>
-      </div>
+      <!-- ADD WALLPAPER -->
 
       <div class="card">
+
+        <h2>🖼️ Add Wallpaper</h2>
+
+        <p>
+          Upload a new wallpaper to PIXORA.
+        </p>
+
+        <form id="wallpaperForm">
+
+          <div class="form-group">
+            <label for="wallpaperFile">
+              Wallpaper Image
+            </label>
+
+            <input
+              type="file"
+              id="wallpaperFile"
+              accept="image/*"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="wallpaperTitle">
+              Title
+            </label>
+
+            <input
+              type="text"
+              id="wallpaperTitle"
+              placeholder="Example: Gojo"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="wallpaperCategory">
+              Category
+            </label>
+
+            <select id="wallpaperCategory" required>
+
+              <option value="">
+                Select category
+              </option>
+
+              <option value="Anime">
+                Anime
+              </option>
+
+              <option value="Sports">
+                Sports
+              </option>
+
+              <option value="Gaming">
+                Gaming
+              </option>
+
+              <option value="Cars">
+                Cars
+              </option>
+
+              <option value="Nature">
+                Nature
+              </option>
+
+              <option value="Abstract">
+                Abstract
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="wallpaperTags">
+              Tags
+            </label>
+
+            <input
+              type="text"
+              id="wallpaperTags"
+              placeholder="gojo, anime, jujutsu kaisen"
+              required
+            >
+          </div>
+
+          <button
+            type="submit"
+            class="upload-btn"
+            id="uploadButton"
+          >
+            🚀 Publish Wallpaper
+          </button>
+
+        </form>
+
+        <div
+          class="status"
+          id="uploadStatus">
+        </div>
+
+      </div>
+
+
+      <!-- DASHBOARD -->
+
+      <div class="card">
+
         <h2>📊 Dashboard</h2>
+
         <p>
-          View and manage PIXORA content.
+          Manage PIXORA content and monitor your wallpaper collection.
         </p>
+
       </div>
 
+
+      <!-- SETTINGS -->
+
       <div class="card">
+
         <h2>⚙️ Settings</h2>
+
         <p>
           PIXORA administration settings.
         </p>
+
       </div>
 
     </section>
 
   </main>
+
 
   <script>
 
@@ -162,10 +333,11 @@
     const SUPABASE_ANON_KEY =
       "sb_publishable_mg6WiPQq2BTk_2YTdJkaJA_f4zQwPF-";
 
-    const supabaseClient = supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY
-    );
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
 
 
     // ==========================================
@@ -196,12 +368,216 @@
 
     document
       .getElementById("logoutButton")
-      .addEventListener("click", async () => {
+      .addEventListener(
+        "click",
+        async () => {
 
-        await supabaseClient.auth.signOut();
+          await supabaseClient.auth.signOut();
 
-        window.location.href = "login.html";
-      });
+          window.location.href =
+            "login.html";
+        }
+      );
+
+
+    // ==========================================
+    // UPLOAD FORM
+    // ==========================================
+
+    document
+      .getElementById("wallpaperForm")
+      .addEventListener(
+        "submit",
+        async (event) => {
+
+          event.preventDefault();
+
+          const file =
+            document.getElementById(
+              "wallpaperFile"
+            ).files[0];
+
+          const title =
+            document.getElementById(
+              "wallpaperTitle"
+            ).value.trim();
+
+          const category =
+            document.getElementById(
+              "wallpaperCategory"
+            ).value;
+
+          const tags =
+            document.getElementById(
+              "wallpaperTags"
+            ).value.trim();
+
+          const uploadButton =
+            document.getElementById(
+              "uploadButton"
+            );
+
+          const status =
+            document.getElementById(
+              "uploadStatus"
+            );
+
+
+          if (!file) {
+
+            status.style.display = "block";
+
+            status.textContent =
+              "Please select a wallpaper image.";
+
+            return;
+          }
+
+
+          try {
+
+            uploadButton.disabled = true;
+
+            uploadButton.textContent =
+              "Uploading...";
+
+            status.style.display = "block";
+
+            status.textContent =
+              "Uploading wallpaper...";
+
+
+            // ==================================
+            // CREATE UNIQUE FILE NAME
+            // ==================================
+
+            const fileName =
+              Date.now() +
+              "-" +
+              file.name
+                .replace(
+                  /[^a-zA-Z0-9._-]/g,
+                  "-"
+                );
+
+
+            // ==================================
+            // UPLOAD TO STORAGE
+            // ==================================
+
+            const {
+              error: storageError
+            } =
+              await supabaseClient.storage
+                .from("wallpapers")
+                .upload(
+                  fileName,
+                  file,
+                  {
+                    cacheControl: "3600",
+                    upsert: false
+                  }
+                );
+
+
+            if (storageError) {
+
+              throw storageError;
+            }
+
+
+            // ==================================
+            // GET PUBLIC IMAGE URL
+            // ==================================
+
+            const {
+              data: publicUrlData
+            } =
+              supabaseClient.storage
+                .from("wallpapers")
+                .getPublicUrl(
+                  fileName
+                );
+
+
+            const imageUrl =
+              publicUrlData.publicUrl;
+
+
+            // ==================================
+            // INSERT INTO DATABASE
+            // ==================================
+
+            const {
+              error: databaseError
+            } =
+              await supabaseClient
+                .from("wallpapers")
+                .insert({
+
+                  title:
+                    title,
+
+                  category:
+                    category,
+
+                  tags:
+                    tags,
+
+                  image_url:
+                    imageUrl,
+
+                  views:
+                    0,
+
+                  downloads:
+                    0
+
+                });
+
+
+            if (databaseError) {
+
+              throw databaseError;
+            }
+
+
+            // ==================================
+            // SUCCESS
+            // ==================================
+
+            status.textContent =
+              "✅ Wallpaper published successfully!";
+
+            document
+              .getElementById(
+                "wallpaperForm"
+              )
+              .reset();
+
+
+          } catch (error) {
+
+            console.error(
+              "PIXORA upload error:",
+              error
+            );
+
+            status.textContent =
+              "❌ Upload failed: " +
+              error.message;
+
+
+          } finally {
+
+            uploadButton.disabled = false;
+
+            uploadButton.textContent =
+              "🚀 Publish Wallpaper";
+          }
+
+        }
+      );
 
 
     // ==========================================
