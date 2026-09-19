@@ -2852,3 +2852,90 @@ body {
         background-position: 0% 50%;
     }
 }
+
+/* =========================================================
+   PIXORA — FINAL HERO TRANSITION FIX
+   ========================================================= */
+
+.hero {
+    position: relative;
+}
+
+.hero-slider {
+    position: relative;
+    display: grid;
+    overflow: hidden;
+    min-height: 390px;
+}
+
+.hero-slide {
+    grid-area: 1 / 1;
+
+    position: relative;
+    inset: auto;
+
+    min-height: 390px;
+
+    display: flex;
+    align-items: center;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: scale(1.03);
+
+    transition:
+        opacity 0.8s ease,
+        transform 1s ease,
+        visibility 0.8s ease;
+}
+
+.hero-slide.active {
+    position: relative;
+    inset: auto;
+
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: scale(1);
+
+    z-index: 2;
+}
+
+/* Keep the hero content transition smooth */
+.hero-slide .hero-content {
+    transform: translateY(18px);
+    opacity: 0;
+
+    transition:
+        transform 0.8s ease,
+        opacity 0.8s ease;
+}
+
+.hero-slide.active .hero-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Mobile hero height */
+@media (max-width: 760px) {
+    .hero-slider {
+        min-height: 360px;
+    }
+
+    .hero-slide {
+        min-height: 360px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-slider {
+        min-height: 315px;
+    }
+
+    .hero-slide {
+        min-height: 315px;
+    }
+}
