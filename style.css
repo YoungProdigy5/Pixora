@@ -3380,3 +3380,46 @@ body {
 #showAllBtn:active {
     transform: translateY(0) scale(0.97);
 }
+
+/* =========================================================
+   PIXORA — BUTTON FIX
+   ========================================================= */
+
+.hero button.primary-btn,
+#resetFilters {
+    color: #ffffff !important;
+
+    background: linear-gradient(
+        135deg,
+        #ff1744 0%,
+        #ff2f68 45%,
+        #7c3aed 100%
+    ) !important;
+
+    border: none !important;
+
+    box-shadow:
+        0 7px 22px rgba(255, 23, 68, 0.22),
+        0 5px 18px rgba(124, 58, 237, 0.16) !important;
+
+    transition:
+        transform 0.25s ease,
+        filter 0.25s ease,
+        box-shadow 0.25s ease !important;
+}
+
+.hero button.primary-btn:hover,
+#resetFilters:hover {
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+
+    box-shadow:
+        0 11px 28px rgba(255, 23, 68, 0.30),
+        0 8px 24px rgba(124, 58, 237, 0.24) !important;
+}
+
+.hero button.primary-btn:active,
+#resetFilters:active {
+    transform: translateY(0) scale(0.97);
+   }
