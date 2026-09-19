@@ -3563,3 +3563,127 @@ body {
         font-size: 12px;
     }
 }
+
+/* =========================================================
+   PIXORA — CREATOR / MESSAGE SYSTEM
+   ========================================================= */
+
+.pixora-admin-choice-card span {
+    color: #ff1744;
+}
+
+#pixoraAdminChoice {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: grid;
+    place-items: center;
+
+    padding: 20px;
+
+    background: rgba(0,0,0,.78);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.pixora-admin-choice-card {
+    width: min(390px,100%);
+
+    padding: 28px;
+
+    border-radius: 22px;
+
+    background: #12121a;
+    border: 1px solid rgba(255,255,255,.09);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.5);
+
+    text-align: center;
+}
+
+.pixora-choice-logo {
+    margin-bottom: 14px;
+
+    font-size: 22px;
+    font-weight: 950;
+    letter-spacing: 1.5px;
+}
+
+.pixora-choice-logo span {
+    color: #ff1744;
+}
+
+.pixora-admin-choice-card h2 {
+    margin-bottom: 5px;
+    font-size: 24px;
+}
+
+.pixora-admin-choice-card p {
+    margin-bottom: 20px;
+    color: #92929d;
+    font-size: 13px;
+}
+
+.pixora-admin-choice-card button {
+    width: 100%;
+    min-height: 46px;
+
+    margin-top: 9px;
+
+    border-radius: 12px;
+
+    color: #fff;
+
+    background: rgba(255,255,255,.07);
+
+    font-size: 13px;
+    font-weight: 850;
+}
+
+.pixora-admin-choice-card button:hover {
+    background: rgba(255,255,255,.12);
+}
+
+#adminDashboardChoice {
+    background:
+        linear-gradient(
+            135deg,
+            #ff1744 0%,
+            #ff2f68 45%,
+            #7c3aed 100%
+        );
+}
+
+/* Creator/message navigation helpers */
+
+.creator-link,
+.message-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 40px;
+    padding: 0 14px;
+
+    border-radius: 11px;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff1744,
+            #7c3aed
+        );
+
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.creator-link:hover,
+.message-link:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+           }
