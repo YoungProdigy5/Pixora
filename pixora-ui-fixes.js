@@ -825,9 +825,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     viewButton.dataset
                         .pixoraView;
 
-                const existingView =
-                    if (card) {
+                if (card) {
     card.click();
+}
+
+return;
 }
 
 return;
