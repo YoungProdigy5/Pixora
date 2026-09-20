@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in | PIXORA</title>
+    <link rel="stylesheet" href="style.css?v=5">
+
+    <style>
+        .auth-page {
+            min-height: calc(100vh - 70px);
+            display: grid;
+            place-items: center;
+            padding: 30px 16px 90px;
+        }
+
+        .auth-card {
+            width: min(420px, 100%);
+            padding: 28px;
+            border-radius: 22px;
+            background: #12121a;
+            border: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .auth-card h1 {
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        .auth-card > p {
+            color: #92929d;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .auth-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .auth-tab {
+            padding: 11px;
+            border-radius: 11px;
+            color: #b5b5c0;
+            background: rgba(255, 255, 255, .06);
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .auth-tab.active {
+            color: #fff;
+            background: #ff1744;
+        }
+
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+
+        .auth-form label {
+            display: block;
+            margin: 14px 0 6px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .auth-form input {
+            width: 100%;
+            min-height: 46px;
+            padding: 0 14px;
+            border-radius: 11px;
+            border: 1px solid rgba(255, 255, 255, .1);
+            background: rgba(255, 255, 255, .06);
+            color: inherit;
+            outline: none;
+        }
+
+        .auth-form input:focus {
+            border-color: #ff1744;
+        }
+
+        .auth-hint {
+            margin-top: 5px;
+            color: #858590;
+            font-size: 12px;
+        }
+
+        .auth-submit {
+            width: 100%;
+            min-height: 48px;
+            margin-top: 20px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff1744, #ff2f68, #7c3aed);
+        }
+
+        .auth-submit:disabled { opacity: .6; cursor: wait; }
+
+        .auth-message {
+            min-height: 20px;
+            margin-top: 14px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .light-mode .auth-card { background: #fff; border-color: rgba(0, 0, 0, .08); }
+        .light-mode .auth-tab { color: #55555f; background: #f1f1f5; }
+        .light-mode .auth-tab.active { color: #fff; background: #ff1744; }
+        .light-mode .auth-form input { background: #f4f4f7; border-color: rgba(0, 0, 0, .1); }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <a href="index.html" class="logo">PIX<span>ORA</span></a>
+</header>
+
+<main class="auth-page">
+    <section class="auth-card">
+
+        <h1>Welcome to PIXORA</h1>
+        <p>Log in to upload wallpapers, follow creators, and send messages.</p>
+
+        <div class="auth-tabs">
+            <button type="button" class="auth-tab active" id="loginTab">Log in</button>
+            <button type="button" class="auth-tab" id="signupTab">Sign up</button>
+        </div>
+
+        <!-- LOG IN (handled by login.js) -->
+        <form id="loginForm" class="auth-form active">
+            <label for="email">Email</label>
+            <input id="email" type="email" autocomplete="email" required>
+
+            <label for="password">Password</label>
+            <input id="password" type="password" autocomplete="current-password" required>
+
+            <button type="submit" class="auth-submit">Log in</button>
+            <p id="loginMessage" class="auth-message"></p>
+        </form>
+
+        <!-- SIGN UP -->
+        <form id="signupForm" class="auth-form">
+            <label for="signupUsername">Username</label>
+            <input id="signupUsername" type="text" autocomplete="username"
+                   minlength="3" maxlength="30" pattern="[A-Za-z0-9_]{3,30}" required>
+            <p class="auth-hint">Letters, numbers, and underscores. This is public.</p>
+
+            <label for="signupEmail">Email</label>
+            <input id="signupEmail" type="email" autocomplete="email" required>
+
+            <label for="signupPassword">Password</label>
+            <input id="signupPassword" type="password" autocomplete="new-password" minlength="8" required>
+            <p class="auth-hint">At least 8 characters.</p>
+
+            <button type="submit" class="auth-submit" id="signupButton">Create account</button>
+            <p id="signupMessage" class="auth-message"></p>
+        </form>
+
+    </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="login.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const supabase = window.pixoraSupabase;
+
+    const loginTab = document.getElementById("loginTab");
+    const signupTab = document.getElementById("signupTab");
+    const loginForm = document.getElementById("loginForm");
+    const signupForm = document.getElementById("signupForm");
+    const signupMessage = document.getElementById("signupMessage");
+    const signupButton = document.getElementById("signupButton");
+
+    // keep the saved theme
+    if (localStorage.getItem("pixoraTheme") === "light") {
+        document.body.classList.add("light-mode");
+    }
+
+    function showTab(name) {
+        const login = name === "login";
+
+        loginTab.classList.toggle("active", login);
+        signupTab.classList.toggle("active", !login);
+        loginForm.classList.toggle("active", login);
+        signupForm.classList.toggle("active", !login);
+    }
+
+    loginTab.addEventListener("click", () => showTab("login"));
+    signupTab.addEventListener("click", () => showTab("signup"));
+
+    if (location.hash === "#signup") showTab("signup");
+
+    function say(text, isError) {
+        signupMessage.textContent = text;
+        signupMessage.style.color = isError ? "#ff5575" : "#7ee787";
+    }
+
+    signupForm.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        if (!supabase) {
+            say("The connection to PIXORA is missing. Reload the page.", true);
+            return;
+        }
+
+        const username = document
+            .getElementById("signupUsername").value.trim().toLowerCase();
+        const email = document.getElementById("signupEmail").value.trim();
+        const password = document.getElementById("signupPassword").value;
+
+        if (!/^[a-z0-9_]{3,30}$/.test(username)) {
+            say("Username must be 3 to 30 letters, numbers, or underscores.", true);
+            return;
+        }
+
+        signupButton.disabled = true;
+        say("Creating your account...", false);
+
+        // where the confirmation email should send people back to
+        const accountUrl = new URL("account.html", location.href).href;
+
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                emailRedirectTo: accountUrl,
+                data: {
+                    username: username,
+                    display_name: username
+                }
+            }
+        });
+
+        signupButton.disabled = false;
+
+        if (error) {
+            say(error.message, true);
+            return;
+        }
+
+        // Email confirmation on: no session yet
+        if (!data.session) {
+            say("Check your email and tap the confirmation link to finish signing up.", false);
+            return;
+        }
+
+        window.location.href = "account.html";
+    });
+});
+</script>
+
+</body>
+</html>
