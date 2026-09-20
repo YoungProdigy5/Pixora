@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PIXORA | Moderation</title>
+
+  <style>
+    :root {
+      --bg: #0b0b0f;
+      --panel: #111118;
+      --line: #24242d;
+      --muted: #9a9aa6;
+      --text: #ffffff;
+      --brand: #ff1744;
+      --ok: #1fb76a;
+      --warn: #f0a020;
+      --bad: #ff5a5f;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    button { font: inherit; cursor: pointer; border: 0; color: inherit; }
+    button:disabled { opacity: .55; cursor: not-allowed; }
+    button:focus-visible, a:focus-visible, select:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+    }
+
+    .bar {
+      min-height: 64px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .logo { font-size: 24px; font-weight: bold; }
+    .logo span { color: var(--brand); }
+
+    .bar a {
+      color: var(--text);
+      text-decoration: none;
+      padding: 9px 14px;
+      border-radius: 8px;
+      background: #24242d;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    h1 { font-size: 28px; margin-bottom: 6px; }
+    .sub { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .tab.active { background: var(--brand); border-color: var(--brand); }
+
+    .count {
+      display: inline-block;
+      min-width: 20px;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.16);
+      font-size: 12px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .chip {
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .chip.active { color: var(--text); border-color: var(--brand); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .media {
+      background: #000;
+      aspect-ratio: 4 / 5;
+      display: grid;
+      place-items: center;
+    }
+
+    .media.video { aspect-ratio: 16 / 9; }
+
+    .media img, .media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .media video { object-fit: contain; }
+
+    .body { padding: 14px; flex: 1; }
+
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      background: #24242d;
+    }
+
+    .badge.pending { color: var(--warn); }
+    .badge.approved { color: var(--ok); }
+    .badge.rejected { color: var(--bad); }
+    .badge.deleted { color: var(--muted); }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 0 14px 14px;
+    }
+
+    .actions button {
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 13px;
+      background: #24242d;
+    }
+
+    .actions .approve { background: var(--ok); }
+    .actions .reject { background: #3a2a10; color: var(--warn); }
+    .actions .remove {
+      grid-column: 1 / -1;
+      background: transparent;
+      border: 1px solid #4a1f28;
+      color: var(--bad);
+    }
+
+    .notice {
+      padding: 40px 16px;
+      text-align: center;
+      color: var(--muted);
+      grid-column: 1 / -1;
+      line-height: 1.6;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      max-width: calc(100% - 32px);
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: #1c1c26;
+      border: 1px solid var(--line);
+      font-size: 14px;
+      display: none;
+      z-index: 10;
+    }
+
+    .toast.show { display: block; }
+    .toast.error { border-color: var(--bad); }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="bar">
+    <div class="logo">PIXORA<span>.</span></div>
+    <a href="admin.html">Back to dashboard</a>
+  </header>
+
+  <main>
+    <h1>Moderation</h1>
+    <p class="sub" id="who">Checking access...</p>
+
+    <div class="tabs">
+      <button class="tab active" id="tabWallpapers" type="button">
+        Wallpapers<span class="count" id="countWallpapers">0</span>
+      </button>
+      <button class="tab" id="tabVideos" type="button">
+        Videos<span class="count" id="countVideos">0</span>
+      </button>
+    </div>
+
+    <div class="filters" id="filters"></div>
+
+    <div class="grid" id="grid">
+      <div class="notice">Loading...</div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+
+  <script>
+    const db = window.pixoraSupabase;
+
+    const TYPES = {
+      wallpapers: {
+        table: "wallpapers",
+        label: "wallpaper",
+        mediaUrl: "image_url"
+      },
+      videos: {
+        table: "videos",
+        label: "video",
+        mediaUrl: "video_url"
+      }
+    };
+
+    const FILTERS = [
+      ["pending", "Pending"],
+      ["approved", "Approved"],
+      ["rejected", "Rejected"],
+      ["deleted", "Deleted"],
+      ["all", "All"]
+    ];
+
+    let currentType = "wallpapers";
+    let currentFilter = "pending";
+    let items = [];
+    let toastTimer;
+
+    const $ = id => document.getElementById(id);
+
+    function esc(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function toast(message, isError) {
+      const el = $("toast");
+      el.textContent = message;
+      el.className = "toast show" + (isError ? " error" : "");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { el.className = "toast"; }, 3500);
+    }
+
+    // ---------- access ----------
+
+    async function checkAdmin() {
+      const { data: { session } } = await db.auth.getSession();
+
+      if (!session) {
+        window.location.href = "login.html";
+        return false;
+      }
+
+      const { data, error } = await db
+        .from("pixora_admin_users")
+        .select("user_id")
+        .eq("user_id", session.user.id)
+        .maybeSingle();
+
+      if (error || !data) {
+        window.location.href = "index.html";
+        return false;
+      }
+
+      $("who").textContent = "Signed in as " + session.user.email;
+      return true;
+    }
+
+    // ---------- storage helpers ----------
+
+    function storagePath(url, bucket) {
+      if (!url) return null;
+
+      try {
+        const marker = "/storage/v1/object/public/" + bucket + "/";
+        const path = new URL(url).pathname;
+        const index = path.indexOf(marker);
+        if (index === -1) return null;
+        return decodeURIComponent(path.slice(index + marker.length));
+      } catch {
+        return null;
+      }
+    }
+
+    // ---------- data ----------
+
+    async function loadCounts() {
+      for (const key of Object.keys(TYPES)) {
+        const { count } = await db
+          .from(TYPES[key].table)
+          .select("id", { count: "exact", head: true })
+          .eq("status", "pending");
+
+        $(key === "wallpapers" ? "countWallpapers" : "countVideos")
+          .textContent = count ?? 0;
+      }
+    }
+
+    async function loadItems() {
+      const grid = $("grid");
+      grid.innerHTML = '<div class="notice">Loading...</div>';
+
+      let query = db
+        .from(TYPES[currentType].table)
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(60);
+
+      if (currentFilter !== "all") {
+        query = query.eq("status", currentFilter);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        grid.innerHTML =
+          '<div class="notice">Could not load uploads: ' +
+          esc(error.message) + "</div>";
+        return;
+      }
+
+      items = data || [];
+
+      // uploader names (wallpapers.user_id points at auth.users, so look up profiles separately)
+      const ids = [...new Set(items.map(i => i.user_id).filter(Boolean))];
+      const names = {};
+
+      if (ids.length) {
+        const { data: profiles } = await db
+          .from("profiles")
+          .select("user_id,username,display_name")
+          .in("user_id", ids);
+
+        (profiles || []).forEach(p => {
+          names[p.user_id] = p.username ? "@" + p.username : (p.display_name || "");
+        });
+      }
+
+      items.forEach(i => { i._uploader = names[i.user_id] || "Unknown uploader"; });
+
+      render();
+    }
+
+    // ---------- render ----------
+
+    function renderFilters() {
+      $("filters").innerHTML = FILTERS.map(([value, label]) =>
+        '<button type="button" class="chip' +
+        (value === currentFilter ? " active" : "") +
+        '" data-filter="' + value + '">' + label + "</button>"
+      ).join("");
+    }
+
+    function render() {
+      const grid = $("grid");
+      const type = TYPES[currentType];
+
+      if (!items.length) {
+        grid.innerHTML =
+          '<div class="notice">' +
+          (currentFilter === "pending"
+            ? "Nothing waiting for review. New " + type.label + " uploads will show up here."
+            : "No " + type.label + "s with this status.") +
+          "</div>";
+        return;
+      }
+
+      grid.innerHTML = items.map(item => {
+        const isVideo = currentType === "videos";
+        const status = esc(item.status);
+        const date = new Date(item.created_at).toLocaleString([], {
+          dateStyle: "medium",
+          timeStyle: "short"
+        });
+
+        const media = isVideo
+          ? '<div class="media video"><video controls playsinline preload="metadata" ' +
+            (item.thumbnail_url ? 'poster="' + esc(item.thumbnail_url) + '" ' : "") +
+            'src="' + esc(item.video_url) + '"></video></div>'
+          : '<div class="media"><img loading="lazy" src="' +
+            esc(item.image_url) + '" alt="' + esc(item.title) + '"></div>';
+
+        const approve = item.status !== "approved"
+          ? '<button type="button" class="approve" data-act="approved" data-id="' + item.id + '">Approve</button>'
+          : "";
+
+        const reject = item.status !== "rejected"
+          ? '<button type="button" class="reject" data-act="rejected" data-id="' + item.id + '">Reject</button>'
+          : "";
+
+        return (
+          '<article class="card">' + media +
+          '<div class="body">' +
+          '<span class="badge ' + status + '">' + status + "</span>" +
+          '<div class="title">' + esc(item.title) + "</div>" +
+          '<div class="meta">' +
+          esc(item.category || "No category") + "<br>" +
+          esc(item.tags || "No tags") + "<br>" +
+          esc(item._uploader) + "<br>" +
+          esc(date) +
+          "</div></div>" +
+          '<div class="actions">' + approve + reject +
+          '<button type="button" class="remove" data-act="delete" data-id="' + item.id + '">Delete permanently</button>' +
+          "</div></article>"
+        );
+      }).join("");
+    }
+
+    // ---------- actions ----------
+
+    async function setStatus(id, status, button) {
+      button.disabled = true;
+
+      const { error } = await db
+        .from(TYPES[currentType].table)
+        .update({ status })
+        .eq("id", id);
+
+      if (error) {
+        button.disabled = false;
+        toast("Could not update: " + error.message, true);
+        return;
+      }
+
+      toast(status === "approved" ? "Approved and now public." : "Rejected and hidden.");
+      await Promise.all([loadCounts(), loadItems()]);
+    }
+
+    async function deleteItem(id, button) {
+      const item = items.find(i => String(i.id) === String(id));
+      if (!item) return;
+
+      if (!confirm('Delete "' + (item.title || "this upload") +
+        '" permanently? This removes the files and cannot be undone.')) {
+        return;
+      }
+
+      button.disabled = true;
+
+      const { error } = await db
+        .from(TYPES[currentType].table)
+        .delete()
+        .eq("id", id);
+
+      if (error) {
+        button.disabled = false;
+        toast("Could not delete: " + error.message, true);
+        return;
+      }
+
+      // remove the files too (best effort)
+      const removals = [];
+
+      if (currentType === "wallpapers") {
+        const path = storagePath(item.image_url, "wallpapers");
+        if (path) removals.push(["wallpapers", path]);
+      } else {
+        const videoPath = storagePath(item.video_url, "videos");
+        const thumbPath = storagePath(item.thumbnail_url, "wallpapers");
+        if (videoPath) removals.push(["videos", videoPath]);
+        if (thumbPath) removals.push(["wallpapers", thumbPath]);
+      }
+
+      for (const [bucket, path] of removals) {
+        const { error: fileError } = await db.storage.from(bucket).remove([path]);
+        if (fileError) console.warn("PIXORA file cleanup:", fileError);
+      }
+
+      toast("Deleted.");
+      await Promise.all([loadCounts(), loadItems()]);
+    }
+
+    // ---------- events ----------
+
+    $("grid").addEventListener("click", event => {
+      const button = event.target.closest("button[data-act]");
+      if (!button) return;
+
+      const { act, id } = button.dataset;
+
+      if (act === "delete") {
+        deleteItem(id, button);
+      } else {
+        setStatus(id, act, button);
+      }
+    });
+
+    $("filters").addEventListener("click", event => {
+      const chip = event.target.closest("[data-filter]");
+      if (!chip) return;
+
+      currentFilter = chip.dataset.filter;
+      renderFilters();
+      loadItems();
+    });
+
+    function switchType(type) {
+      currentType = type;
+      $("tabWallpapers").classList.toggle("active", type === "wallpapers");
+      $("tabVideos").classList.toggle("active", type === "videos");
+      loadItems();
+    }
+
+    $("tabWallpapers").addEventListener("click", () => switchType("wallpapers"));
+    $("tabVideos").addEventListener("click", () => switchType("videos"));
+
+    // ---------- start ----------
+
+    (async function start() {
+      if (!db) {
+        $("who").textContent = "Supabase connection is missing.";
+        return;
+      }
+
+      if (!(await checkAdmin())) return;
+
+      renderFilters();
+      await Promise.all([loadCounts(), loadItems()]);
+    })();
+  </script>
+
+</body>
+</html>
