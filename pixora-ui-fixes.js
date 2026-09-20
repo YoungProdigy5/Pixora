@@ -912,24 +912,49 @@ document.addEventListener("DOMContentLoaded", () => {
         addCardControls();
     }
 
-    const observer =
-        new MutationObserver(
-            () => {
-                refreshUI();
-            }
-        );
+    let uiRefreshQueued = false;
 
-    observer.observe(
-        document.body,
-        {
-            childList: true,
-            subtree: true
+const queueUIRefresh = () => {
+    if (uiRefreshQueued) return;
+
+    uiRefreshQueued = true;
+
+    requestAnimationFrame(() => {
+        uiRefreshQueued = false;
+        refreshUI();
+    });
+};
+
+const observer =
+    new MutationObserver(
+        mutations => {
+            if (
+                mutations.some(
+                    mutation =>
+                        mutation.addedNodes.length > 0
+                )
+            ) {
+                queueUIRefresh();
+            }
         }
     );
 
-    createDownloadModal();
+[
+    document.getElementById("categoryList"),
+    document.getElementById("wallpaperGrid"),
+    document.getElementById("trendingGrid")
+]
+    .filter(Boolean)
+    .forEach(target => {
+        observer.observe(target, {
+            childList: true,
+            subtree: true
+        });
+    });
 
-    refreshUI();
+createDownloadModal();
+
+refreshUI();
 
     /*
     =====================================================
