@@ -657,11 +657,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         const image = imageUrl(item);
 
         if (modalArt) {
-            modalArt.src = image;
-            modalArt.alt =
-                item?.title ||
-                item?.name ||
-                "PIXORA Wallpaper";
+    modalArt.innerHTML = image
+        ? `
+            <img
+                src="${escapeHtml(image)}"
+                alt="${escapeHtml(
+                    item?.title ||
+                    item?.name ||
+                    "PIXORA Wallpaper"
+                )}"
+            >
+        `
+        : `<div class="modal-art-empty">PIXORA</div>`;
         }
 
         if (modalArt) {
