@@ -664,11 +664,20 @@ document.addEventListener("DOMContentLoaded", async () => {
                 "PIXORA Wallpaper";
         }
 
-        if (modalTitle) {
-            modalTitle.textContent =
-                item?.title ||
-                item?.name ||
-                "PIXORA Wallpaper";
+        if (modalArt) {
+    modalArt.innerHTML = image
+        ? `
+            <img
+                src="${escapeHtml(image)}"
+                alt="${escapeHtml(
+                    item?.title ||
+                    item?.name ||
+                    "PIXORA Wallpaper"
+                )}"
+            >
+        `
+        : `<div class="modal-art-empty">PIXORA</div>`;
+    }
         }
 
         if (modalDetails) {
