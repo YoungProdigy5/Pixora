@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creators | PIXORA</title>
+    <link rel="stylesheet" href="style.css?v=5">
+
+    <style>
+        .creator-page {
+            width: min(1100px, calc(100% - 28px));
+            margin: 0 auto;
+            padding: 30px 0 110px;
+        }
+
+        .creator-header {
+            margin-bottom: 24px;
+        }
+
+        .creator-header .section-label {
+            color: #ff1744;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+        }
+
+        .creator-header h1 {
+            margin-top: 6px;
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 950;
+        }
+
+        .creator-header p {
+            margin-top: 7px;
+            color: #92929d;
+            font-size: 14px;
+        }
+
+        .creator-search {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .creator-search input {
+            flex: 1;
+            min-height: 48px;
+            padding: 0 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,.08);
+            background: rgba(255,255,255,.05);
+            color: #fff;
+        }
+
+        .creator-search button {
+            min-width: 105px;
+            border-radius: 14px;
+            color: #fff;
+            font-weight: 850;
+            background: linear-gradient(135deg,#ff1744,#ff2f68,#7c3aed);
+        }
+
+        .creator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(230px,1fr));
+            gap: 14px;
+        }
+
+        .creator-card {
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,.07);
+            background: rgba(18,18,26,.82);
+        }
+
+        .creator-avatar {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            margin-bottom: 13px;
+            overflow: hidden;
+            background: linear-gradient(135deg,#ff1744,#7c3aed);
+            font-size: 21px;
+            font-weight: 950;
+        }
+
+        .creator-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .creator-name {
+            font-size: 17px;
+            font-weight: 900;
+        }
+
+        .creator-username {
+            margin-top: 3px;
+            color: #ff4d70;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .creator-bio {
+            min-height: 40px;
+            margin: 10px 0;
+            color: #9999a5;
+            font-size: 12px;
+        }
+
+        .creator-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .creator-actions button {
+            flex: 1;
+            min-height: 38px;
+            border-radius: 11px;
+            font-size: 11px;
+            font-weight: 850;
+        }
+
+        .creator-profile-btn {
+            color: #fff;
+            background: rgba(255,255,255,.07);
+        }
+
+        .creator-message-btn {
+            color: #fff;
+            background: linear-gradient(135deg,#ff1744,#7c3aed);
+        }
+
+        .creator-empty {
+            padding: 50px 20px;
+            text-align: center;
+            color: #888894;
+        }
+
+        @media(max-width:600px) {
+            .creator-search {
+                flex-direction: column;
+            }
+
+            .creator-search button {
+                min-height: 46px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <header class="topbar">
+        <a href="index.html" class="logo">PIX<span>ORA</span></a>
+
+        <div class="top-actions">
+            <a href="messages.html" class="icon-btn" title="Messages">💬</a>
+            <a href="account.html" class="auth-btn">Account</a>
+        </div>
+    </header>
+
+    <main class="creator-page">
+
+        <div class="creator-header">
+            <span class="section-label">PIXORA COMMUNITY</span>
+            <h1>Creators</h1>
+            <p>Find other PIXORA creators by username.</p>
+        </div>
+
+        <form id="creatorSearchForm" class="creator-search">
+            <input
+                id="creatorSearchInput"
+                type="search"
+                placeholder="Search username..."
+                autocomplete="off"
+            >
+            <button type="submit">Search</button>
+        </form>
+
+        <div id="creatorGrid" class="creator-grid"></div>
+
+        <div id="creatorEmpty" class="creator-empty" hidden>
+            No creators found.
+        </div>
+
+    </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const supabase = window.pixoraSupabase;
+
+    if (!supabase) {
+        console.error("PIXORA Supabase client missing.");
+        return;
+    }
+
+    const grid = document.getElementById("creatorGrid");
+    const empty = document.getElementById("creatorEmpty");
+    const input = document.getElementById("creatorSearchInput");
+    const form = document.getElementById("creatorSearchForm");
+
+    let currentUser = null;
+    let searchTimer = null;
+
+    async function getUser() {
+        const { data } = await supabase.auth.getSession();
+        currentUser = data.session?.user || null;
+        return currentUser;
+    }
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replace(/&/g,"&amp;")
+            .replace(/</g,"&lt;")
+            .replace(/>/g,"&gt;")
+            .replace(/"/g,"&quot;")
+            .replace(/'/g,"&#039;");
+    }
+
+    function avatar(profile) {
+        if (profile.avatar_url) {
+            return `<img src="${escapeHtml(profile.avatar_url)}" alt="">`;
+        }
+
+        const name =
+            profile.display_name ||
+            profile.username ||
+            "P";
+
+        return escapeHtml(name.charAt(0).toUpperCase());
+    }
+
+    function showEmpty(text) {
+        empty.textContent = text;
+        empty.hidden = false;
+    }
+
+    function renderCreators(data) {
+
+        grid.innerHTML = "";
+
+        if (!data.length) {
+            showEmpty("No creators found.");
+            return;
+        }
+
+        empty.hidden = true;
+
+        data.forEach(profile => {
+
+            const card = document.createElement("article");
+            card.className = "creator-card";
+
+            card.innerHTML = `
+                <div class="creator-avatar">
+                    ${avatar(profile)}
+                </div>
+
+                <div class="creator-name">
+                    ${escapeHtml(profile.display_name || profile.username)}
+                </div>
+
+                <div class="creator-username">
+                    @${escapeHtml(profile.username)}
+                </div>
+
+                <div class="creator-bio">
+                    ${escapeHtml(profile.bio || "PIXORA creator")}
+                </div>
+
+                <div class="creator-actions">
+                    <button class="creator-profile-btn"
+                        data-profile="${escapeHtml(profile.user_id)}">
+                        Profile
+                    </button>
+
+                    <button class="creator-message-btn"
+                        data-message="${escapeHtml(profile.user_id)}">
+                        Message
+                    </button>
+                </div>
+            `;
+
+            grid.appendChild(card);
+        });
+    }
+
+    /* One click handler for every button in the grid */
+    grid.addEventListener("click", async event => {
+
+        const profileButton = event.target.closest("[data-profile]");
+        const messageButton = event.target.closest("[data-message]");
+
+        if (profileButton) {
+            window.location.href =
+                "creator.html?id=" +
+                encodeURIComponent(profileButton.dataset.profile);
+            return;
+        }
+
+        if (!messageButton) return;
+
+        if (!currentUser) {
+            window.location.href = "login.html";
+            return;
+        }
+
+        const otherUser = messageButton.dataset.message;
+
+        if (otherUser === currentUser.id) {
+            window.location.href = "account.html";
+            return;
+        }
+
+        messageButton.disabled = true;
+
+        const { data, error } =
+            await supabase.rpc(
+                "start_private_conversation",
+                {
+                    p_other_user: otherUser
+                }
+            );
+
+        if (error) {
+            console.error(error);
+            messageButton.disabled = false;
+            alert("Could not start conversation.");
+            return;
+        }
+
+        window.location.href =
+            "messages.html?conversation=" +
+            encodeURIComponent(data);
+    });
+
+    async function searchCreators(term = "") {
+
+        let query =
+            supabase
+                .from("profiles")
+                .select("user_id,username,display_name,bio,avatar_url")
+                .not("username","is",null)
+                .order("username",{ascending:true})
+                .limit(30);
+
+        /* escape LIKE wildcards so "_" and "%" search literally */
+        const clean = term.trim().toLowerCase().replace(/[%_\\]/g, "\\$&");
+
+        if (clean) {
+            query = query.ilike("username", "%" + clean + "%");
+        }
+
+        const { data, error } = await query;
+
+        if (error) {
+            console.error("Creator search:", error);
+            grid.innerHTML = "";
+            showEmpty("Could not load creators. Try again in a moment.");
+            return;
+        }
+
+        renderCreators(data || []);
+    }
+
+    form.addEventListener("submit", event => {
+        event.preventDefault();
+        searchCreators(input.value);
+    });
+
+    input.addEventListener("input", () => {
+        clearTimeout(searchTimer);
+
+        searchTimer = setTimeout(() => {
+            searchCreators(input.value);
+        }, 250);
+    });
+
+    await getUser();
+    await searchCreators();
+});
+</script>
+
+</body>
+</html>
