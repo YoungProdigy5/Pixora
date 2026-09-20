@@ -826,37 +826,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         .pixoraView;
 
                 const existingView =
-                    document.querySelector(
-                        `[data-preview-wallpaper="${id}"]`
-                    );
+                    if (card) {
+    card.click();
+}
 
-                if (existingView) {
-                    existingView.click();
-                    return;
-                }
-
-                const item =
-                    findWallpaper(id);
-
-                if (item) {
-                    const image =
-                        getImageFromWallpaper(
-                            item
-                        );
-
-                    if (
-                        image &&
-                        typeof window
-                            .openWallpaperPreview ===
-                            "function"
-                    ) {
-                        window.openWallpaperPreview(
-                            item
-                        );
-                    }
-                }
-
-                return;
+return;
             }
 
             if (downloadButton) {
