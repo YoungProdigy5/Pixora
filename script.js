@@ -886,26 +886,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    authButton?.addEventListener(
-        "click",
-        async () => {
-            if (currentUser) {
-                if (accountSection) {
-                    accountSection.hidden =
-                        false;
-                }
-
-                scrollToSection(
-                    "account"
-                );
-
-                return;
-            }
-
+   authButton?.addEventListener(
+    "click",
+    async () => {
+        if (currentUser) {
             window.location.href =
-                "login.html";
+                "account.html";
+
+            return;
         }
-    );
+
+        window.location.href =
+            "login.html";
+    }
+); 
 
     accountNavBtn?.addEventListener(
         "click",
