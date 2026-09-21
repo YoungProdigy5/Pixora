@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages | PIXORA</title>
+    <link rel="stylesheet" href="style.css?v=5">
+
+    <style>
+        .messages-page {
+            width: min(1100px, calc(100% - 20px));
+            margin: auto;
+            padding: 25px 0 100px;
+        }
+
+        .messages-title {
+            margin-bottom: 18px;
+        }
+
+        .messages-title h1 {
+            font-size: 28px;
+            font-weight: 950;
+        }
+
+        .messages-title p {
+            margin-top: 5px;
+            color: #90909b;
+            font-size: 13px;
+        }
+
+        .message-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.07);
+            background: #12121a;
+        }
+
+        .conversation-list {
+            border-right: 1px solid rgba(255,255,255,.07);
+            overflow-y: auto;
+        }
+
+        .conversation-heading {
+            padding: 17px;
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        .conversation-item {
+            width: 100%;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            text-align: left;
+            color: #fff;
+            background: transparent;
+            border-bottom: 1px solid rgba(255,255,255,.04);
+        }
+
+        .conversation-item:hover,
+        .conversation-item.active {
+            background: rgba(255,255,255,.06);
+        }
+
+        .conversation-text {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .conversation-user {
+            font-weight: 850;
+            font-size: 13px;
+        }
+
+        .conversation-preview {
+            margin-top: 3px;
+            color: #858590;
+            font-size: 11px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .mini-avatar {
+            width: 38px;
+            height: 38px;
+            flex: 0 0 auto;
+            border-radius: 50%;
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+            font-size: 14px;
+            font-weight: 900;
+            background: linear-gradient(135deg,#ff1744,#7c3aed);
+        }
+
+        .mini-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .chat-panel {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .chat-header {
+            min-height: 60px;
+            padding: 10px 17px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            font-weight: 900;
+        }
+
+        .chat-person {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .chat-person span:last-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .chat-tools {
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .chat-tools button {
+            background: transparent;
+            color: #858590;
+            font-size: 12px;
+            text-decoration: underline;
+        }
+
+        .chat-messages {
+            flex: 1;
+            min-height: 460px;
+            max-height: 560px;
+            overflow-y: auto;
+            padding: 18px;
+        }
+
+        .chat-empty {
+            height: 100%;
+            min-height: 400px;
+            display: grid;
+            place-items: center;
+            color: #777782;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .message-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .message-row.mine {
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: min(75%,480px);
+            padding: 10px 13px;
+            border-radius: 15px;
+            background: rgba(255,255,255,.07);
+            font-size: 13px;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .message-row.mine .message-bubble {
+            background: linear-gradient(135deg,#ff1744,#7c3aed);
+        }
+
+        .message-bubble audio {
+            display: block;
+            width: 230px;
+            max-width: 100%;
+            height: 38px;
+            margin-top: 4px;
+        }
+
+        .voice-label {
+            font-size: 11px;
+            opacity: .85;
+        }
+
+        .message-time {
+            margin-top: 4px;
+            opacity: .55;
+            font-size: 9px;
+        }
+
+        .blocked-banner {
+            padding: 12px 17px;
+            font-size: 13px;
+            text-align: center;
+            color: #ffb4c0;
+            background: rgba(255,23,68,.1);
+            border-top: 1px solid rgba(255,255,255,.07);
+        }
+
+        .blocked-banner button {
+            margin-left: 8px;
+            padding: 6px 12px;
+            border-radius: 9px;
+            color: #fff;
+            background: rgba(255,255,255,.12);
+            font-weight: 800;
+            font-size: 12px;
+        }
+
+        .chat-status {
+            min-height: 16px;
+            padding: 0 14px;
+            font-size: 12px;
+            color: #ff8fa3;
+        }
+
+        .chat-form {
+            display: flex;
+            gap: 9px;
+            padding: 12px;
+            border-top: 1px solid rgba(255,255,255,.07);
+            align-items: center;
+        }
+
+        .chat-form input {
+            flex: 1;
+            min-width: 0;
+            min-height: 44px;
+            padding: 0 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,.08);
+            background: rgba(255,255,255,.05);
+            color: #fff;
+        }
+
+        .chat-form button {
+            min-width: 75px;
+            min-height: 44px;
+            border-radius: 12px;
+            color: #fff;
+            background: linear-gradient(135deg,#ff1744,#7c3aed);
+            font-weight: 900;
+        }
+
+        .chat-form button.mic-btn {
+            min-width: 46px;
+            width: 46px;
+            background: rgba(255,255,255,.09);
+            font-size: 18px;
+        }
+
+        .record-controls {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .record-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff1744;
+            animation: recordPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes recordPulse {
+            50% { opacity: .25; }
+        }
+
+        .record-time {
+            flex: 1;
+            font-weight: 800;
+            font-size: 15px;
+        }
+
+        .chat-form button.record-cancel {
+            background: rgba(255,255,255,.09);
+        }
+
+        @media(max-width:700px) {
+            .message-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .conversation-list {
+                max-height: 190px;
+                border-right: 0;
+                border-bottom: 1px solid rgba(255,255,255,.07);
+            }
+
+            .chat-messages {
+                min-height: 390px;
+            }
+        }
+
+        .light-mode .message-layout { background: #fff; border-color: rgba(0,0,0,.08); }
+        .light-mode .conversation-item { color: #111116; }
+        .light-mode .chat-form input { color: #111116; background: #f1f1f5; border-color: rgba(0,0,0,.08); }
+        .light-mode .message-bubble { background: #eeeef3; }
+        .light-mode .message-row.mine .message-bubble { color: #fff; }
+        .light-mode .chat-form button.mic-btn,
+        .light-mode .chat-form button.record-cancel { color: #111116; background: #e8e8ee; }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <a href="index.html" class="logo">PIX<span>ORA</span></a>
+
+    <div class="top-actions">
+        <a href="index.html" class="auth-btn">🏠 Home</a>
+        <a href="creators.html" class="auth-btn">Creators</a>
+        <a href="account.html" class="auth-btn">Account</a>
+    </div>
+</header>
+
+<main class="messages-page">
+
+    <div class="messages-title">
+        <h1>Messages</h1>
+        <p>Private conversations between PIXORA creators.</p>
+    </div>
+
+    <section class="message-layout">
+
+        <aside class="conversation-list">
+            <div class="conversation-heading">
+                Conversations
+            </div>
+
+            <div id="conversationList"></div>
+        </aside>
+
+        <section class="chat-panel">
+
+            <div id="chatHeader" class="chat-header">
+                Select a conversation
+            </div>
+
+            <div id="chatMessages" class="chat-messages">
+                <div class="chat-empty">
+                    Choose a creator conversation to start messaging.
+                </div>
+            </div>
+
+            <div id="blockedBanner" class="blocked-banner" hidden>
+                You blocked this person.
+                <button type="button" id="bannerUnblock">Unblock</button>
+            </div>
+
+            <div id="chatStatus" class="chat-status"></div>
+
+            <form id="messageForm" class="chat-form">
+
+                <input
+                    id="messageInput"
+                    type="text"
+                    maxlength="2000"
+                    placeholder="Write a message..."
+                    autocomplete="off"
+                >
+
+                <button type="button" id="micBtn" class="mic-btn" aria-label="Record a voice message" title="Voice message">🎤</button>
+
+                <button type="submit" id="sendBtn">
+                    Send
+                </button>
+
+                <div id="recordControls" class="record-controls" hidden>
+                    <span class="record-dot"></span>
+                    <span class="record-time" id="recordTime">0:00</span>
+                    <button type="button" id="recordCancel" class="record-cancel">Cancel</button>
+                    <button type="button" id="recordSend">Send</button>
+                </div>
+
+            </form>
+
+        </section>
+
+    </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const supabase = window.pixoraSupabase;
+
+    if (!supabase) return;
+
+    if (localStorage.getItem("pixoraTheme") === "light") {
+        document.body.classList.add("light-mode");
+    }
+
+    const $ = id => document.getElementById(id);
+
+    const conversationList = $("conversationList");
+    const chatMessages = $("chatMessages");
+    const chatHeader = $("chatHeader");
+    const messageForm = $("messageForm");
+    const messageInput = $("messageInput");
+    const chatStatus = $("chatStatus");
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replace(/&/g,"&amp;")
+            .replace(/</g,"&lt;")
+            .replace(/>/g,"&gt;")
+            .replace(/"/g,"&quot;")
+            .replace(/'/g,"&#039;");
+    }
+
+    const { data: sessionData } =
+        await supabase.auth.getSession();
+
+    const me = sessionData.session?.user;
+
+    if (!me) {
+        location.href = "login.html";
+        return;
+    }
+
+    let conversations = [];
+    let active = null;
+    let blockedByMe = false;
+    let refreshTimer = null;
+
+    /* =====================================================
+       HELPERS
+       ===================================================== */
+
+    function displayName(profile) {
+        return profile?.display_name || profile?.username || "PIXORA Creator";
+    }
+
+    function avatarHtml(profile) {
+        const name = displayName(profile);
+
+        const inner = profile?.avatar_url
+            ? `<img src="${escapeHtml(profile.avatar_url)}" alt="">`
+            : escapeHtml(name.charAt(0).toUpperCase());
+
+        return `<span class="mini-avatar">${inner}</span>`;
+    }
+
+    function formatSeconds(total) {
+        const seconds = Math.max(0, Math.round(total || 0));
+        return Math.floor(seconds / 60) + ":" + String(seconds % 60).padStart(2, "0");
+    }
+
+    function previewText(message) {
+        if (!message) return "No messages yet.";
+        if (message.kind === "audio") return "🎤 Voice message";
+        return message.body || "";
+    }
+
+    function setStatus(text) {
+        chatStatus.textContent = text || "";
+    }
+
+    /* =====================================================
+       CONVERSATION LIST
+       ===================================================== */
+
+    async function loadConversations() {
+
+        const { data: memberships, error } =
+            await supabase
+                .from("conversation_members")
+                .select("conversation_id")
+                .eq("user_id", me.id);
+
+        if (error) {
+            console.error(error);
+            return;
+        }
+
+        const ids = (memberships || []).map(item => item.conversation_id);
+
+        if (!ids.length) {
+            conversations = [];
+            renderConversationList();
+            return;
+        }
+
+        const { data: others } =
+            await supabase
+                .from("conversation_members")
+                .select("conversation_id,user_id")
+                .in("conversation_id", ids)
+                .neq("user_id", me.id);
+
+        const otherByConversation = {};
+
+        (others || []).forEach(item => {
+            otherByConversation[item.conversation_id] = item.user_id;
+        });
+
+        const otherIds = [...new Set(Object.values(otherByConversation))];
+        const profiles = {};
+
+        if (otherIds.length) {
+
+            const { data: profileRows } =
+                await supabase
+                    .from("profiles")
+                    .select("user_id,username,display_name,avatar_url")
+                    .in("user_id", otherIds);
+
+            (profileRows || []).forEach(row => {
+                profiles[row.user_id] = row;
+            });
+        }
+
+        const latestResults = await Promise.all(
+            ids.map(id =>
+                supabase
+                    .from("messages")
+                    .select("body,kind,sender_id,created_at")
+                    .eq("conversation_id", id)
+                    .order("created_at", { ascending: false })
+                    .limit(1)
+                    .maybeSingle()
+            )
+        );
+
+        conversations = ids
+            .map((id, index) => ({
+                id,
+                otherId: otherByConversation[id],
+                profile: profiles[otherByConversation[id]] || null,
+                latest: latestResults[index].data || null
+            }))
+            .filter(item => item.otherId)
+            .sort((a, b) => {
+                const aTime = a.latest ? new Date(a.latest.created_at).getTime() : 0;
+                const bTime = b.latest ? new Date(b.latest.created_at).getTime() : 0;
+                return bTime - aTime;
+            });
+
+        if (active) {
+            const fresh = conversations.find(item => String(item.id) === String(active.id));
+            if (fresh) active = fresh;
+        }
+
+        renderConversationList();
+    }
+
+    function renderConversationList() {
+
+        conversationList.innerHTML = "";
+
+        if (!conversations.length) {
+            conversationList.innerHTML =
+                `<div style="padding:17px;color:#777;font-size:12px">
+                    No conversations yet.
+                </div>`;
+            return;
+        }
+
+        conversations.forEach(item => {
+
+            const button = document.createElement("button");
+
+            button.type = "button";
+            button.className =
+                "conversation-item" +
+                (active && String(active.id) === String(item.id) ? " active" : "");
+
+            button.innerHTML = `
+                ${avatarHtml(item.profile)}
+                <span class="conversation-text">
+                    <div class="conversation-user">${escapeHtml(displayName(item.profile))}</div>
+                    <div class="conversation-preview">${escapeHtml(previewText(item.latest))}</div>
+                </span>
+            `;
+
+            button.addEventListener("click", () => openConversation(item.id));
+
+            conversationList.appendChild(button);
+        });
+    }
+
+    function scheduleListRefresh() {
+        clearTimeout(refreshTimer);
+        refreshTimer = setTimeout(loadConversations, 500);
+    }
+
+    /* =====================================================
+       CHAT HEADER + BLOCK STATE
+       ===================================================== */
+
+    function renderHeader() {
+
+        if (!active) return;
+
+        chatHeader.innerHTML = `
+            <a class="chat-person" href="creator.html?id=${encodeURIComponent(active.otherId)}">
+                ${avatarHtml(active.profile)}
+                <span>${escapeHtml(displayName(active.profile))}</span>
+            </a>
+
+            <div class="chat-tools">
+                <button type="button" id="chatBlock">${blockedByMe ? "Unblock" : "Block"}</button>
+                <button type="button" id="chatReport">Report</button>
+            </div>
+        `;
+
+        $("chatBlock").addEventListener("click", toggleBlock);
+        $("chatReport").addEventListener("click", reportUser);
+    }
+
+    function updateComposer() {
+
+        const locked = !active || blockedByMe;
+
+        messageForm.hidden = !active || blockedByMe;
+        $("blockedBanner").hidden = !blockedByMe;
+
+        messageInput.disabled = locked;
+    }
+
+    async function loadBlockState() {
+
+        const { data } =
+            await supabase
+                .from("blocks")
+                .select("blocker_id")
+                .eq("blocker_id", me.id)
+                .eq("blocked_id", active.otherId)
+                .maybeSingle();
+
+        blockedByMe = !!data;
+    }
+
+    async function toggleBlock() {
+
+        if (!active) return;
+
+        if (!blockedByMe) {
+
+            if (!confirm("Block " + displayName(active.profile) +
+                "? You won't be able to message each other.")) {
+                return;
+            }
+
+            const { error } = await supabase
+                .from("blocks")
+                .insert({ blocker_id: me.id, blocked_id: active.otherId });
+
+            if (error && error.code !== "23505") {
+                setStatus("Could not block. Try again.");
+                return;
+            }
+
+            await supabase.from("follows")
+                .delete()
+                .eq("follower_id", me.id)
+                .eq("following_id", active.otherId);
+
+            blockedByMe = true;
+
+        } else {
+
+            const { error } = await supabase
+                .from("blocks")
+                .delete()
+                .eq("blocker_id", me.id)
+                .eq("blocked_id", active.otherId);
+
+            if (error) {
+                setStatus("Could not unblock. Try again.");
+                return;
+            }
+
+            blockedByMe = false;
+        }
+
+        setStatus("");
+        renderHeader();
+        updateComposer();
+    }
+
+    async function reportUser() {
+
+        if (!active) return;
+
+        const reason = (prompt(
+            "Why are you reporting " + displayName(active.profile) + "?"
+        ) || "").trim();
+
+        if (!reason) return;
+
+        if (reason.length < 3 || reason.length > 500) {
+            setStatus("Please write between 3 and 500 characters.");
+            return;
+        }
+
+        const { error } = await supabase
+            .from("reports")
+            .insert({
+                reporter_id: me.id,
+                reported_user_id: active.otherId,
+                reason: reason
+            });
+
+        if (error) {
+            console.error(error);
+            setStatus("Could not send the report. Try again.");
+            return;
+        }
+
+        setStatus("Thanks. Your report was sent to the PIXORA team.");
+    }
+
+    $("bannerUnblock").addEventListener("click", toggleBlock);
+
+    /* =====================================================
+       MESSAGES
+       ===================================================== */
+
+    async function signedUrlsFor(messages) {
+
+        const paths = messages
+            .filter(item => item.kind === "audio" && item.audio_path)
+            .map(item => item.audio_path);
+
+        const urls = {};
+
+        if (!paths.length) return urls;
+
+        const { data, error } =
+            await supabase
+                .storage
+                .from("voice-messages")
+                .createSignedUrls(paths, 3600);
+
+        if (error) {
+            console.error("Voice URLs:", error);
+            return urls;
+        }
+
+        (data || []).forEach(item => {
+            if (item.signedUrl) urls[item.path] = item.signedUrl;
+        });
+
+        return urls;
+    }
+
+    function renderMessage(message, urls) {
+
+        const row = document.createElement("div");
+        const mine = message.sender_id === me.id;
+
+        row.className = "message-row" + (mine ? " mine" : "");
+
+        const bubble = document.createElement("div");
+        bubble.className = "message-bubble";
+
+        const time = new Date(message.created_at)
+            .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+        let content;
+
+        if (message.kind === "audio") {
+
+            const url = urls[message.audio_path];
+
+            content = `
+                <div class="voice-label">🎤 Voice message · ${escapeHtml(formatSeconds(message.audio_seconds))}</div>
+                ${
+                    url
+                        ? `<audio controls preload="metadata" src="${escapeHtml(url)}"></audio>`
+                        : `<div class="voice-label">Could not load this voice message.</div>`
+                }
+            `;
+
+        } else {
+
+            content = `<div>${escapeHtml(message.body)}</div>`;
+        }
+
+        bubble.innerHTML = `
+            ${content}
+            <div class="message-time">${escapeHtml(time)}</div>
+        `;
+
+        row.appendChild(bubble);
+        chatMessages.appendChild(row);
+    }
+
+    async function loadMessages() {
+
+        if (!active) return;
+
+        const conversationId = active.id;
+
+        const { data, error } =
+            await supabase
+                .from("messages")
+                .select("id,sender_id,body,created_at,kind,audio_path,audio_seconds")
+                .eq("conversation_id", conversationId)
+                .order("created_at", { ascending: true });
+
+        if (error) {
+            console.error(error);
+            chatMessages.innerHTML =
+                `<div class="chat-empty">Could not load messages.</div>`;
+            return;
+        }
+
+        /* the person may have switched conversations while this loaded */
+        if (!active || active.id !== conversationId) return;
+
+        chatMessages.innerHTML = "";
+
+        if (!data?.length) {
+            chatMessages.innerHTML =
+                `<div class="chat-empty">
+                    No messages yet. Say hello 👋
+                </div>`;
+            return;
+        }
+
+        const urls = await signedUrlsFor(data);
+
+        data.forEach(message => renderMessage(message, urls));
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    async function openConversation(id) {
+
+        let conversation =
+            conversations.find(item => String(item.id) === String(id));
+
+        if (!conversation) {
+            await loadConversations();
+
+            conversation =
+                conversations.find(item => String(item.id) === String(id));
+        }
+
+        if (!conversation) {
+            chatHeader.textContent = "Conversation not found";
+            chatMessages.innerHTML =
+                `<div class="chat-empty">This conversation doesn't exist or you're not part of it.</div>`;
+            return;
+        }
+
+        cancelRecordingSilently();
+
+        active = conversation;
+        blockedByMe = false;
+        setStatus("");
+
+        renderConversationList();
+        renderHeader();
+
+        await loadBlockState();
+
+        renderHeader();
+        updateComposer();
+
+        await loadMessages();
+    }
+
+    /* =====================================================
+       SEND TEXT
+       ===================================================== */
+
+    function sendErrorText(error) {
+        if (error && (error.code === "42501" || /row-level security/i.test(error.message || ""))) {
+            return "You can't send messages in this conversation.";
+        }
+
+        return "Message could not be sent. Try again.";
+    }
+
+    messageForm.addEventListener("submit", async event => {
+
+        event.preventDefault();
+
+        if (!active || blockedByMe) return;
+
+        const body = messageInput.value.trim();
+
+        if (!body) return;
+
+        messageInput.disabled = true;
+        setStatus("");
+
+        const { error } =
+            await supabase
+                .from("messages")
+                .insert({
+                    conversation_id: active.id,
+                    sender_id: me.id,
+                    body
+                });
+
+        messageInput.disabled = false;
+
+        if (error) {
+            console.error(error);
+            setStatus(sendErrorText(error));
+            return;
+        }
+
+        messageInput.value = "";
+        messageInput.focus();
+
+        await loadMessages();
+        scheduleListRefresh();
+    });
+
+    /* =====================================================
+       VOICE MESSAGES
+       ===================================================== */
+
+    const MAX_RECORD_SECONDS = 180;
+
+    let recorder = null;
+    let recordStream = null;
+    let recordChunks = [];
+    let recordStartedAt = 0;
+    let recordTimer = null;
+    let finishing = false;
+
+    const canRecord =
+        !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+
+    if (!canRecord) {
+        $("micBtn").hidden = true;
+    }
+
+    function pickMimeType() {
+
+        const options = [
+            "audio/webm;codecs=opus",
+            "audio/webm",
+            "audio/mp4",
+            "audio/ogg;codecs=opus"
+        ];
+
+        return options.find(type =>
+            window.MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(type)
+        ) || "";
+    }
+
+    function showRecordingUi(recording) {
+
+        $("recordControls").hidden = !recording;
+
+        messageInput.hidden = recording;
+        $("micBtn").hidden = recording || !canRecord;
+        $("sendBtn").hidden = recording;
+    }
+
+    function stopTracks() {
+
+        clearInterval(recordTimer);
+        recordTimer = null;
+
+        if (recordStream) {
+            recordStream.getTracks().forEach(track => track.stop());
+        }
+
+        recordStream = null;
+        recorder = null;
+        recordChunks = [];
+
+        showRecordingUi(false);
+    }
+
+    function cancelRecordingSilently() {
+
+        if (recorder && recorder.state !== "inactive") {
+            recorder.onstop = null;
+            recorder.stop();
+        }
+
+        finishing = false;
+        stopTracks();
+    }
+
+    async function startRecording() {
+
+        if (!active || blockedByMe || recorder) return;
+
+        setStatus("");
+
+        try {
+            recordStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        } catch (error) {
+            console.error(error);
+            setStatus("Allow microphone access in your browser to send voice messages.");
+            return;
+        }
+
+        const mimeType = pickMimeType();
+
+        try {
+            recorder = mimeType
+                ? new MediaRecorder(recordStream, { mimeType })
+                : new MediaRecorder(recordStream);
+        } catch (error) {
+            console.error(error);
+            stopTracks();
+            setStatus("Voice messages aren't supported in this browser.");
+            return;
+        }
+
+        recordChunks = [];
+
+        recorder.ondataavailable = event => {
+            if (event.data && event.data.size) {
+                recordChunks.push(event.data);
+            }
+        };
+
+        recorder.start();
+
+        recordStartedAt = Date.now();
+        $("recordTime").textContent = "0:00";
+
+        showRecordingUi(true);
+
+        recordTimer = setInterval(() => {
+
+            const elapsed = (Date.now() - recordStartedAt) / 1000;
+
+            $("recordTime").textContent = formatSeconds(elapsed);
+
+            if (elapsed >= MAX_RECORD_SECONDS) {
+                finishRecording(true);
+            }
+        }, 250);
+    }
+
+    function stopRecorder() {
+
+        return new Promise(resolve => {
+
+            const current = recorder;
+
+            current.onstop = () => {
+
+                const type = (current.mimeType || "audio/webm").split(";")[0];
+
+                resolve({
+                    blob: new Blob(recordChunks, { type }),
+                    mime: type,
+                    seconds: Math.round((Date.now() - recordStartedAt) / 1000)
+                });
+            };
+
+            if (current.state !== "inactive") {
+                current.stop();
+            } else {
+                current.onstop();
+            }
+        });
+    }
+
+    async function finishRecording(send) {
+
+        if (!recorder || finishing) return;
+
+        finishing = true;
+
+        const result = await stopRecorder();
+
+        stopTracks();
+
+        finishing = false;
+
+        if (!send) return;
+
+        await sendVoice(result);
+    }
+
+    async function sendVoice(result) {
+
+        if (!active || blockedByMe) return;
+
+        if (result.seconds < 1 || result.blob.size < 800) {
+            setStatus("That recording was too short.");
+            return;
+        }
+
+        const seconds = Math.min(300, Math.max(1, result.seconds));
+
+        const extension =
+            result.mime.includes("mp4") ? "m4a" :
+            result.mime.includes("ogg") ? "ogg" :
+            result.mime.includes("mpeg") ? "mp3" :
+            "webm";
+
+        const path = active.id + "/" + me.id + "/" + Date.now() + "." + extension;
+
+        setStatus("Sending voice message...");
+
+        const upload =
+            await supabase
+                .storage
+                .from("voice-messages")
+                .upload(path, result.blob, { contentType: result.mime });
+
+        if (upload.error) {
+            console.error(upload.error);
+            setStatus("Could not upload the voice message. Try again.");
+            return;
+        }
+
+        const insert =
+            await supabase
+                .from("messages")
+                .insert({
+                    conversation_id: active.id,
+                    sender_id: me.id,
+                    body: "",
+                    kind: "audio",
+                    audio_path: path,
+                    audio_seconds: seconds
+                });
+
+        if (insert.error) {
+            console.error(insert.error);
+            await supabase.storage.from("voice-messages").remove([path]);
+            setStatus(sendErrorText(insert.error));
+            return;
+        }
+
+        setStatus("");
+
+        await loadMessages();
+        scheduleListRefresh();
+    }
+
+    $("micBtn").addEventListener("click", startRecording);
+    $("recordCancel").addEventListener("click", () => finishRecording(false));
+    $("recordSend").addEventListener("click", () => finishRecording(true));
+
+    /* =====================================================
+       REALTIME
+       ===================================================== */
+
+    supabase
+        .channel("pixora-messages-" + me.id)
+        .on(
+            "postgres_changes",
+            {
+                event: "INSERT",
+                schema: "public",
+                table: "messages"
+            },
+            async payload => {
+
+                const message = payload.new;
+
+                if (
+                    active &&
+                    String(message.conversation_id) === String(active.id) &&
+                    message.sender_id !== me.id
+                ) {
+
+                    const urls = await signedUrlsFor([message]);
+
+                    /* remove the "no messages yet" placeholder */
+                    const empty = chatMessages.querySelector(".chat-empty");
+                    if (empty) chatMessages.innerHTML = "";
+
+                    renderMessage(message, urls);
+
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+
+                scheduleListRefresh();
+            }
+        )
+        .subscribe();
+
+    /* =====================================================
+       START
+       ===================================================== */
+
+    updateComposer();
+
+    await loadConversations();
+
+    const requested =
+        new URLSearchParams(location.search).get("conversation");
+
+    if (requested) {
+        await openConversation(requested);
+    }
+});
+</script>
+
+</body>
+</html>
