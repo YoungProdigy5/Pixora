@@ -1,0 +1,1169 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creator | PIXORA</title>
+    <link rel="stylesheet" href="style.css?v=5">
+
+    <style>
+        .profile-page {
+            width: min(1050px, calc(100% - 28px));
+            margin: auto;
+            padding: 30px 0 110px;
+        }
+
+        .creator-profile {
+            padding: 25px;
+            border-radius: 22px;
+            border: 1px solid rgba(255,255,255,.07);
+            background: rgba(18,18,26,.85);
+            margin-bottom: 25px;
+        }
+
+        .profile-top {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .profile-avatar {
+            width: 82px;
+            height: 82px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            background: linear-gradient(135deg,#ff1744,#7c3aed);
+            font-size: 28px;
+            font-weight: 950;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 25px;
+            font-weight: 950;
+        }
+
+        .profile-username {
+            color: #ff4d70;
+            font-size: 13px;
+            font-weight: 800;
+            margin-top: 3px;
+        }
+
+        .profile-bio {
+            margin-top: 12px;
+            color: #9999a5;
+            font-size: 13px;
+            white-space: pre-line;
+            word-break: break-word;
+        }
+
+        .profile-counts {
+            display: flex;
+            gap: 22px;
+            margin-top: 18px;
+        }
+
+        .profile-counts div {
+            font-size: 12px;
+            color: #9999a5;
+        }
+
+        .profile-counts strong {
+            display: block;
+            font-size: 19px;
+            color: inherit;
+        }
+
+        .profile-actions {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .profile-actions button,
+        .profile-actions a {
+            min-height: 42px;
+            padding: 0 17px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 850;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .profile-actions button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        #followBtn {
+            background: linear-gradient(135deg,#ff1744,#ff2f68);
+        }
+
+        #followBtn.following {
+            background: rgba(255,255,255,.1);
+        }
+
+        #messageCreatorBtn {
+            background: linear-gradient(135deg,#7c3aed,#5b21b6);
+        }
+
+        #backCreatorsBtn,
+        #editOwnProfile {
+            background: rgba(255,255,255,.07);
+        }
+
+        .profile-safety {
+            margin-top: 12px;
+            display: flex;
+            gap: 14px;
+        }
+
+        .profile-safety button {
+            background: transparent;
+            color: #858590;
+            font-size: 12px;
+            text-decoration: underline;
+            padding: 4px 0;
+        }
+
+        .profile-status {
+            margin-top: 12px;
+            font-size: 13px;
+            min-height: 18px;
+            overflow-wrap: anywhere;
+        }
+
+        .profile-content-title {
+            margin: 25px 0 14px;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .profile-empty {
+            padding: 30px;
+            text-align: center;
+            color: #858590;
+        }
+
+        .profile-video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+        }
+
+        .profile-video-grid .video-card {
+            cursor: pointer;
+        }
+
+        .profile-video-grid .video-card:focus-visible {
+            outline: 2px solid #ff4d70;
+            outline-offset: 3px;
+        }
+
+        .profile-video-grid .video-card img {
+            max-width: 100%;
+        }
+
+        @media(max-width:600px) {
+            .profile-top {
+                align-items: flex-start;
+            }
+
+            .profile-avatar {
+                width: 65px;
+                height: 65px;
+            }
+
+            .profile-name {
+                font-size: 21px;
+                overflow-wrap: anywhere;
+            }
+
+            .profile-actions button,
+            .profile-actions a {
+                flex: 1 1 calc(50% - 10px);
+            }
+
+            .profile-counts {
+                gap: 16px;
+                flex-wrap: wrap;
+            }
+
+            .profile-video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <a href="index.html" class="logo">PIX<span>ORA</span></a>
+
+    <div class="top-actions">
+        <a href="index.html" class="auth-btn">🏠 Home</a>
+        <a href="messages.html" class="icon-btn" aria-label="Messages">💬</a>
+        <a href="creators.html" class="auth-btn">Creators</a>
+    </div>
+</header>
+
+<main class="profile-page">
+
+    <section id="profileCard" class="creator-profile">
+        <div class="profile-top">
+            <div id="profileAvatar" class="profile-avatar">P</div>
+
+            <div>
+                <div id="profileName" class="profile-name">Loading...</div>
+                <div id="profileUsername" class="profile-username"></div>
+            </div>
+        </div>
+
+        <div id="profileBio" class="profile-bio"></div>
+
+        <div class="profile-counts">
+            <div><strong id="followerCount">0</strong>followers</div>
+            <div><strong id="followingCount">0</strong>following</div>
+            <div><strong id="uploadCount">0</strong>uploads</div>
+        </div>
+
+        <div class="profile-actions">
+            <button id="followBtn" type="button">Follow</button>
+
+            <button id="messageCreatorBtn" type="button">
+                💬 Message
+            </button>
+
+            <a id="editOwnProfile" href="account.html" hidden>
+                ✏️ Edit profile
+            </a>
+
+            <button id="backCreatorsBtn" type="button">
+                ← Creators
+            </button>
+        </div>
+
+        <div class="profile-safety" id="safetyRow">
+            <button id="blockBtn" type="button">Block</button>
+            <button id="reportBtn" type="button">Report</button>
+        </div>
+
+        <div id="profileStatus" class="profile-status" role="status" aria-live="polite"></div>
+    </section>
+
+    <h2 class="profile-content-title">Wallpapers</h2>
+
+    <div id="creatorContent" class="profile-empty">
+        Loading...
+    </div>
+
+    <h2 class="profile-content-title" id="videosTitle" hidden>Videos</h2>
+
+    <div id="creatorVideos" class="profile-video-grid"></div>
+
+</main>
+
+<!-- VIDEO POPUP -->
+<div id="videoModal" class="modal" aria-hidden="true">
+
+    <div class="modal-backdrop" id="videoBackdrop"></div>
+
+    <div
+        class="modal-content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="videoModalTitle"
+        tabindex="-1"
+    >
+        <button
+            id="videoClose"
+            class="modal-close"
+            type="button"
+            aria-label="Close video"
+        >✕</button>
+
+        <video
+            id="videoPlayer"
+            class="video-player"
+            controls
+            playsinline
+            preload="metadata"
+        ></video>
+
+        <div class="modal-info">
+            <h2 id="videoModalTitle">Video</h2>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+    "use strict";
+
+    const supabase = window.pixoraSupabase;
+    const $ = id => document.getElementById(id);
+
+    /* ---------- Supabase availability ---------- */
+
+    if (!supabase || !supabase.auth || !supabase.from) {
+        $("profileName").textContent =
+            "PIXORA is temporarily unavailable.";
+
+        $("creatorContent").textContent =
+            "Please refresh this page in a moment.";
+
+        [
+            "followBtn",
+            "messageCreatorBtn",
+            "blockBtn",
+            "reportBtn"
+        ].forEach(id => {
+            const button = $(id);
+            if (button) button.disabled = true;
+        });
+
+        return;
+    }
+
+    const params = new URLSearchParams(location.search);
+    const creatorId = params.get("id");
+
+    try {
+        if (localStorage.getItem("pixoraTheme") === "light") {
+            document.body.classList.add("light-mode");
+        }
+    } catch (error) {
+        console.warn("Could not read PIXORA theme preference.", error);
+    }
+
+    /* ---------- Helpers ---------- */
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function say(message, isError = false) {
+        const element = $("profileStatus");
+        if (!element) return;
+
+        element.textContent = message;
+        element.style.color = isError ? "#ff5575" : "#7ee787";
+    }
+
+    function disableActions() {
+        [
+            "followBtn",
+            "messageCreatorBtn",
+            "blockBtn",
+            "reportBtn"
+        ].forEach(id => {
+            const button = $(id);
+            if (button) button.disabled = true;
+        });
+    }
+
+    function safeMediaUrl(value) {
+        if (!value || typeof value !== "string") return "";
+
+        try {
+            const url = new URL(value, location.href);
+
+            if (url.protocol !== "https:" && url.protocol !== "http:") {
+                return "";
+            }
+
+            // Permit HTTP only for same-origin resources.
+            if (
+                url.origin !== location.origin &&
+                url.protocol !== "https:"
+            ) {
+                return "";
+            }
+
+            return url.href;
+        } catch {
+            return "";
+        }
+    }
+
+    function setButtonBusy(button, busy) {
+        if (button) button.disabled = busy;
+    }
+
+    /* ---------- Validate creator ---------- */
+
+    if (!creatorId || creatorId.length > 200) {
+        $("profileName").textContent = "Creator not found";
+        $("creatorContent").textContent = "The creator link is invalid.";
+        disableActions();
+        return;
+    }
+
+    let me = null;
+    let profile = null;
+    let following = false;
+    let blocked = false;
+    let followers = 0;
+
+    /* ---------- Session ---------- */
+
+    try {
+        const sessionResult = await supabase.auth.getSession();
+
+        if (sessionResult.error) {
+            console.error(
+                "Could not read PIXORA session:",
+                sessionResult.error
+            );
+            say(
+                "Some account actions may be unavailable. Refresh and try again.",
+                true
+            );
+        }
+
+        me = sessionResult.data?.session?.user || null;
+    } catch (error) {
+        console.error("Could not read PIXORA session:", error);
+        say(
+            "Some account actions may be unavailable. Refresh and try again.",
+            true
+        );
+    }
+
+    const isMe = !!me && me.id === creatorId;
+
+    /* ---------- Profile ---------- */
+
+    let profileData;
+
+    try {
+        const result = await supabase
+            .from("profiles")
+            .select("user_id,username,display_name,bio,avatar_url")
+            .eq("user_id", creatorId)
+            .maybeSingle();
+
+        if (result.error) {
+            console.error("Could not load creator profile:", result.error);
+        }
+
+        profileData = result.data;
+    } catch (error) {
+        console.error("Could not load creator profile:", error);
+    }
+
+    if (!profileData) {
+        $("profileName").textContent = "Creator not found";
+        $("creatorContent").textContent =
+            "This profile could not be loaded. It may be unavailable, or you may not have permission to view it.";
+
+        disableActions();
+        return;
+    }
+
+    profile = profileData;
+
+    document.title =
+        (profile.display_name || profile.username || "Creator") +
+        " | PIXORA";
+
+    $("profileName").textContent =
+        profile.display_name ||
+        profile.username ||
+        "PIXORA Creator";
+
+    $("profileUsername").textContent =
+        profile.username ? "@" + profile.username : "";
+
+    $("profileBio").textContent = profile.bio || "";
+
+    const avatarUrl = safeMediaUrl(profile.avatar_url);
+
+    if (avatarUrl) {
+        const avatarImage = document.createElement("img");
+        avatarImage.src = avatarUrl;
+        avatarImage.alt = "";
+        avatarImage.referrerPolicy = "no-referrer";
+
+        avatarImage.addEventListener("error", () => {
+            avatarImage.remove();
+            $("profileAvatar").textContent =
+                (profile.display_name || profile.username || "P")
+                    .charAt(0)
+                    .toUpperCase();
+        }, { once: true });
+
+        $("profileAvatar").replaceChildren(avatarImage);
+    } else {
+        $("profileAvatar").textContent =
+            (profile.display_name || profile.username || "P")
+                .charAt(0)
+                .toUpperCase();
+    }
+
+    /* ---------- Follower and following counts ---------- */
+
+    async function loadCounts() {
+        try {
+            const [followerResult, followingResult] = await Promise.all([
+                supabase
+                    .from("follows")
+                    .select("follower_id", {
+                        count: "exact",
+                        head: true
+                    })
+                    .eq("following_id", creatorId),
+
+                supabase
+                    .from("follows")
+                    .select("following_id", {
+                        count: "exact",
+                        head: true
+                    })
+                    .eq("follower_id", creatorId)
+            ]);
+
+            if (followerResult.error || followingResult.error) {
+                console.error(
+                    "Could not load follow counts:",
+                    followerResult.error,
+                    followingResult.error
+                );
+
+                $("followerCount").textContent = "—";
+                $("followingCount").textContent = "—";
+
+                say("Some profile counts could not be loaded.", true);
+                return;
+            }
+
+            followers = followerResult.count || 0;
+
+            $("followerCount").textContent = followers;
+            $("followingCount").textContent =
+                followingResult.count || 0;
+        } catch (error) {
+            console.error("Could not load follow counts:", error);
+            $("followerCount").textContent = "—";
+            $("followingCount").textContent = "—";
+        }
+    }
+
+    /* ---------- Follow and block state ---------- */
+
+    function paintButtons() {
+        $("followBtn").textContent =
+            following ? "Following ✓" : "Follow";
+
+        $("followBtn").classList.toggle("following", following);
+
+        $("blockBtn").textContent = blocked ? "Unblock" : "Block";
+    }
+
+    async function loadRelationship() {
+        if (!me || isMe) return;
+
+        try {
+            const [followResult, blockResult] = await Promise.all([
+                supabase
+                    .from("follows")
+                    .select("follower_id")
+                    .eq("follower_id", me.id)
+                    .eq("following_id", creatorId)
+                    .maybeSingle(),
+
+                supabase
+                    .from("blocks")
+                    .select("blocker_id")
+                    .eq("blocker_id", me.id)
+                    .eq("blocked_id", creatorId)
+                    .maybeSingle()
+            ]);
+
+            if (followResult.error || blockResult.error) {
+                console.error(
+                    "Could not load creator relationship:",
+                    followResult.error,
+                    blockResult.error
+                );
+
+                say(
+                    "Follow/block status could not be loaded. Refresh and try again.",
+                    true
+                );
+                return;
+            }
+
+            following = !!followResult.data;
+            blocked = !!blockResult.data;
+        } catch (error) {
+            console.error("Could not load creator relationship:", error);
+            say("Could not load follow/block status.", true);
+        }
+    }
+
+    if (isMe) {
+        $("followBtn").hidden = true;
+        $("messageCreatorBtn").hidden = true;
+        $("safetyRow").hidden = true;
+        $("editOwnProfile").hidden = false;
+    }
+
+    await Promise.all([loadCounts(), loadRelationship()]);
+    paintButtons();
+
+    /* ---------- Follow / unfollow ---------- */
+
+    $("followBtn").addEventListener("click", async () => {
+        if (!me) {
+            location.href = "login.html";
+            return;
+        }
+
+        if (isMe) return;
+
+        const button = $("followBtn");
+        setButtonBusy(button, true);
+
+        try {
+            if (following) {
+                const { error: unfollowError } = await supabase
+                    .from("follows")
+                    .delete()
+                    .eq("follower_id", me.id)
+                    .eq("following_id", creatorId);
+
+                if (unfollowError) {
+                    console.error(unfollowError);
+                    say("Could not unfollow. Try again.", true);
+                    return;
+                }
+
+                following = false;
+                followers = Math.max(0, followers - 1);
+            } else {
+                const { error: followError } = await supabase
+                    .from("follows")
+                    .insert({
+                        follower_id: me.id,
+                        following_id: creatorId
+                    });
+
+                if (followError && followError.code !== "23505") {
+                    console.error(followError);
+                    say("Could not follow. Try again.", true);
+                    return;
+                }
+
+                if (!followError) followers += 1;
+                following = true;
+            }
+
+            $("followerCount").textContent = followers;
+            paintButtons();
+            say(following ? "You are now following this creator." : "You unfollowed this creator.");
+        } catch (error) {
+            console.error("Follow action failed:", error);
+            say("Something went wrong. Please try again.", true);
+        } finally {
+            setButtonBusy(button, false);
+        }
+    });
+
+    /* ---------- Private message ---------- */
+
+    $("messageCreatorBtn").addEventListener("click", async () => {
+        if (!me) {
+            location.href = "login.html";
+            return;
+        }
+
+        if (isMe) return;
+
+        const button = $("messageCreatorBtn");
+        setButtonBusy(button, true);
+
+        try {
+            const { data, error: startError } = await supabase.rpc(
+                "start_private_conversation",
+                { p_other_user: creatorId }
+            );
+
+            if (startError) {
+                console.error(startError);
+
+                say(
+                    /cannot message/i.test(startError.message || "")
+                        ? "You can't message this person."
+                        : "Could not start the conversation.",
+                    true
+                );
+                return;
+            }
+
+            // Support either a UUID string or a row/object result.
+            const conversationId =
+                typeof data === "string"
+                    ? data
+                    : data?.id || data?.conversation_id;
+
+            if (!conversationId) {
+                console.error("Unexpected conversation response:", data);
+                say("The conversation could not be opened.", true);
+                return;
+            }
+
+            location.href =
+                "messages.html?conversation=" +
+                encodeURIComponent(conversationId);
+        } catch (error) {
+            console.error("Could not start private conversation:", error);
+            say("Could not start the conversation. Try again.", true);
+        } finally {
+            setButtonBusy(button, false);
+        }
+    });
+
+    /* ---------- Block / unblock ---------- */
+
+    $("blockBtn").addEventListener("click", async () => {
+        if (!me) {
+            location.href = "login.html";
+            return;
+        }
+
+        if (isMe) return;
+
+        const button = $("blockBtn");
+        setButtonBusy(button, true);
+
+        try {
+            if (!blocked) {
+                const confirmed = confirm(
+                    "Block @" + (profile.username || "this user") +
+                    "? You won't be able to message each other."
+                );
+
+                if (!confirmed) return;
+
+                const { error: blockError } = await supabase
+                    .from("blocks")
+                    .insert({
+                        blocker_id: me.id,
+                        blocked_id: creatorId
+                    });
+
+                if (blockError && blockError.code !== "23505") {
+                    console.error(blockError);
+                    say("Could not block. Try again.", true);
+                    return;
+                }
+
+                blocked = true;
+
+                // Remove the current user's follow, if one exists.
+                const { error: removeFollowError } = await supabase
+                    .from("follows")
+                    .delete()
+                    .eq("follower_id", me.id)
+                    .eq("following_id", creatorId);
+
+                if (removeFollowError) {
+                    console.error(
+                        "Blocked user, but could not remove follow:",
+                        removeFollowError
+                    );
+
+                    say(
+                        "User blocked, but your follow could not be removed. Try unfollowing again.",
+                        true
+                    );
+
+                    // Recheck relationship rather than assuming it changed.
+                    await loadRelationship();
+                    await loadCounts();
+                    paintButtons();
+                    return;
+                }
+
+                if (following) {
+                    following = false;
+                    followers = Math.max(0, followers - 1);
+                    $("followerCount").textContent = followers;
+                }
+
+                say("User blocked.");
+            } else {
+                const { error: unblockError } = await supabase
+                    .from("blocks")
+                    .delete()
+                    .eq("blocker_id", me.id)
+                    .eq("blocked_id", creatorId);
+
+                if (unblockError) {
+                    console.error(unblockError);
+                    say("Could not unblock. Try again.", true);
+                    return;
+                }
+
+                blocked = false;
+                say("User unblocked.");
+            }
+
+            paintButtons();
+        } catch (error) {
+            console.error("Block action failed:", error);
+            say("Something went wrong. Please try again.", true);
+        } finally {
+            setButtonBusy(button, false);
+        }
+    });
+
+    /* ---------- Report creator ---------- */
+
+    $("reportBtn").addEventListener("click", async () => {
+        if (!me) {
+            location.href = "login.html";
+            return;
+        }
+
+        if (isMe) return;
+
+        const reason = (
+            prompt(
+                "Why are you reporting @" +
+                (profile.username || "this user") +
+                "?"
+            ) || ""
+        ).trim();
+
+        if (!reason) return;
+
+        if (reason.length < 3 || reason.length > 500) {
+            say("Please write between 3 and 500 characters.", true);
+            return;
+        }
+
+        const button = $("reportBtn");
+        setButtonBusy(button, true);
+
+        try {
+            const { error: reportError } = await supabase
+                .from("reports")
+                .insert({
+                    reporter_id: me.id,
+                    reported_user_id: creatorId,
+                    reason
+                });
+
+            if (reportError) {
+                console.error(reportError);
+                say("Could not send the report. Try again.", true);
+                return;
+            }
+
+            say("Thanks. Your report was sent to the PIXORA team.");
+        } catch (error) {
+            console.error("Report action failed:", error);
+            say("Could not send the report. Try again.", true);
+        } finally {
+            setButtonBusy(button, false);
+        }
+    });
+
+    $("backCreatorsBtn").addEventListener("click", () => {
+        location.href = "creators.html";
+    });
+
+    /* ---------- Wallpapers ---------- */
+
+    const content = $("creatorContent");
+
+    try {
+        const { data: wallpapers, error: wallpapersError } =
+            await supabase
+                .from("wallpapers")
+                .select("id,title,image_url,category,views,downloads")
+                .eq("user_id", creatorId)
+                .eq("status", "approved")
+                .order("created_at", { ascending: false })
+                .limit(24);
+
+        if (wallpapersError) {
+            console.error(
+                "Could not load creator wallpapers:",
+                wallpapersError
+            );
+
+            content.textContent =
+                "Could not load this creator's wallpapers. Please refresh and try again.";
+        } else if (wallpapers?.length) {
+            const grid = document.createElement("div");
+            grid.className = "wallpaper-grid";
+
+            wallpapers.forEach(item => {
+                const card = document.createElement("article");
+                card.className = "wallpaper-card";
+
+                const art = document.createElement("div");
+                art.className = "wallpaper-art";
+
+                const imageUrl = safeMediaUrl(item.image_url);
+
+                if (imageUrl) {
+                    const image = document.createElement("img");
+                    image.className = "wallpaper-image";
+                    image.src = imageUrl;
+                    image.alt = item.title || "Wallpaper";
+                    image.loading = "lazy";
+                    image.referrerPolicy = "no-referrer";
+
+                    image.addEventListener("error", () => {
+                        image.alt = "Wallpaper image unavailable";
+                    }, { once: true });
+
+                    art.appendChild(image);
+                } else {
+                    art.textContent = "Image unavailable";
+                }
+
+                const info = document.createElement("div");
+                info.className = "wallpaper-info";
+
+                const title = document.createElement("h3");
+                title.textContent = item.title || "Wallpaper";
+
+                const category = document.createElement("p");
+                category.textContent = item.category || "";
+
+                info.append(title, category);
+                card.append(art, info);
+                grid.appendChild(card);
+            });
+
+            content.className = "";
+            content.replaceChildren(grid);
+        } else {
+            content.textContent = "No public wallpapers yet.";
+        }
+    } catch (error) {
+        console.error("Wallpaper loading failed:", error);
+        content.textContent =
+            "Could not load this creator's wallpapers. Please refresh and try again.";
+    }
+
+    /* ---------- Videos and exact upload count ---------- */
+
+    const videosContainer = $("creatorVideos");
+
+    try {
+        const [
+            videosResult,
+            wallpaperCountResult,
+            videoCountResult
+        ] = await Promise.all([
+            supabase
+                .from("videos")
+                .select("id,title,thumbnail_url,video_url,category")
+                .eq("user_id", creatorId)
+                .eq("status", "approved")
+                .order("created_at", { ascending: false })
+                .limit(24),
+
+            supabase
+                .from("wallpapers")
+                .select("id", { count: "exact", head: true })
+                .eq("user_id", creatorId)
+                .eq("status", "approved"),
+
+            supabase
+                .from("videos")
+                .select("id", { count: "exact", head: true })
+                .eq("user_id", creatorId)
+                .eq("status", "approved")
+        ]);
+
+        const { data: videos, error: videosError } = videosResult;
+
+        if (videosError) {
+            console.error("Could not load creator videos:", videosError);
+            videosContainer.textContent =
+                "Could not load this creator's videos. Please refresh and try again.";
+        } else if (videos?.length) {
+            $("videosTitle").hidden = false;
+
+            videos.forEach(item => {
+                const card = document.createElement("article");
+                card.className = "video-card";
+                card.tabIndex = 0;
+                card.setAttribute("role", "button");
+                card.setAttribute(
+                    "aria-label",
+                    "Play video: " + (item.title || "Video")
+                );
+
+                const media = document.createElement("div");
+                media.className = "video-card-media";
+
+                const thumbnailUrl = safeMediaUrl(item.thumbnail_url);
+
+                if (thumbnailUrl) {
+                    const image = document.createElement("img");
+                    image.src = thumbnailUrl;
+                    image.alt = item.title || "Video";
+                    image.loading = "lazy";
+                    image.referrerPolicy = "no-referrer";
+                    media.appendChild(image);
+                } else {
+                    const placeholder = document.createElement("div");
+                    placeholder.className = "video-placeholder";
+                    placeholder.textContent = "🎬";
+                    media.appendChild(placeholder);
+                }
+
+                const playIcon = document.createElement("div");
+                playIcon.className = "video-play-icon";
+                playIcon.textContent = "▶";
+                media.appendChild(playIcon);
+
+                const info = document.createElement("div");
+                info.className = "video-card-info";
+
+                const title = document.createElement("h3");
+                title.textContent = item.title || "Video";
+
+                const category = document.createElement("p");
+                category.textContent = item.category || "";
+
+                info.append(title, category);
+                card.append(media, info);
+
+                card.addEventListener("click", () => {
+                    openVideo(item, card);
+                });
+
+                card.addEventListener("keydown", event => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        openVideo(item, card);
+                    }
+                });
+
+                videosContainer.appendChild(card);
+            });
+        } else if (!videosError) {
+            $("videosTitle").hidden = true;
+        }
+
+        if (!wallpaperCountResult.error && !videoCountResult.error) {
+            $("uploadCount").textContent =
+                (wallpaperCountResult.count || 0) +
+                (videoCountResult.count || 0);
+        } else {
+            console.error(
+                "Could not load exact upload counts:",
+                wallpaperCountResult.error,
+                videoCountResult.error
+            );
+            $("uploadCount").textContent = "—";
+        }
+    } catch (error) {
+        console.error("Video/count loading failed:", error);
+
+        if (!videosContainer.childElementCount) {
+            videosContainer.textContent =
+                "Could not load this creator's videos. Please refresh and try again.";
+        }
+
+        $("uploadCount").textContent = "—";
+    }
+
+    /* ---------- Video popup ---------- */
+
+    let lastVideoTrigger = null;
+
+    function openVideo(item, trigger) {
+        const videoUrl = safeMediaUrl(item.video_url);
+
+        if (!videoUrl) {
+            say("This video has no valid playable URL.", true);
+            return;
+        }
+
+        lastVideoTrigger = trigger || document.activeElement;
+
+        $("videoModalTitle").textContent = item.title || "Video";
+
+        const player = $("videoPlayer");
+        player.src = videoUrl;
+        player.load();
+
+        const modal = $("videoModal");
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
+
+        document.body.classList.add("modal-open");
+        $("videoClose").focus();
+    }
+
+    function closeVideo() {
+        const modal = $("videoModal");
+
+        if (!modal.classList.contains("active")) return;
+
+        const player = $("videoPlayer");
+        player.pause();
+        player.removeAttribute("src");
+        player.load();
+
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("modal-open");
+
+        if (
+            lastVideoTrigger &&
+            document.contains(lastVideoTrigger)
+        ) {
+            lastVideoTrigger.focus();
+        }
+
+        lastVideoTrigger = null;
+    }
+
+    $("videoClose").addEventListener("click", closeVideo);
+    $("videoBackdrop").addEventListener("click", closeVideo);
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+            closeVideo();
+        }
+    });
+});
+</script>
+
+</body>
+</html>
