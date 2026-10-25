@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /moderation.html
+Disallow: /login.html
+Disallow: /messages.html
+Disallow: /account.html
+
+Sitemap: https://pixora.quest/sitemap.xml
