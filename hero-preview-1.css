@@ -1,0 +1,40 @@
+/* PIXORA hero phone preview — add-on (loaded after style.css) */
+.hero-phone{position:absolute;z-index:2;top:50%;right:clamp(22px,8%,110px);width:clamp(150px,17vw,200px);padding:0;border:0;background:none;cursor:pointer;
+  transform:translateY(-50%) rotate(4deg);animation:heroPhoneFloat 6s ease-in-out infinite;-webkit-tap-highlight-color:transparent}
+.hero-phone:focus-visible{outline:3px solid #ff1744;outline-offset:6px;border-radius:30px}
+.hp-frame{display:block;position:relative;aspect-ratio:9/19;border-radius:28px;padding:6px;background:#0a0a0f;
+  border:2px solid rgba(255,255,255,.22);box-shadow:0 24px 60px rgba(0,0,0,.55),0 0 40px rgba(255,23,68,.22)}
+.hp-notch{position:absolute;z-index:4;top:11px;left:50%;width:34%;height:8px;transform:translateX(-50%);border-radius:8px;background:#000}
+.hp-screen{display:block;position:relative;width:100%;height:100%;overflow:hidden;border-radius:22px;background:#15151d}
+.hp-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .9s ease}
+.hp-img.show{opacity:1}
+.hp-shade{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,transparent 32%,transparent 62%,rgba(0,0,0,.7) 100%)}
+.hp-lock{position:absolute;z-index:2;top:11%;left:0;right:0;display:flex;flex-direction:column;align-items:center;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.hp-date{font-size:clamp(8px,1.1vw,11px);font-weight:600;opacity:.9}
+.hp-time{font-size:clamp(28px,3.6vw,44px);font-weight:300;line-height:1.05;letter-spacing:-1px}
+.hp-caption{position:absolute;z-index:2;left:10px;right:10px;bottom:12px;display:flex;flex-direction:column;gap:1px;text-align:left;color:#fff}
+.hp-caption small{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#ff6b88}
+.hp-caption strong{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hp-tap{position:absolute;z-index:3;right:8px;bottom:12px;font-size:9px;font-weight:700;padding:3px 7px;border-radius:99px;background:rgba(255,23,68,.9);color:#fff}
+@keyframes heroPhoneFloat{0%,100%{transform:translateY(-50%) rotate(4deg)}50%{transform:translateY(calc(-50% - 9px)) rotate(4deg)}}
+
+/* make room for the phone beside the text on slide 1 */
+.hero-slide.has-phone .hero-content{max-width:calc(100% - 250px)}
+@media (max-width:900px){
+  .hero-phone{width:140px;right:18px}
+  .hero-slide.has-phone .hero-content{max-width:calc(100% - 170px)}
+}
+@media (max-width:760px){
+  .hero-phone{width:118px;right:12px;top:auto;bottom:-26px;transform:rotate(7deg);animation:none}
+  .hero-slide.has-phone .hero-content{max-width:66%;padding-right:6px}
+  .hero-slide.has-phone .hero-content h1{font-size:34px;letter-spacing:-1.5px}
+  .hp-frame{border-radius:22px;padding:5px}.hp-screen{border-radius:17px}
+  .hp-time{font-size:26px}.hp-caption strong{font-size:10px}.hp-tap{display:none}
+}
+@media (max-width:480px){
+  .hero-slide.has-phone .hero-content h1{font-size:28px}
+  .hero-phone{width:104px}
+}
+@media (max-width:340px){.hero-phone{display:none}.hero-slide.has-phone .hero-content{max-width:100%}}
+@media (prefers-reduced-motion:reduce){.hero-phone{animation:none}.hp-img{transition:none}}
