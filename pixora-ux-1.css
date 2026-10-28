@@ -1,0 +1,88 @@
+/* =========================================================
+   PIXORA — UI/UX refinement layer (loaded after style.css)
+   Pure CSS, no markup changes. To undo: remove its <link>.
+   ========================================================= */
+
+:root{
+  --px-accent:#ff1744;
+  --px-ring:0 0 0 3px rgba(255,23,68,.55);
+  --px-radius:18px;
+  --px-ease:cubic-bezier(.2,.7,.2,1);
+}
+
+/* ---------- Base polish ---------- */
+html{scroll-padding-top:84px;-webkit-text-size-adjust:100%}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button,a,.wallpaper-card,.video-card,.category-btn,.nav-item{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+h1,h2,h3{text-wrap:balance}
+::selection{background:rgba(255,23,68,.4);color:#fff}
+
+/* ---------- Visible keyboard / screen-reader focus ---------- */
+:focus{outline:none}
+:focus-visible{outline:none;box-shadow:var(--px-ring)}
+.wallpaper-card:focus-visible,.video-card:focus-visible{box-shadow:var(--px-ring)}
+
+/* ---------- Wallpaper cards ---------- */
+.wallpaper-card{border-radius:var(--px-radius);transition:transform .3s var(--px-ease),box-shadow .3s var(--px-ease),border-color .3s ease}
+.wallpaper-art{
+  background:linear-gradient(110deg,#181820 30%,#22222c 50%,#181820 70%);
+  background-size:220% 100%}
+body.light-mode .wallpaper-art{background:linear-gradient(110deg,#e9e9ef 30%,#f6f6fa 50%,#e9e9ef 70%);background-size:220% 100%}
+.wallpaper-art img.wallpaper-image{transition:transform .5s var(--px-ease),opacity .4s ease}
+.wallpaper-card:hover .wallpaper-art img.wallpaper-image{transform:scale(1.04)}
+.wallpaper-info{padding:12px 14px 14px}
+.wallpaper-info h3{font-size:14px;font-weight:700;line-height:1.3;letter-spacing:-.01em;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.wallpaper-info p{margin-top:3px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#ff6b88}
+body.light-mode .wallpaper-info p{color:#d6123b}
+
+/* Bigger, easier tap targets for the three card buttons */
+@media (pointer:coarse){
+  .like-btn,.preview-btn,.download-btn{width:44px;height:44px;font-size:19px}
+  .like-btn{top:10px;right:10px}.preview-btn{top:10px;left:10px}.download-btn{bottom:10px;right:10px}
+}
+.like-btn:active,.preview-btn:active,.download-btn:active{transform:scale(.92)}
+
+/* ---------- Categories ---------- */
+.category-list{padding:2px 0 6px;scroll-snap-type:x proximity;
+  -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent 100%);
+  mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent 100%)}
+.category-btn{min-height:40px;scroll-snap-align:start;font-size:13px}
+.category-btn.active{box-shadow:0 6px 18px rgba(255,23,68,.35)}
+
+/* ---------- Bottom navigation ---------- */
+.bottom-nav{bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.nav-item{min-height:50px;min-width:0;flex:1 1 0;font-size:11px;color:#a0a0ae}
+body.light-mode .nav-item{color:#5d5d6a}
+body.light-mode .nav-item.active,.nav-item.active{color:#fff}
+.nav-item:active{transform:scale(.95)}
+
+/* ---------- Preview + download windows ---------- */
+.modal-content{max-height:92vh;max-height:92dvh;border-radius:26px;
+  padding-bottom:env(safe-area-inset-bottom,0px);overscroll-behavior:contain}
+#modalClose,#videoModalClose,.pixora-download-close{min-width:44px;min-height:44px}
+.pixora-download-panel{max-height:92vh;max-height:92dvh;overflow:auto;overscroll-behavior:contain;
+  padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
+.pixora-option{min-height:58px;transition:transform .15s ease,background .2s ease,border-color .2s ease}
+.pixora-option:active{transform:scale(.97)}
+.pixora-download-main{min-height:52px;font-size:16px}
+
+/* ---------- Videos ---------- */
+.video-card{transition:transform .3s var(--px-ease),box-shadow .3s var(--px-ease)}
+.video-card:active{transform:scale(.985)}
+
+/* ---------- Result counts and empty states ---------- */
+.results-count{font-weight:700;letter-spacing:.02em}
+#emptyState,#videoEmptyState{padding:36px 18px;text-align:center;border-radius:var(--px-radius);
+  border:1px dashed rgba(255,255,255,.14)}
+body.light-mode #emptyState,body.light-mode #videoEmptyState{border-color:rgba(0,0,0,.16)}
+
+/* ---------- Footer links (homepage) ---------- */
+.site-footer-home a{display:inline-block;min-height:40px;line-height:40px;padding:0 6px;opacity:.85}
+.site-footer-home a:hover{opacity:1;text-decoration:underline}
+
+/* ---------- Respect "reduce motion" ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
