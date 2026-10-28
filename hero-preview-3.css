@@ -1,0 +1,95 @@
+/* PIXORA hero visuals + smoother hero on phones (loaded after style.css) */
+
+/* ---------- Slide 1: phone ---------- */
+.hero-phone{position:absolute;z-index:2;top:50%;right:clamp(22px,8%,110px);width:clamp(140px,13vw,172px);padding:0;border:0;background:none;cursor:pointer;
+  transform:translateY(-50%) rotate(4deg);-webkit-tap-highlight-color:transparent}
+.hero-phone:focus-visible{outline:3px solid #ff1744;outline-offset:6px;border-radius:30px}
+.hp-frame{display:block;position:relative;aspect-ratio:9/19;border-radius:28px;padding:6px;background:#0a0a0f;
+  border:2px solid rgba(255,255,255,.22);box-shadow:0 18px 40px rgba(0,0,0,.5)}
+.hp-notch{position:absolute;z-index:4;top:11px;left:50%;width:34%;height:8px;transform:translateX(-50%);border-radius:8px;background:#000}
+.hp-screen{display:block;position:relative;width:100%;height:100%;overflow:hidden;border-radius:22px;background:#15151d}
+.hp-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease}
+.hp-img.show{opacity:1}
+.hp-shade{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,transparent 32%,transparent 62%,rgba(0,0,0,.7) 100%)}
+.hp-lock{position:absolute;z-index:2;top:11%;left:0;right:0;display:flex;flex-direction:column;align-items:center;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.hp-date{font-size:clamp(8px,1.1vw,11px);font-weight:600;opacity:.9}
+.hp-time{white-space:nowrap;font-size:clamp(26px,3vw,40px);font-weight:300;line-height:1.05;letter-spacing:-1px}
+.hp-caption{position:absolute;z-index:2;left:10px;right:10px;bottom:12px;display:flex;flex-direction:column;gap:1px;text-align:left;color:#fff}
+.hp-caption small{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#ff6b88}
+.hp-caption strong{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hp-tap{position:absolute;z-index:3;right:8px;bottom:12px;font-size:9px;font-weight:700;padding:3px 7px;border-radius:99px;background:rgba(255,23,68,.9);color:#fff}
+
+/* ---------- Slide 2: fan of new wallpapers ---------- */
+.hero-fan{position:absolute;z-index:2;top:50%;right:clamp(30px,9%,130px);width:clamp(230px,23vw,300px);height:clamp(250px,26vw,330px);transform:translateY(-50%)}
+.hf-card{position:absolute;width:52%;aspect-ratio:9/16;padding:0;overflow:hidden;cursor:pointer;border-radius:14px;background:#15151d;
+  border:2px solid rgba(255,255,255,.22);box-shadow:0 14px 28px rgba(0,0,0,.45);-webkit-tap-highlight-color:transparent}
+.hf-card:focus-visible{outline:3px solid #ff1744;outline-offset:3px}
+.hf-img{display:block;width:100%;height:100%;object-fit:cover}
+.hf-l{left:0;top:14%;transform:rotate(-9deg)}
+.hf-c{left:24%;top:0;z-index:2;transform:rotate(0)}
+.hf-r{left:48%;top:14%;transform:rotate(9deg)}
+
+/* ---------- Slide 3: wallpaper mosaic ---------- */
+.hero-mosaic{position:absolute;z-index:2;top:50%;right:clamp(40px,10%,140px);width:clamp(200px,19vw,250px);
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;transform:translateY(-50%) rotate(-4deg)}
+.hm-tile{position:relative;display:block;aspect-ratio:4/5;padding:0;overflow:hidden;cursor:pointer;border-radius:14px;background:#15151d;
+  border:2px solid rgba(255,255,255,.22);box-shadow:0 12px 26px rgba(0,0,0,.45);-webkit-tap-highlight-color:transparent}
+.hm-tile:nth-child(even){margin-top:24px}
+.hm-tile:focus-visible{outline:3px solid #ff1744;outline-offset:3px}
+.hm-img{display:block;width:100%;height:100%;object-fit:cover}
+.hm-play{position:absolute;left:50%;top:50%;width:36px;height:36px;margin:-18px 0 0 -18px;display:grid;place-items:center;
+  border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding-left:2px;border:1px solid rgba(255,255,255,.4)}
+
+/* Gentle float: desktop only, and only while the slide is showing */
+@keyframes heroFloat{0%,100%{transform:translateY(-50%) rotate(4deg)}50%{transform:translateY(calc(-50% - 8px)) rotate(4deg)}}
+@media (hover:hover) and (pointer:fine){
+  .hero-slide.active .hero-phone{animation:heroFloat 6s ease-in-out infinite}
+}
+
+/* make room for the visual beside the text */
+.hero-slide.has-phone .hero-content{max-width:calc(100% - 250px)}
+@media (max-width:900px){
+  .hero-phone{width:140px;right:18px}
+  .hero-fan{width:220px;height:250px;right:14px}
+  .hero-mosaic{width:190px;right:20px}
+  .hero-slide.has-phone .hero-content{max-width:calc(100% - 170px)}
+}
+@media (max-width:760px){
+  .hero-slide.has-phone .hero-content{max-width:66%;padding-right:6px}
+  .hero-slide.has-phone .hero-content h1{font-size:34px;letter-spacing:-1.5px}
+  .hero-slide.has-phone .hero-content .primary-btn{font-size:14px;padding:0 14px;white-space:nowrap}
+  .hero-phone{width:118px;right:-8px;top:auto;bottom:-26px;transform:rotate(7deg)}
+  .hp-frame{border-radius:22px;padding:5px}.hp-screen{border-radius:17px}
+  .hp-time{font-size:24px}.hp-caption{bottom:38px}.hp-caption strong{font-size:10px}.hp-tap{display:none}
+  .hero-fan{width:150px;height:176px;right:-6px;top:auto;bottom:-18px;transform:none}
+  .hf-card{border-radius:10px}
+  .hero-mosaic{width:148px;right:-6px;top:auto;bottom:-16px;transform:rotate(-5deg);gap:8px}
+  .hm-tile{border-radius:10px}.hm-tile:nth-child(even){margin-top:20px}
+  .hm-play{width:28px;height:28px;margin:-14px 0 0 -14px;font-size:10px}
+}
+@media (max-width:480px){
+  .hero-slide.has-phone .hero-content h1{font-size:28px}
+  .hero-phone{width:104px}
+  .hero-fan{width:128px;height:152px;right:-14px;bottom:-30px}
+  .hero-mosaic{width:136px;right:-14px}
+}
+@media (max-width:340px){
+  .hero-phone,.hero-fan,.hero-mosaic{display:none}
+  .hero-slide.has-phone .hero-content{max-width:100%}
+}
+
+/* ---------- Smoother hero on phones and tablets ----------
+   These stop effects in the existing stylesheet that repaint the whole
+   screen continuously (page + hero background drift, big blurred layer)
+   and the zoom on each slide change. Desktop keeps them. */
+@media (hover:none),(pointer:coarse),(max-width:900px){
+  body,body.light-mode,.hero-slider,.hero-slider::before{animation:none!important}
+  .hero-slider::before{filter:none!important}
+  .hero-slide,.hero-slide.active{transform:none!important}
+  .hero-slide{transition:opacity .6s ease,visibility .6s ease!important;will-change:opacity}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-slide.active .hero-phone{animation:none}
+  .hp-img{transition:none}
+}
