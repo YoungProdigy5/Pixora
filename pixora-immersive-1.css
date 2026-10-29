@@ -1,0 +1,110 @@
+/* =========================================================
+   PIXORA — Immersive gallery layer (loaded after style.css)
+   1 Masonry grid   2 Glass bars + one calm accent
+   3 Full-screen swipe viewer   4 Mood chips   5 Hero glow
+   To undo: remove this file's <link> and <script> from index.html.
+   ========================================================= */
+:root{--px-accent:#ff3d68;--px-accent-rgb:255,61,104;--px-accent-dark:#d6123b;--px-accent-text:#ff6b88;--px-tint-rgb:255,61,104;--px-glass:rgba(14,14,22,.78)}
+body.light-mode{--px-accent-text:var(--px-accent-dark)}
+[hidden]{display:none!important}
+
+/* ---------- 2. One calm accent instead of red→purple gradients ---------- */
+#adminDashboardChoice,#exploreBtn,#randomBtn,#resetFilters,#showAllBtn,.auth-btn,.category-btn.active,.category-btn:hover,
+.category-chip.active,.category-chip:hover,.creator-link,.explore-btn,.hero .primary-btn,.hero button.primary-btn,.message-link,
+.modal-action,.pixora-card-action,.pixora-channel-button,.pixora-download-main,.pixora-option.active,.pixora-quality.active,
+.primary-btn,.random-btn,.secondary-btn,.text-btn{background:var(--px-accent)!important;background-image:none!important;
+  box-shadow:0 6px 18px rgba(var(--px-accent-rgb),.28)!important}
+
+/* ---------- 2. Glass bars (blur only where it is cheap) ---------- */
+.topbar{background:var(--px-glass)}
+.bottom-nav{background:rgba(16,16,24,.82);border-radius:22px}
+body.light-mode .topbar{background:rgba(255,255,255,.82)}
+body.light-mode .bottom-nav{background:rgba(255,255,255,.86)}
+@media (hover:hover) and (pointer:fine){
+  .topbar,.bottom-nav{-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}
+}
+/* Phones: the old blur sat behind every card button and the bars, which makes scrolling heavy */
+@media (hover:none),(pointer:coarse){
+  .topbar,.bottom-nav,.like-btn,.preview-btn,.download-btn,.search-panel,#pixoraSearchSuggestions{
+    -webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  .topbar{background:rgba(10,10,16,.94)}
+  .bottom-nav{background:rgba(16,16,24,.95)}
+  body.light-mode .topbar{background:rgba(255,255,255,.96)}
+  body.light-mode .bottom-nav{background:rgba(255,255,255,.97)}
+  .like-btn,.preview-btn,.download-btn{background:rgba(0,0,0,.5)!important}
+}
+
+/* ---------- 1. Masonry grid ---------- */
+#wallpaperGrid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-auto-rows:8px;column-gap:12px!important;row-gap:0!important;grid-auto-flow:row dense}
+@media (min-width:700px){#wallpaperGrid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media (min-width:1100px){#wallpaperGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+#wallpaperGrid .wallpaper-card{align-self:start;margin:0;min-width:0}
+#wallpaperGrid .wallpaper-art{aspect-ratio:var(--px-ar,.74)!important;height:auto!important}
+.wallpaper-art img.wallpaper-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.wallpaper-card{cursor:zoom-in}
+
+/* ---------- Align the Categories block with the other sections ---------- */
+.categories-section{--px-g:24px}
+@media (max-width:760px){.categories-section{--px-g:14px}}
+@media (max-width:480px){.categories-section{--px-g:11px}}
+.categories-section .section-header,.categories-section .px-moods,.categories-section .category-list{padding-left:var(--px-g);padding-right:var(--px-g)}
+.categories-section .category-list{scroll-padding-left:var(--px-g);scroll-padding-right:var(--px-g)}
+
+/* ---------- 4. Mood chips ---------- */
+.px-moods{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.px-moods::-webkit-scrollbar{display:none}
+.px-mood{flex:0 0 auto;min-height:40px;padding:0 16px;border-radius:999px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;
+  color:inherit;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);transition:background .2s ease,border-color .2s ease}
+body.light-mode .px-mood{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.14)}
+.px-mood[aria-pressed="true"]{background:rgba(var(--px-accent-rgb),.16);border-color:var(--px-accent)}
+.px-mood:focus-visible{outline:3px solid var(--px-accent);outline-offset:2px}
+
+/* ---------- 5. Hero glow that follows the current wallpaper ---------- */
+.hero-slider::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(55% 95% at 82% 50%,rgba(var(--px-tint-rgb),.42),transparent 72%)}
+
+/* ---------- Site-wide colour that follows the hero picture ---------- */
+.px-tint{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity 1.1s ease;
+  background:radial-gradient(95% 55% at 100% 0%,rgba(var(--c,255,61,104),.26),transparent 70%),
+             radial-gradient(85% 50% at 0% 100%,rgba(var(--c,255,61,104),.16),transparent 70%)}
+.px-tint.on{opacity:1}
+body.light-mode .px-tint{opacity:0}
+body.light-mode .px-tint.on{opacity:.55}
+
+/* pieces of the page that use the brand colour follow it */
+.logo span,.hero-content h1 span,.search-icon,.like-btn.liked,.modal-action.liked,.wallpaper-info p{color:var(--px-accent-text)!important}
+.hero-dot.active,.nav-item.active,.light-mode .nav-item.active,.upload-tabs button.active,.upload-form button[type="submit"],.modal-action.primary{
+  background:var(--px-accent)!important}
+.light-mode .logo span,.light-mode .search-icon{color:var(--px-accent-dark)!important}
+
+/* ---------- 3. Full-screen viewer ---------- */
+body.pxv-open{overflow:hidden}
+.pxv{position:fixed;inset:0;z-index:5000;overflow:hidden;color:#fff;user-select:none;-webkit-user-select:none;
+  background:radial-gradient(120% 80% at 50% 22%,rgba(var(--pxv-rgb,255,61,104),.5),rgba(var(--pxv-rgb,255,61,104),0) 72%),#05050a}
+.pxv-track{position:absolute;inset:0;touch-action:none;will-change:transform}
+.pxv-pane{position:absolute;left:0;right:0;height:100%;display:grid;place-items:center}
+.pxv-pane.prev{top:-100%}.pxv-pane.cur{top:0}.pxv-pane.next{top:100%}
+.pxv-pane img{max-width:100%;max-height:100%;object-fit:contain;display:block;-webkit-user-drag:none;
+  box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.pxv-ui{position:absolute;inset:0;pointer-events:none;transition:opacity .25s ease}
+.pxv-ui.off{opacity:0}
+.pxv-ui.off button{pointer-events:none}
+.pxv-top,.pxv-bottom{position:absolute;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pxv-top{top:0;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 28px;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent)}
+.pxv-bottom{bottom:0;padding:34px 16px calc(18px + env(safe-area-inset-bottom,0px));background:linear-gradient(0deg,rgba(0,0,0,.7),transparent)}
+.pxv-ui button{pointer-events:auto;width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.22);
+  background:rgba(0,0,0,.45);color:#fff;font-size:20px;line-height:1;display:grid;place-items:center;cursor:pointer;
+  -webkit-tap-highlight-color:transparent}
+.pxv-ui button:focus-visible{outline:3px solid var(--px-accent);outline-offset:2px}
+.pxv-ui button.liked{background:var(--px-accent);border-color:transparent}
+.pxv-count{font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;background:rgba(0,0,0,.45)}
+.pxv-meta{min-width:0;display:flex;flex-direction:column;gap:2px}
+.pxv-meta small{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.pxv-meta strong{font-size:18px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pxv-actions{display:flex;gap:10px;flex:0 0 auto}
+.pxv-hint{position:absolute;left:0;right:0;bottom:calc(92px + env(safe-area-inset-bottom,0px));text-align:center;font-size:12px;
+  font-weight:600;color:rgba(255,255,255,.8);pointer-events:none;animation:pxvHint 3.5s ease forwards}
+@keyframes pxvHint{0%,70%{opacity:1}100%{opacity:0}}
+
+@media (prefers-reduced-motion:reduce){.px-tint,.pxv-ui,.px-mood{transition:none}.pxv-hint{animation:none;opacity:0}}
